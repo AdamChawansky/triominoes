@@ -2,7 +2,7 @@
 
 import { NewBlock } from "./types";
 
-function makeNewBlocks(): NewBlock[] {
+export function makeNewBlocks(): NewBlock[] {
   const newBlocks: NewBlock[] = [];
   for(let i=0; i<=5; i++) {
     for(let j=i; j<=5; j++) {
