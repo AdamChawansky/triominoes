@@ -1,7 +1,6 @@
 // (0,0,0), (0,0,1), ... (0,0,5), (0,1,1), ... (5,5,5)
 
-import { NewBlock } from "./types";
-import { PlacedBlock } from "./types";
+import { NewBlock, PlacedBlock, Coordinate } from "./types";
 
 export function makeNewBlocks(): NewBlock[] {
   const newBlocks: NewBlock[] = [];
@@ -50,7 +49,32 @@ function permuteBlock( tile:NewBlock ): PlacedBlock[] {
 // How to expand from the "center" of the board?
 // Or just allocate a fuckton of space and hope it's enough?
 // Or allocate a reasonable amount of space and recopy into an array with double dimensions if you ever hit the boundaries?
-
+// Treat it as a hash table with (0,0) as the origin. Keys are (x,y) 
+const gameBoard = new Map<string, PlacedBlock>();
+gameBoard.set("0,0", {
+  bottomCenter: 2,
+  topLeft: 0,
+  topRight: 1,
+});
+/*
+gameBoard.has("0,0");
+gameBoard.get("0,0");
+gameBoard.keys();
+gameBoard.values();
+gameBoard.entries();
+*/
+// Function to turn coordinates into keys
+function toKey( coord: Coordinate): string {
+  return `${coord.x},${coord.y}`;
+}
+// Function to turn keys into coordinates
+function toCoord( key: string ): Coordinate {
+  const temp = key.split(',');
+  return {
+    x: Number(temp[0]),
+    y: Number(temp[1]),
+  };
+}
 
 // Write a function that given a new Block and placedBlock, do they align?
 function doBlocksAlign( testBlock: NewBlock, ): PlacedBlock|Boolean {
