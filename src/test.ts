@@ -1,8 +1,10 @@
-import { makeNewBlocks } from "./generator";
+import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate } from "./types";
+import { makeNewBlocks, doesBlockFit, TestBlockPlacer } from "./generator";
 
-function Test() {
+function TestGenerator() {
   const newBlocks = makeNewBlocks();
   console.log(newBlocks);
 }
 
-Test();
+//TestGenerator();
+//TestBlockPlacer();
