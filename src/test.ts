@@ -1,5 +1,6 @@
-import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate } from "./types";
-import { makeNewBlocks, doesBlockFit, genNewBlock } from "./generator";
+import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard } from "./types";
+import { makeNewBlocks, genNewBlock } from "./generator";
+import { doesBlockFit } from "./logic";
 
 function TestGenerator() {
   const newBlocks = makeNewBlocks();
@@ -7,7 +8,6 @@ function TestGenerator() {
 }
 
 function TestBlockPlacer() {
-  type GameBoard = Map<string, PlacedBlock>;
   const gameBoard: GameBoard = new Map();
 
   gameBoard.set("0,0", {
