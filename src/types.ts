@@ -17,7 +17,10 @@ export type PlacedBlockB = {
 export type PlacedBlock = PlacedBlockA | PlacedBlockB;
 
 // clockwise
-export type NewBlock = [number, number, number];
+export type NewBlock = {
+  id: string;
+  numbers: [number, number, number];
+}
 
 export type Coordinate = {
   x: number;

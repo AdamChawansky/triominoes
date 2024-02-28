@@ -33,11 +33,12 @@ if( NUM_PLAYERS === 1 || NUM_PLAYERS === 2 ) {
 }
 for(let i = 0; i < NUM_PLAYERS; i++) {
   for(let i = 0; i < NUM_STARTING_TILES; i++) {
-    hands[i].push( drawPile.pop() );
+    hands[i].push( drawPile.pop()! );
+  }
 }
 
 // Choose a random tile to be the starting tile
-const temp = permuteBlock( drawPile.pop() );
+const temp = permuteBlock( drawPile.pop()! );
 function determineFirstPlay( hands: NewBlock[], gameBoard: GameBoard ): undefined {
   // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
   //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
@@ -52,7 +53,10 @@ export function makeNewBlocks(): NewBlock[] {
   for(let i = 0; i <= 5; i++) {
     for(let j = i; j <= 5; j++) {
       for(let k = j; k <=5 ; k++) {
-        newBlocks.push([i,j,k]);
+        newBlocks.push({
+          id: [i,j,k].join(","), 
+          numbers: [i,j,k],
+        });
       }
     }
   }
@@ -73,36 +77,42 @@ export function makeNewBlocks(): NewBlock[] {
 function permuteBlock( tile:NewBlock ): PlacedBlock[] {
   return [{
   // Make the 3 A types
-    orientation: 'up',  
-    topCenter: tile[0],
-    bottomRight: tile[1],
-    bottomLeft: tile[2],
+    orientation: 'up',
+    newBlockID: tile.id,
+    topCenter: tile.numbers[0],
+    bottomRight: tile.numbers[1],
+    bottomLeft: tile.numbers[2],
   }, {
     orientation: 'up',
-    topCenter: tile[1],
-    bottomRight: tile[2],
-    bottomLeft: tile[0],
+    newBlockID: tile.id,
+    topCenter: tile.numbers[1],
+    bottomRight: tile.numbers[2],
+    bottomLeft: tile.numbers[0],
   }, {
     orientation: 'up',
-    topCenter: tile[2],
-    bottomRight: tile[0],
-    bottomLeft: tile[1],
+    newBlockID: tile.id,
+    topCenter: tile.numbers[2],
+    bottomRight: tile.numbers[0],
+    bottomLeft: tile.numbers[1],
   }, {
   // Make the 3 B types
     orientation: 'down',
-    bottomCenter: tile[0],
-    topLeft: tile[1],
-    topRight: tile[2],
+    newBlockID: tile.id,
+    bottomCenter: tile.numbers[0],
+    topLeft: tile.numbers[1],
+    topRight: tile.numbers[2],
   }, {
     orientation: 'down',
-    bottomCenter: tile[1],
-    topLeft: tile[2],
-    topRight: tile[0],
+    newBlockID: tile.id,
+    bottomCenter: tile.numbers[1],
+    topLeft: tile.numbers[2],
+    topRight: tile.numbers[0],
   }, {
     orientation: 'down',
-    bottomCenter: tile[2],
-    topLeft: tile[0],
-    topRight: tile[1],
+    newBlockID: tile.id,
+    bottomCenter: tile.numbers[2],
+    topLeft: tile.numbers[0],
+    topRight: tile.numbers[1],
   }];
 }
 
@@ -226,12 +236,13 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // For each gameboard entry, look at the 3 coordinate spaces around its 3 edges
 // Create an array of all possible moves to select from, then choose one
-function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) {
-  const potentialMoves: [ PlacedBlock[], Coordinate ] = [];
-  gameBoard.forEach((coord: Coordinate) => {
+function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) : Coordinate[] {
+  // const potentialMoves: [ PlacedBlock[], Coordinate ] = [];
+  // gameBoard.forEach((tilesInHand) => {
 
-    return;
-  });
+  //   return;
+  // });
+  return [];
 }
 
 function placeBlock( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: GameBoard ) {
@@ -247,5 +258,3 @@ function placeBlock( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: Gam
 //    FOR LATER: Design GUI
 //    FOR LATER: Add ability to play versus computer
 //    FOR LATER: Add ability to play versus another human (like Paul's Avalon site)
-
-
