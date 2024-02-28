@@ -28,3 +28,9 @@ export type Coordinate = {
 }
 
 export type GameBoard = Map<string, PlacedBlock>;
+
+export type PotentialMove = {
+  coord: Coordinate;
+  newBlock: NewBlock;
+  placedBlock: PlacedBlock;
+}

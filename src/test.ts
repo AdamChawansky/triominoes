@@ -1,6 +1,6 @@
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard } from "./types";
 import { makeNewBlocks, genNewBlock } from "./generator";
-import { doesBlockFit, getAvailableCoords } from "./logic";
+import { doesBlockFit, getAvailableCoords, searchForMoves } from "./logic";
 
 function TestGenerator() {
   const newBlocks = makeNewBlocks();
@@ -67,10 +67,31 @@ function TestAvailableSpaces() {
   console.log(getAvailableCoords(gameBoard));
 }
 
+function TestMoveFinder() {
+  const gameBoard: GameBoard = new Map();
+
+  gameBoard.set("0,0", {
+    orientation: 'up',
+    newBlockID: "0,1,2",
+    topCenter: 0,
+    bottomRight: 1,
+    bottomLeft: 2,
+  });
+
+  const hand: NewBlock[] = ([
+    [1,2,2],
+    [0,0,0],
+    [0,0,1],
+    [0,2,5],
+  ] satisfies [number, number, number][]).map(genNewBlock);
+
+  console.log(searchForMoves(hand, gameBoard));
+}
+
 //TestGenerator();
 //TestBlockPlacer();
 //TestAvailableSpaces();
-
+TestMoveFinder();
 
 // Testing libraries
 // Given this board & this block, I expect _______

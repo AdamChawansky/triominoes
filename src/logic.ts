@@ -1,5 +1,5 @@
 import { makeNewBlocks, permuteBlock } from "./generator";
-import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard } from "./types";
+import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove } from "./types";
 import { toCoord, toKey } from "./util";
 
 // Function to test if blockInHand fits into given space on game board
@@ -97,7 +97,7 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
 }
 
 // For each gameboard entry, look at the 3 coordinate spaces around its 3 edges,
-// Then return a list of coordinates of available, meaning:
+// Then return a list of unique coordinates available, meaning:
 // 1) the space is empty
 // 2) the space is adjacent to the edge of another already PlacedBlock
 export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
@@ -132,13 +132,24 @@ export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
 
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // Then we can loop through those to see if any of the NewBlocks in hand fit
-export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) : Coordinate[] {
+export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) : PotentialMove[] {
+  const toReturn: PotentialMove[] = [];
+  const availableSpaces = getAvailableCoords(gameBoard);
+  tilesInHand.forEach(tile => {
+    availableSpaces.forEach(coord => {
+      const potentialMove = doesBlockFit(tile, coord, gameBoard);
+      if( potentialMove ) {
+        toReturn.push( {
+          coord: coord,
+          newBlock: tile,
+          placedBlock: potentialMove,
+        });
+      }
+    });
+  });
+  return toReturn;
+}
 
 
   // const potentialMoves: [ PlacedBlock[], Coordinate ] = [];
   // gameBoard.forEach((tilesInHand) => {
-
-  //   return;
-  // });
-  return [];
-}
