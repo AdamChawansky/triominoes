@@ -1,4 +1,5 @@
 export type PlacedBlockA = {
+  newBlockID: string;
   orientation: 'up';
   topCenter: number;
   bottomLeft: number;
@@ -6,6 +7,7 @@ export type PlacedBlockA = {
 }
 
 export type PlacedBlockB = {
+  newBlockID: string;
   orientation: 'down';
   bottomCenter: number;
   topLeft: number;

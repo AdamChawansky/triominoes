@@ -2,15 +2,70 @@
 
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate } from "./types";
 
+// Treat game board  as a hash table with (0,0) as the origin. Keys are (x,y) coordinates.
+type GameBoard = Map<string, PlacedBlock>;
+const gameBoard: GameBoard = new Map();
+
+/*
+https://en.wikipedia.org/wiki/Triominoes
+gameBoard.has("0,0");
+gameBoard.get("0,0");
+gameBoard.keys();
+gameBoard.values();
+gameBoard.entries();
+*/
+
+const hands: NewBlock[][] = [];
+const drawPile = makeNewBlocks();
+
+// Starting tiles depends on number of players
+//    2 players start with 9 tiles each
+//    3-4 players start with 7 tiles each
+//    5-6 players start with 6 tiles each
+const NUM_PLAYERS: number = 1;
+let NUM_STARTING_TILES: number = 1;
+if( NUM_PLAYERS === 1 || NUM_PLAYERS === 2 ) {
+  NUM_STARTING_TILES = 9;
+} else if( NUM_PLAYERS === 3 || NUM_PLAYERS === 4 ) {
+  NUM_STARTING_TILES = 7;
+} else if( NUM_PLAYERS === 5 || NUM_PLAYERS === 6 ) {
+  NUM_STARTING_TILES = 6;
+}
+for(let i = 0; i < NUM_PLAYERS; i++) {
+  for(let i = 0; i < NUM_STARTING_TILES; i++) {
+    hands[i].push( drawPile.pop() );
+}
+
+// Choose a random tile to be the starting tile
+const temp = permuteBlock( drawPile.pop() );
+function determineFirstPlay( hands: NewBlock[], gameBoard: GameBoard ): undefined {
+  // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
+  //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
+  gameBoard.set( "0,0", temp[0] );
+  return;
+}
+
 export function makeNewBlocks(): NewBlock[] {
   const newBlocks: NewBlock[] = [];
-  for(let i=0; i<=5; i++) {
-    for(let j=i; j<=5; j++) {
-      for(let k=j; k<=5; k++) {
+
+  // Make all of the possible triominoes from (0,0,0) to (5,5,5)
+  for(let i = 0; i <= 5; i++) {
+    for(let j = i; j <= 5; j++) {
+      for(let k = j; k <=5 ; k++) {
         newBlocks.push([i,j,k]);
       }
     }
   }
+
+  // Shuffle the tiles
+  for(let i=0; i<newBlocks.length; i++) {
+    // Pick a random number between 0 and # of newBlocks
+    let shuffle = Math.floor(Math.random() * (newBlocks.length));
+    
+    // Swap the current with a random position
+    [ newBlocks[i], newBlocks[shuffle] ] = [ newBlocks[shuffle], newBlocks[i] ];
+  }
+
   return newBlocks;
 }
 
@@ -50,19 +105,6 @@ function permuteBlock( tile:NewBlock ): PlacedBlock[] {
     topRight: tile[1],
   }];
 }
-
-// Treat game board  as a hash table with (0,0) as the origin. Keys are (x,y) coordinates.
-type GameBoard = Map<string, PlacedBlock>;
-const gameBoard: GameBoard = new Map();
-//console.log("GameBoard", gameBoard);
-
-/*
-gameBoard.has("0,0");
-gameBoard.get("0,0");
-gameBoard.keys();
-gameBoard.values();
-gameBoard.entries();
-*/
 
 // Function to turn coordinates into keys
 function toKey( coord: Coordinate): string {
@@ -181,49 +223,17 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
 }
 
 
-
-export function TestBlockPlacer() {
-  gameBoard.set("0,0", {
-    orientation: 'up',
-    topCenter: 0,
-    bottomRight: 1,
-    bottomLeft: 2,
-  });
-  
-  const hand: NewBlock[] = [[1,2,2], [0,0,0], [0,0,1], [0,2,5]];
-  hand.forEach((blockInHand) => {
-    console.log( "Checking blockInHand: ", doesBlockFit(blockInHand, {x: 0, y:-1}, gameBoard) );
-  });
-  console.log("Next test:");
-
-  hand.forEach((blockInHand) => {
-    console.log( "Checking blockInHand: ", doesBlockFit(blockInHand, {x: 5, y:5}, gameBoard) );
-  });
-
-  console.log("Next test:");
-  hand.forEach((blockInHand) => {
-    console.log( "Checking blockInHand: ", doesBlockFit(blockInHand, {x: 1, y:0}, gameBoard) );
-  });
-
-  console.log("Next test:");
-  hand.forEach((blockInHand) => {
-    console.log( "Checking blockInHand: ", doesBlockFit(blockInHand, {x: -1, y:0}, gameBoard) );
-  });
-}
-
-
-
-
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // For each gameboard entry, look at the 3 coordinate spaces around its 3 edges
 // Create an array of all possible moves to select from, then choose one
-/*
-function searchForMoves( ) {
+function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) {
+  const potentialMoves: [ PlacedBlock[], Coordinate ] = [];
   gameBoard.forEach((coord: Coordinate) => {
+
     return;
   });
 }
-*/
+
 function placeBlock( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: GameBoard ) {
   gameBoard.set( toKey(coord), placedBlock );
 }
@@ -237,8 +247,5 @@ function placeBlock( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: Gam
 //    FOR LATER: Design GUI
 //    FOR LATER: Add ability to play versus computer
 //    FOR LATER: Add ability to play versus another human (like Paul's Avalon site)
-
-
-
 
 
