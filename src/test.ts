@@ -1,6 +1,6 @@
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard } from "./types";
 import { makeNewBlocks, genNewBlock } from "./generator";
-import { doesBlockFit } from "./logic";
+import { doesBlockFit, getAvailableCoords } from "./logic";
 
 function TestGenerator() {
   const newBlocks = makeNewBlocks();
@@ -45,8 +45,32 @@ function TestBlockPlacer() {
   });
 }
 
-TestGenerator();
-TestBlockPlacer();
+
+function TestAvailableSpaces() {
+  const gameBoard: GameBoard = new Map();
+
+  gameBoard.set("0,0", {
+    orientation: 'up',
+    newBlockID: "0,1,2",
+    topCenter: 0,
+    bottomRight: 1,
+    bottomLeft: 2,
+  });
+  gameBoard.set("1,-1", {
+    orientation: 'up',
+    newBlockID: "0,1,2",
+    topCenter: 0,
+    bottomRight: 1,
+    bottomLeft: 2,
+  });
+
+  console.log(getAvailableCoords(gameBoard));
+}
+
+//TestGenerator();
+//TestBlockPlacer();
+//TestAvailableSpaces();
+
 
 // Testing libraries
 // Given this board & this block, I expect _______

@@ -1,17 +1,10 @@
 import { makeNewBlocks, permuteBlock } from "./generator";
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard } from "./types";
-import { toKey } from "./util";
+import { toCoord, toKey } from "./util";
 
 // Function to test if blockInHand fits into given space on game board
 // Need to check if any of the 3 permutations of blockInHand align
-// PAUL: This function will correctly say a block fits if it has no other blocks touching. However, that shouldn't
-// be possible, because we will only call this function when crawling the board, and so we'll always be testing positions
-// that are adjacent to at least one block. But should I add some logic to make sure that the block we are testing
-// WOULD BE edge-to-edge will at least one pre-existing block? 
 export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoard: GameBoard ): PlacedBlock | undefined {
-  // Check if space already filled
-  if( gameBoard.has(toKey(coord)) ) return;
-
   // Only need to check 3 of the permutations based on space on game board
   // If we assume the block at (0,0) has PlacedBlockA orientation, then
   // all (x,y) where x+y is even will be A, and x+y is odd is B
@@ -44,7 +37,6 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
       const rightMiddle = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y - 1})) as PlacedBlockB | undefined;
       const rightDown = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y - 1})) as PlacedBlockA | undefined;
 
-      //console.log("BlockFits (L,R,B): ", toLeft, toRight, toBelow);
       blockFits =
       (toLeft === undefined || (testBlock.bottomLeft === toLeft.bottomCenter && testBlock.topCenter === toLeft.topRight)) &&
       (toRight === undefined || (testBlock.bottomRight === toRight.bottomCenter && testBlock.topCenter === toRight.topLeft)) &&
@@ -84,7 +76,6 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
       const rightMiddle = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y + 1})) as PlacedBlockA | undefined;
       const rightDown = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y})) as PlacedBlockB | undefined;
 
-      //console.log("BlockFits (L,R,A): ", toLeft, toRight, toAbove);
       blockFits =
       (toLeft === undefined || (testBlock.topLeft === toLeft.topCenter && testBlock.bottomCenter === toLeft.bottomRight)) &&
       (toRight === undefined || (testBlock.bottomCenter === toRight.bottomLeft && testBlock.topRight === toRight.topCenter)) &&
@@ -105,11 +96,45 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
   return validPlays[0];
 }
 
+// For each gameboard entry, look at the 3 coordinate spaces around its 3 edges,
+// Then return a list of coordinates of available, meaning:
+// 1) the space is empty
+// 2) the space is adjacent to the edge of another already PlacedBlock
+export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
+  const availableKeys = new Set<string>();
+  gameBoard.forEach((placedBlock, key) => {
+    const coord = toCoord(key);
+    const neighbors: Coordinate[] = [];
+    if (placedBlock.orientation === 'up') {
+      neighbors.push(...[
+        { x: coord.x-1, y: coord.y },
+        { x: coord.x+1, y: coord.y },
+        { x: coord.x, y: coord.y-1 },
+      ]);
+    } else {
+      neighbors.push(...[
+        { x: coord.x-1, y: coord.y },
+        { x: coord.x+1, y: coord.y },
+        { x: coord.x, y: coord.y+1 },
+      ]);
+    }
+    neighbors.forEach(coord => {
+      const nkey = toKey(coord);
+      // Check if space already filled
+      if (!gameBoard.has(nkey)) {
+        availableKeys.add(nkey);
+      }
+    });
+  })
+  return Array.from(availableKeys.keys()).map(toCoord);
+}
+
 
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
-// For each gameboard entry, look at the 3 coordinate spaces around its 3 edges
-// Create an array of all possible moves to select from, then choose one
+// Then we can loop through those to see if any of the NewBlocks in hand fit
 export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) : Coordinate[] {
+
+
   // const potentialMoves: [ PlacedBlock[], Coordinate ] = [];
   // gameBoard.forEach((tilesInHand) => {
 
