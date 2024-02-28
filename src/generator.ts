@@ -32,7 +32,8 @@ if( NUM_PLAYERS === 1 || NUM_PLAYERS === 2 ) {
   NUM_STARTING_TILES = 6;
 }
 for(let i = 0; i < NUM_PLAYERS; i++) {
-  for(let i = 0; i < NUM_STARTING_TILES; i++) {
+  hands[i] = [];
+  for(let j = 0; j < NUM_STARTING_TILES; j++) {
     hands[i].push( drawPile.pop()! );
   }
 }
@@ -46,6 +47,13 @@ function determineFirstPlay( hands: NewBlock[], gameBoard: GameBoard ): undefine
   return;
 }
 
+export function genNewBlock(nums: [number, number, number]): NewBlock {
+  return {
+    id: nums.join(","), 
+    numbers: nums,
+  };
+}
+
 export function makeNewBlocks(): NewBlock[] {
   const newBlocks: NewBlock[] = [];
 
@@ -53,10 +61,7 @@ export function makeNewBlocks(): NewBlock[] {
   for(let i = 0; i <= 5; i++) {
     for(let j = i; j <= 5; j++) {
       for(let k = j; k <=5 ; k++) {
-        newBlocks.push({
-          id: [i,j,k].join(","), 
-          numbers: [i,j,k],
-        });
+        newBlocks.push( genNewBlock([i,j,k]) );
       }
     }
   }
