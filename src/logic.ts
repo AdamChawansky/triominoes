@@ -1,4 +1,5 @@
 import { makeNewBlocks, permuteBlock } from "./generator";
+import { MAX_DRAW } from "./main";
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove } from "./types";
 import { toCoord, toKey } from "./util";
 
@@ -132,7 +133,7 @@ export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
 
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // Then we can loop through those to see if any of the NewBlocks in hand fit
-export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) : PotentialMove[] {
+export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ): PotentialMove[] {
   const toReturn: PotentialMove[] = [];
   const availableSpaces = getAvailableCoords(gameBoard);
   tilesInHand.forEach(tile => {
@@ -151,5 +152,103 @@ export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ) 
 }
 
 
-  // const potentialMoves: [ PlacedBlock[], Coordinate ] = [];
-  // gameBoard.forEach((tilesInHand) => {
+export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoard: GameBoard ): number {
+  let potentialMoves: PotentialMove[] = searchForMoves( tilesInHand, gameBoard );
+  let pointsForTurn: number = 0;
+  // FOR LATER: Create heuristics to decide which move to prioritize
+  // FOR LATER: Implement machine learning to determine best move
+  
+  if( potentialMoves.length > 0 ) {
+    let index = tilesInHand.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
+    tilesInHand.splice(index, 1);
+    gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
+    return pointsForTurn;
+  } else {
+    // If no move exists for all tiles in hand, then draw (up to MAX_DRAW) new tiles
+    // Check whether each new tile can be played before drawing another
+    let newTiles: NewBlock[] = [];
+    for( let i = 0; i < MAX_DRAW; i++ ) {
+      if( drawPile.length > 0 ) {
+        newTiles.push( drawPile.pop()! );
+        // YUCK, this will search ALL new tiles each time we draw another.
+        potentialMoves = searchForMoves( newTiles, gameBoard );
+        if( potentialMoves.length > 0 ) {
+          // Play that tile
+          let index = tilesInHand.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
+          tilesInHand.splice(index, 1);
+          gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
+          i = MAX_DRAW;
+          return pointsForTurn;
+        }
+      }
+    }
+  }
+  return -5 * MAX_DRAW;
+}
+
+
+// Function to determine points from placing a tile
+export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: GameBoard ): number {
+  let points: number = placedBlock.newBlockID.split(',').map(Number).reduce((sum, num) => sum + num, 0);
+  
+  // Determine if placedBlock completes one of 3 possible hexagons (50 points per hexagon)
+  // Need to check coordinates of hexagon formed around the 3 vertices of placedBlock
+  if( placedBlock.orientation === 'up' ) {
+    // Check Up: (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)
+    // Check DownLeft: (x-2,y), (x-1,y), (x-2,y-1), (x-1,y-1), (x,y-1)
+    // Check DownRight: (x+1,y), (x+2,y), (x,y-1), (x+1,y-1), (x-1,y+1)
+    const hexAbove: Boolean =
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y+1})) &&
+      gameBoard.has(toKey({ x: coord.x,   y: coord.y+1})) &&
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y+1}));
+    const hexDownLeft: Boolean =
+      gameBoard.has(toKey({ x: coord.x-2, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-2, y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x,   y: coord.y-1}));
+    const hexDownRight: Boolean =
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x+2, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x,   y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y+1}));
+    if( hexAbove ) points += 50;
+    if( hexDownLeft ) points += 50;
+    if( hexDownRight ) points += 50;
+  } else {
+    // Check Down: (x-1,y), (x+1,y), (x-1,y-1), (x,y-1), (x+1,y-1)
+    // Check UpLeft: (x-2,y), (x-1,y), (x-2,y+1), (x-1,y+1), (x,y+1)
+    // Check UpRight: (x+1,y), (x+2,y), (x,y+1), (x+1,y+1), (x+2,y+1)
+    const hexBelow: Boolean =
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x,   y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y-1}));
+    const hexUpLeft: Boolean =
+      gameBoard.has(toKey({ x: coord.x-2, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-2, y: coord.y+1})) &&
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y+1})) &&
+      gameBoard.has(toKey({ x: coord.x,   y: coord.y+1}));
+    const hexUpRight: Boolean =
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x+2, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x,   y: coord.y+1})) &&
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y+1})) &&
+      gameBoard.has(toKey({ x: coord.x+2, y: coord.y+1}));
+    if( hexBelow ) points += 50;
+    if( hexUpLeft ) points += 50;
+    if( hexUpRight ) points += 50;
+  }
+
+  // Determine if placedBlock completes a bridge (40 points per bridge)
+  // Need to check if matching one edge of a placedBlock with the point directly opposite
+  if( placedBlock.orientation === 'up' ) {
+    
+  }
+  return points;
+}

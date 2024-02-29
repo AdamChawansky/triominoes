@@ -91,7 +91,8 @@ function TestMoveFinder() {
 //TestGenerator();
 //TestBlockPlacer();
 //TestAvailableSpaces();
-TestMoveFinder();
+//TestMoveFinder();
 
+// JEST tutorial
 // Testing libraries
 // Given this board & this block, I expect _______
