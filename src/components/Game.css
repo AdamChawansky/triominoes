@@ -1,0 +1,20 @@
+main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: forestgreen;
+}
+
+.block {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  color: black;
+  background-color: white;
+  transform: translate(50vw, -50vh);
+}

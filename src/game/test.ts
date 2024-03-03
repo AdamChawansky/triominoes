@@ -2,12 +2,12 @@ import { NewBlock, GameBoard } from "./types";
 import { makeNewBlocks, genNewBlock } from "./generator";
 import { doesBlockFit, getAvailableCoords, searchForMoves } from "./logic";
 
-function TestGenerator() {
+export function TestGenerator() {
   const newBlocks = makeNewBlocks();
   console.log(newBlocks);
 }
 
-function TestBlockPlacer() {
+export function TestBlockPlacer() {
   const gameBoard: GameBoard = new Map();
 
   gameBoard.set("0,0", {
@@ -46,7 +46,7 @@ function TestBlockPlacer() {
 }
 
 
-function TestAvailableSpaces() {
+export function TestAvailableSpaces() {
   const gameBoard: GameBoard = new Map();
 
   gameBoard.set("0,0", {
@@ -67,7 +67,7 @@ function TestAvailableSpaces() {
   console.log(getAvailableCoords(gameBoard));
 }
 
-function TestMoveFinder() {
+export function TestMoveFinder() {
   const gameBoard: GameBoard = new Map();
 
   gameBoard.set("0,0", {
@@ -88,10 +88,7 @@ function TestMoveFinder() {
   console.log(searchForMoves(hand, gameBoard));
 }
 
-TestGenerator();
-TestBlockPlacer();
-TestAvailableSpaces();
-TestMoveFinder();
+
 
 // JEST tutorial
 // Testing libraries
