@@ -1,4 +1,4 @@
-import { makeNewBlocks, permuteBlock } from "./generator";
+import { permuteBlock } from "./generator";
 import { MAX_DRAW } from "./main";
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove } from "./types";
 import { toCoord, toKey } from "./util";

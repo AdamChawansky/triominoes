@@ -1,9 +1,8 @@
 // (0,0,0), (0,0,1), ... (0,0,5), (0,1,1), ... (5,5,5)
 
 import { makeNewBlocks, permuteBlock } from "./generator";
-import { searchForMoves, takeTurn } from "./logic";
-import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, PotentialMove } from "./types";
-import { toKey } from "./util";
+import { takeTurn } from "./logic";
+import { NewBlock, PlacedBlock } from "./types";
 
 // Treat game board  as a hash table with (0,0) as the origin. Keys are (x,y) coordinates.
 type GameBoard = Map<string, PlacedBlock>;
@@ -42,12 +41,12 @@ for(let i = 0; i < NUM_PLAYERS; i++) {
   }
 }
 
-function determineFirstPlay( hands: NewBlock[][], gameBoard: GameBoard ): undefined {
-  // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
-  //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
-  gameBoard.set( "0,0", temp[0] );
-  return;
-}
+// function determineFirstPlay( hands: NewBlock[][], gameBoard: GameBoard ): undefined {
+//   // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
+//   //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
+//   gameBoard.set( "0,0", temp[0] );
+//   return;
+// }
 
 // Choose a random tile to be the starting tile
 const temp = permuteBlock( drawPile.pop()! );

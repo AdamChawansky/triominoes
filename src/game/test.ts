@@ -1,4 +1,4 @@
-import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard } from "./types";
+import { NewBlock, GameBoard } from "./types";
 import { makeNewBlocks, genNewBlock } from "./generator";
 import { doesBlockFit, getAvailableCoords, searchForMoves } from "./logic";
 
@@ -88,10 +88,10 @@ function TestMoveFinder() {
   console.log(searchForMoves(hand, gameBoard));
 }
 
-//TestGenerator();
-//TestBlockPlacer();
-//TestAvailableSpaces();
-//TestMoveFinder();
+TestGenerator();
+TestBlockPlacer();
+TestAvailableSpaces();
+TestMoveFinder();
 
 // JEST tutorial
 // Testing libraries
