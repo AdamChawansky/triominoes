@@ -133,6 +133,7 @@ export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
 
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // Then we can loop through those to see if any of the NewBlocks in hand fit
+// FOR LATER: refactor this function to take a single tile rather than an array
 export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ): PotentialMove[] {
   const toReturn: PotentialMove[] = [];
   const availableSpaces = getAvailableCoords(gameBoard);
@@ -169,15 +170,17 @@ export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoa
     let newTiles: NewBlock[] = [];
     for( let i = 0; i < MAX_DRAW; i++ ) {
       if( drawPile.length > 0 ) {
+        console.log("I drew tile", i+1);
+        // const newTile = drawPile.pop();
         newTiles.push( drawPile.pop()! );
-        // YUCK, this will search ALL new tiles each time we draw another.
-        potentialMoves = searchForMoves( newTiles, gameBoard );
+        potentialMoves = searchForMoves( [newTiles[i]], gameBoard );
         if( potentialMoves.length > 0 ) {
           // Play that tile
+          // Not actually getting rid of the tile and adding the others
           let index = tilesInHand.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
+          // Is this actually adding the drawn tiles to hand? 
           tilesInHand.splice(index, 1);
           gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
-          i = MAX_DRAW;
           return pointsForTurn;
         }
       }
@@ -246,9 +249,42 @@ export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gam
   }
 
   // Determine if placedBlock completes a bridge (40 points per bridge)
-  // Need to check if matching one edge of a placedBlock with the point directly opposite
+  // Assuming all previous moves were legal, you only need to check
+  // if matching one edge of a placedBlock with the point DIRECTLY OPPOSITE
+  // (There seem to be other definitions of a bridge, but this is my interpretation.)
   if( placedBlock.orientation === 'up' ) {
-    
+    // Check Above: (x,y-1) & (x,y+1)
+    // Check DownLeft: (x+1,y) & (x-2,y-1)
+    // Check DownRight: (x-1,y) & (x+2,y-1)
+    const bridgeAbove: Boolean =
+      gameBoard.has(toKey({ x: coord.x, y: coord.y-1})) &&
+      gameBoard.has(toKey({ x: coord.x, y: coord.y+1}));
+    const bridgeDownLeft: Boolean =
+      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x-2, y: coord.y-1}));
+    const bridgeDownRight: Boolean =
+      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x+2, y: coord.y-1}));
+    if( bridgeAbove ) points += 40;
+    if( bridgeDownLeft ) points += 40;
+    if( bridgeDownRight ) points += 40;
+  } else {
+    // Check Below: (x,y+1) & (x,y-1)
+    // Check UpLeft: (x+1,y) & (x-2,y+1)
+    // Check UpRight: (x-1,y) & (x+2,y+1)
+    const bridgeBelow: Boolean =
+      gameBoard.has(toKey({ x: coord.x, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x, y: coord.y}));
+    const bridgeUpLeft: Boolean =
+      gameBoard.has(toKey({ x: coord.x, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x, y: coord.y}));
+    const bridgeUpRight: Boolean =
+      gameBoard.has(toKey({ x: coord.x, y: coord.y})) &&
+      gameBoard.has(toKey({ x: coord.x, y: coord.y}));
+    if( bridgeBelow ) points += 40;
+    if( bridgeUpLeft ) points += 40;
+    if( bridgeUpRight ) points += 40;
   }
+
   return points;
 }
