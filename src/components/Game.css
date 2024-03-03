@@ -18,3 +18,24 @@ main {
   background-color: white;
   transform: translate(50vw, -50vh);
 }
+
+.triangular-block-up {
+  position: absolute;
+  text-align: center;
+  width: 0;
+  height: 0;
+  border-left: 45px solid transparent;
+  border-right: 45px solid transparent;
+  border-bottom: 80px solid white;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 0px;
+  color: black;
+  font-size: 16px;
+  /* transition: background-color 0.3s ease; */
+  transform: translate(50vw, -50vh);
+}
+
+.triangular-block:hover {
+  background-color: #0056b3;
+}
