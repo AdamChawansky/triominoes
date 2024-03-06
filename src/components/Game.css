@@ -36,6 +36,11 @@ main {
   transform: translate(50vw, -50vh);
 }
 
+.triangular-block-down {
+  /* Rotate triangular-block-up */
+  transform: rotate(180deg);
+}
+
 .triangular-block:hover {
   background-color: #0056b3;
 }

@@ -175,9 +175,7 @@ export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoa
         potentialMoves = searchForMoves( [newTiles[i]], gameBoard );
         if( potentialMoves.length > 0 ) {
           // Play that tile
-          // Not actually getting rid of the tile and adding the others
           let index = newTiles.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
-          // Is this actually adding the drawn tiles to hand? 
           newTiles.splice(index, 1);
           gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
           tilesInHand = tilesInHand.concat(newTiles);
