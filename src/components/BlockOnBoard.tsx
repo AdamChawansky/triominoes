@@ -5,9 +5,10 @@ export function BlockOnBoard(props: {
   coord: Coordinate;
   placedBlock: PlacedBlock;
 }) {
+  const width = 90;
   const position: CSSProperties = {
-    left: `${props.coord.x * 80}px`,
-    bottom: `${props.coord.y * 80}px`,
+    left: `${props.coord.x * width * 0.8}px`,
+    bottom: `${props.coord.y * width * 1.1}px`,
   };
 
   const top = props.placedBlock.orientation === 'up'
@@ -21,8 +22,14 @@ export function BlockOnBoard(props: {
     console.log('i clicked on:', props.placedBlock);
   }
 
+  const classNames = [
+    'block', 
+    props.placedBlock.orientation === 'up'
+      ? 'block-up'
+      : 'block-down',
+  ];
   return (
-    <div className="triangular-block-up" style={position} onClick={onClick}>
+    <div className={classNames.join(' ')} style={position} onClick={onClick}>
       <div>{top.join(' ')}</div>
       <div>{bottom.join(' ')}</div>
     </div>

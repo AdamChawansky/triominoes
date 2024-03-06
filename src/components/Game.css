@@ -9,38 +9,29 @@ main {
 
 .block {
   position: absolute;
-  text-align: center;
-  width: 60px;
-  height: 60px;
-  border: 2px solid black;
+  width: 100px;
+  height: 100px;
   box-sizing: border-box;
-  color: black;
-  background-color: white;
   transform: translate(50vw, -50vh);
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.block-up {
+  background-image: url('triangle-up.png');
+  padding-top: 1em;
+}
+.block-down {
+  background-image: url('triangle-down.png');
+  padding-bottom: 1em;
 }
 
-.triangular-block-up {
-  position: absolute;
-  text-align: center;
-  width: 0;
-  height: 0;
-  border-left: 45px solid transparent;
-  border-right: 45px solid transparent;
-  border-bottom: 80px solid white;
-  box-sizing: border-box;
-  cursor: pointer;
-  padding: 0px;
-  color: black;
-  font-size: 16px;
-  /* transition: background-color 0.3s ease; */
-  transform: translate(50vw, -50vh);
-}
-
-.triangular-block-down {
-  /* Rotate triangular-block-up */
-  transform: rotate(180deg);
-}
-
-.triangular-block:hover {
-  background-color: #0056b3;
+.block:hover {
+  font-weight: bold;
 }
