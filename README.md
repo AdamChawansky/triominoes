@@ -1,5 +1,1 @@
-# triominoes
-
-```bash
-npm create vite@latest triominoes -- --template react-swc-ts
-```
+this is where you put images you want to reference in HTML
