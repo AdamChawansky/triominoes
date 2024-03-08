@@ -9,7 +9,7 @@ export function GameBoard() {
     <main>
       {Array.from(game.entries()).map(([coord, placedBlock]) => (
         <BlockOnBoard
-          key={coord}
+          key = {coord}
           coord = {toCoord(coord)}
           placedBlock = {placedBlock}
         />

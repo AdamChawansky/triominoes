@@ -7,8 +7,8 @@ export function BlockOnBoard(props: {
 }) {
   const width = 90;
   const position: CSSProperties = {
-    left: `${props.coord.x * width * 0.8}px`,
-    bottom: `${props.coord.y * width * 1.1}px`,
+    left: `${props.coord.x * width * 0.54}px`,
+    bottom: `${props.coord.y * width * 0.95}px`,
   };
 
   const top = props.placedBlock.orientation === 'up'

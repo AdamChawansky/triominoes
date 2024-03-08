@@ -23,6 +23,7 @@ export function simulateGame(): GameBoard {
   */
 
   const hands: NewBlock[][] = [[]];
+  const scores: number[] = [];
   const drawPile = makeNewBlocks();
 
   // Starting tiles depends on number of players
@@ -38,6 +39,7 @@ export function simulateGame(): GameBoard {
   }
   for(let i = 0; i < NUM_PLAYERS; i++) {
     hands[i] = [];
+    scores[i] = 0;
     for(let j = 0; j < NUM_STARTING_TILES; j++) {
       hands[i].push( drawPile.pop()! );
     }
@@ -57,7 +59,9 @@ export function simulateGame(): GameBoard {
   // determineFirstPlay( hands, gameBoard );
   let turns = 0;
   while( hands[0].length > 0 && turns < 200) {
-    takeTurn( hands[0], drawPile, gameBoard );
+    let pointsForTurn = takeTurn( hands[0], drawPile, gameBoard );
+    scores[0] += pointsForTurn;
+    console.log(pointsForTurn, scores[0]);
     turns++;
   }
   console.log( gameBoard );

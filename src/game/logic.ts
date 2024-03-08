@@ -170,17 +170,23 @@ export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoa
     let newTiles: NewBlock[] = [];
     for( let i = 0; i < MAX_DRAW; i++ ) {
       if( drawPile.length > 0 ) {
-        console.log("I drew tile", i+1);
         newTiles.push( drawPile.pop()! );
+        pointsForTurn -= 5; // Lose 5 points for drawing a tile
         potentialMoves = searchForMoves( [newTiles[i]], gameBoard );
         if( potentialMoves.length > 0 ) {
           // Play that tile
           let index = newTiles.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
           newTiles.splice(index, 1);
-          gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
           tilesInHand = tilesInHand.concat(newTiles);
+
+          gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
+
+          pointsForTurn += pointsFromPlay( potentialMoves[0].placedBlock, potentialMoves[0].coord, gameBoard );
           return pointsForTurn;
         }
+      } else {
+        pointsForTurn -= 10; // If you have no plays, -10 points
+        return pointsForTurn; 
       }
     }
   }
