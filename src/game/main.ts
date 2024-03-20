@@ -48,6 +48,7 @@ export function simulateGame(): GameBoard {
   // function determineFirstPlay( hands: NewBlock[][], gameBoard: GameBoard ): undefined {
   //   // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
   //   //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
+  //                 First player earns 10 bonus points if they play a triple, 40 points for playing (0,0,0)
   //   gameBoard.set( "0,0", temp[0] );
   //   return;
   // }
@@ -63,6 +64,12 @@ export function simulateGame(): GameBoard {
     scores[0] += pointsForTurn;
     console.log(pointsForTurn, scores[0]);
     turns++;
+
+    // End states:
+    // 1) A player plays their last tile (any hand[i] === 0)
+    //    That player earns 25 points + the total points of everyone else's tiles
+    // 2) The drawPile is empty and all players pass, meaning no more moves possible.
+    //    Each player loses points equal to sum of their own tiles
   }
   console.log( gameBoard );
 
