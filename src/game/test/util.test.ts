@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { toCoord, toKey } from './util';
+import { toCoord, toKey } from '../util';
 
 describe('util tests', () => {
   test('Key <--> Coord', () => {

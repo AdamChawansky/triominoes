@@ -1,11 +1,6 @@
 import { NewBlock, GameBoard } from "./types";
-import { makeNewBlocks, genNewBlock } from "./generator";
+import { genNewBlock } from "./generator";
 import { doesBlockFit, getAvailableCoords, searchForMoves } from "./logic";
-
-export function TestGenerator() {
-  const newBlocks = makeNewBlocks();
-  console.log(newBlocks);
-}
 
 export function TestBlockPlacer() {
   const gameBoard: GameBoard = new Map();
