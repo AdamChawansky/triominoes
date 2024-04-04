@@ -2,9 +2,10 @@ import { BlockOnBoard } from './BlockOnBoard';
 import './Game.css';
 import { simulateGame } from '../game/main.ts';
 import { toCoord } from '../game/util.ts'
+import { useState } from 'react';
 
 export function GameBoard() {
-  const game = simulateGame();
+  const [game, setGame] = useState(simulateGame());
   return (
     <main>
       {Array.from(game.entries()).map(([coord, placedBlock]) => (
@@ -12,6 +13,8 @@ export function GameBoard() {
           key = {coord}
           coord = {toCoord(coord)}
           placedBlock = {placedBlock}
+          game={game}
+          setGame={setGame}
         />
       ))}
     </main>

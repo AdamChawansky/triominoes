@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { GameBoard, NewBlock } from "../types";
-import { doesBlockFit, getAvailableCoords, searchForMove, searchForMoves } from "../logic";
+import { doesBlockFit, getAvailableCoords, searchForMove } from "../logic";
 import { genNewBlock } from "../generator";
 
 describe('logic test 1', () => {
