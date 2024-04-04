@@ -133,7 +133,6 @@ export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
 
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // Then we can loop through those to see if any of the NewBlocks in hand fit
-// FOR LATER: refactor this function to take a single tile rather than an array
 export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ): PotentialMove[] {
   const toReturn: PotentialMove[] = [];
   const availableSpaces = getAvailableCoords(gameBoard);
@@ -148,6 +147,23 @@ export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ):
         });
       }
     });
+  });
+  return toReturn;
+}
+
+// A refactor of the above function that takes a single tile rather than an array
+export function searchForMove( tileInHand: NewBlock, gameBoard: GameBoard ): PotentialMove[] {
+  const toReturn: PotentialMove[] = [];
+  const availableSpaces = getAvailableCoords(gameBoard);
+  availableSpaces.forEach(coord => {
+    const potentialMove = doesBlockFit(tileInHand, coord, gameBoard);
+    if( potentialMove ) {
+      toReturn.push( {
+        coord: coord,
+        newBlock: tileInHand,
+        placedBlock: potentialMove,
+      });
+    }
   });
   return toReturn;
 }

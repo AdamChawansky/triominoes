@@ -8,7 +8,7 @@ import { NewBlock, PlacedBlock } from "./types";
 type GameBoard = Map<string, PlacedBlock>;
 export const NUM_PLAYERS: number = 1;
 export let NUM_STARTING_TILES: number = 1;
-export const MAX_DRAW = 3;
+export const MAX_DRAW: number = 3;
 
 export function simulateGame(): GameBoard {
   const gameBoard: GameBoard = new Map();

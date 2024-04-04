@@ -37,4 +37,10 @@ main {
 }
 
 /* To implement
-    - 
+    - Score tracker (top left)
+    - Hand size indicator (top left)
+    - Visible hand at bottom
+    - Clickable draw pile (bottom right)
+    - Running game log (top right)
+    - Game object (which holds log of all plays)
+*/
