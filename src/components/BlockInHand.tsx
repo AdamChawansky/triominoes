@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react';
 import { NewBlock } from "../game/types";
 
 export function BlockInHand(props: {
@@ -7,12 +6,6 @@ export function BlockInHand(props: {
   // gameState: GameState;
   // setGame: (newGame: GameBoard) => void;
 }) {
-  const width = 90;
-  const position: CSSProperties = {
-    left: `${props.index * width * 0.54}px`,
-    bottom: `${0 * width * 0.95}px`,
-  };
-
   const top = [props.newBlock.numbers[0]];
   const bottom = [props.newBlock.numbers[2], props.newBlock.numbers[1]];
 
@@ -25,7 +18,7 @@ export function BlockInHand(props: {
     'block-up',
   ];
   return (
-    <div className={classNames.join(' ')} style={position} onClick={onClick}>
+    <div className={classNames.join(' ')} onClick={onClick}>
       <div>{top.join(' ')}</div>
       <div>{bottom.join(' ')}</div>
     </div>

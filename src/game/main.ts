@@ -65,7 +65,7 @@ export function simulateGame(): GameState {
 
   // determineFirstPlay( hands, gameBoard );
   let turns = 0;
-  while( gameState.hands[0].length > 0 && turns < 200) {
+  while( gameState.hands[0].length > 0 && turns < 10) {
     let pointsForTurn = takeTurn( gameState.hands[0], gameState.drawPile, gameState.gameBoard );
     gameState.scores[0] += pointsForTurn;
     console.log(pointsForTurn, gameState.scores[0]);
