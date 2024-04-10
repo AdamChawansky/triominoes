@@ -2,17 +2,14 @@
 
 import { makeNewBlocks, permuteBlock } from "./generator";
 import { takeTurn } from "./logic";
-import { NewBlock, PlacedBlock } from "./types";
+import { GameState, GameBoard, NewBlock } from "./types";
 
-// Treat game board  as a hash table with (0,0) as the origin. Keys are (x,y) coordinates.
-type GameBoard = Map<string, PlacedBlock>;
+
 export const NUM_PLAYERS: number = 1;
 export let NUM_STARTING_TILES: number = 1;
 export const MAX_DRAW: number = 3;
 
-export function simulateGame(): GameBoard {
-  const gameBoard: GameBoard = new Map();
-
+export function simulateGame(): GameState {
   /*
   https://en.wikipedia.org/wiki/Triominoes
   gameBoard.has("0,0");
@@ -22,9 +19,20 @@ export function simulateGame(): GameBoard {
   gameBoard.entries();
   */
 
+  const gameBoard: GameBoard = new Map();
   const hands: NewBlock[][] = [[]];
   const scores: number[] = [];
   const drawPile = makeNewBlocks();
+
+  // Is there a better way to initialize a Game?
+  const gameState: GameState = {
+    gameBoard: gameBoard,
+    hands: hands,
+    scores: scores,
+    drawPile: drawPile,
+    // gameLog:
+    // lastPlay: Coordinate;
+  };
 
   // Starting tiles depends on number of players
   //    2 players start with 9 tiles each
@@ -38,31 +46,29 @@ export function simulateGame(): GameBoard {
     NUM_STARTING_TILES = 6;
   }
   for(let i = 0; i < NUM_PLAYERS; i++) {
-    hands[i] = [];
-    scores[i] = 0;
+    gameState.hands[i] = [];
+    gameState.scores[i] = 0;
     for(let j = 0; j < NUM_STARTING_TILES; j++) {
-      hands[i].push( drawPile.pop()! );
+      gameState.hands[i].push( gameState.drawPile.pop()! );
     }
   }
 
-  // function determineFirstPlay( hands: NewBlock[][], gameBoard: GameBoard ): undefined {
-  //   // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
-  //   //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
-  //                 First player earns 10 bonus points if they play a triple, 40 points for playing (0,0,0)
-  //   gameBoard.set( "0,0", temp[0] );
-  //   return;
-  // }
+// FOR LATER: Introduce logic to look through all hands for the "proper" first tile
+//            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
+//            First player earns 10 bonus points if they play a triple, 40 points for playing (0,0,0)
+//   gameBoard.set( "0,0", temp[0] );
+//   return;
 
   // Choose a random tile to be the starting tile
-  const temp = permuteBlock( drawPile.pop()! );
-  gameBoard.set( "0,0", temp[0] );
+  const temp = permuteBlock( gameState.drawPile.pop()! );
+  gameState.gameBoard.set( "0,0", temp[0] );
 
   // determineFirstPlay( hands, gameBoard );
   let turns = 0;
-  while( hands[0].length > 0 && turns < 200) {
-    let pointsForTurn = takeTurn( hands[0], drawPile, gameBoard );
-    scores[0] += pointsForTurn;
-    console.log(pointsForTurn, scores[0]);
+  while( gameState.hands[0].length > 0 && turns < 200) {
+    let pointsForTurn = takeTurn( gameState.hands[0], gameState.drawPile, gameState.gameBoard );
+    gameState.scores[0] += pointsForTurn;
+    console.log(pointsForTurn, gameState.scores[0]);
     turns++;
 
     // End states:
@@ -71,9 +77,9 @@ export function simulateGame(): GameBoard {
     // 2) The drawPile is empty and all players pass, meaning no more moves possible.
     //    Each player loses points equal to sum of their own tiles
   }
-  console.log( gameBoard );
+  console.log( gameState );
 
-  return gameBoard;
+  return gameState;
 }
 
 //    FOR LATER: Keep track of score

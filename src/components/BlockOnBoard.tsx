@@ -1,12 +1,11 @@
 import { CSSProperties } from 'react';
-import { Coordinate, GameBoard, PlacedBlock } from "../game/types";
-import { toKey } from '../game/util';
+import { Coordinate, GameState, PlacedBlock } from "../game/types";
 
 export function BlockOnBoard(props: {
   coord: Coordinate;
   placedBlock: PlacedBlock;
-  game: GameBoard;
-  setGame: (newGame: GameBoard) => void;
+  game: GameState;
+  setGame: (newGame: GameState) => void;
 }) {
   const width = 90;
   const position: CSSProperties = {
@@ -22,10 +21,10 @@ export function BlockOnBoard(props: {
     : [props.placedBlock.bottomCenter];
 
   function onClick() {
-    console.log('i clicked on:', props.placedBlock);
-    const newGame = new Map(props.game);
-    newGame.delete(toKey(props.coord));
-    props.setGame(newGame);
+    // console.log('i clicked on:', props.placedBlock);
+    // const newBoard = new Map(props.game.gameBoard);
+    // newBoard.delete(toKey(props.coord));
+    // props.setGame(newGame);
   }
 
   const classNames = [

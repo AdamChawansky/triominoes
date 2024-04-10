@@ -27,10 +27,20 @@ export type Coordinate = {
   y: number;
 }
 
+// Treat game board  as a hash table with (0,0) as the origin. Keys are (x,y) coordinates.
 export type GameBoard = Map<string, PlacedBlock>;
 
 export type PotentialMove = {
   coord: Coordinate;
   newBlock: NewBlock;
   placedBlock: PlacedBlock;
+}
+
+export type GameState = {
+  gameBoard: GameBoard;
+  hands: NewBlock[][];
+  scores: number[];
+  drawPile: NewBlock[];
+  // gameLog:
+  // lastPlay: Coordinate;
 }
