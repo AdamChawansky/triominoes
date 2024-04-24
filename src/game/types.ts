@@ -41,6 +41,25 @@ export type GameState = {
   hands: NewBlock[][];
   scores: number[];
   drawPile: NewBlock[];
-  // gameLog:
-  // lastPlay: Coordinate;
+  gameLog: String[];
+  lastPlay: Coordinate;
+}
+
+export type GameHistory = {
+  startingDeck: NewBlock[];
+  actions: Action[]; 
+}
+
+export type Action = PlayAction | DrawAction;
+
+export type PlayAction = {
+  actionType: 'play';
+  playerIndex: number;
+  tilePlayed: PlacedBlock;
+  coord: Coordinate;
+}
+
+export type DrawAction = {
+  actionType: 'draw';
+  playerIndex: number;
 }

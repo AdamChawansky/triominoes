@@ -30,8 +30,8 @@ export function simulateGame(): GameState {
     hands: hands,
     scores: scores,
     drawPile: drawPile,
-    // gameLog:
-    // lastPlay: Coordinate;
+    gameLog: [],
+    lastPlay: {x: 0, y: 0},
   };
 
   // Starting tiles depends on number of players
@@ -65,7 +65,7 @@ export function simulateGame(): GameState {
 
   // determineFirstPlay( hands, gameBoard );
   let turns = 0;
-  while( gameState.hands[0].length > 0 && turns < 10) {
+  while( gameState.hands[0].length > 0 && turns < 100) {
     let pointsForTurn = takeTurn( gameState.hands[0], gameState.drawPile, gameState.gameBoard );
     gameState.scores[0] += pointsForTurn;
     console.log(pointsForTurn, gameState.scores[0]);
