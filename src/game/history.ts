@@ -1,3 +1,4 @@
+import { permuteBlock } from "./generator";
 import { pointsFromPlay } from "./logic";
 import { GameBoard, GameHistory, GameState, NewBlock } from "./types";
 import { toKey } from "./util";
@@ -38,6 +39,10 @@ export function simulateHistory(gameHistory: GameHistory): GameState {
         gameState.scores[action.playerIndex] -= 10;
         gameState.gameLog.push(`Player ${action.playerIndex} can not play or draw and loses 10 points.`);
       }
+    } else if(action.actionType === 'init') {
+      // Choose a random tile to be the starting tile
+      const temp = permuteBlock( gameState.drawPile.pop()! );
+      gameState.gameBoard.set( "0,0", temp[0] );
     } else {
       console.log("Not a valid action.");
     }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { makeNewBlocks } from '../game/generator.ts';
+import { makeNewBlocks, createGameHistory } from '../game/generator.ts';
 import { simulateHistory } from '../game/history.ts';
 import { GameHistory } from '../game/types.ts';
 import { DisplayHand } from './DisplayHand.tsx';
@@ -7,18 +7,7 @@ import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
 
 export function RootDisplay() {
-  // const [gameState, setGame] = useState(simulateGame());
-  const [gameHistory] = useState<GameHistory>({
-    startingDeck: makeNewBlocks(),
-    actions: [
-      { actionType: 'draw', playerIndex: 0 },
-      { actionType: 'draw', playerIndex: 0 },
-      { actionType: 'draw', playerIndex: 0 },
-      { actionType: 'draw', playerIndex: 0 },
-      { actionType: 'draw', playerIndex: 0 },
-      { actionType: 'draw', playerIndex: 0 },
-    ],
-  });
+  const [gameHistory] = useState<GameHistory>(createGameHistory(1));
   const gameState = simulateHistory(gameHistory);
   const setGame = () => {};
 

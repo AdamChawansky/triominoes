@@ -50,7 +50,10 @@ export type GameHistory = {
   actions: Action[]; 
 }
 
-export type Action = PlayAction | DrawAction;
+export type Action = 
+  | InitialTileAction
+  | PlayAction
+  | DrawAction;
 
 export type PlayAction = {
   actionType: 'play';
@@ -62,4 +65,8 @@ export type PlayAction = {
 export type DrawAction = {
   actionType: 'draw';
   playerIndex: number;
+}
+
+export type InitialTileAction = {
+  actionType: 'init';
 }

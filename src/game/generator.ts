@@ -1,6 +1,6 @@
 // (0,0,0), (0,0,1), ... (0,0,5), (0,1,1), ... (5,5,5)
 
-import { NewBlock, PlacedBlock } from "./types";
+import { GameHistory, NewBlock, PlacedBlock } from "./types";
 
 export function genNewBlock(nums: [number, number, number]): NewBlock {
   return {
@@ -74,4 +74,44 @@ export function permuteBlock( tile:NewBlock ): PlacedBlock[] {
     topLeft: tile.numbers[0],
     topRight: tile.numbers[1],
   }];
+}
+
+export function createGameHistory(numPlayers: number): GameHistory {
+  const history: GameHistory = {
+    startingDeck: makeNewBlocks(),
+    actions: [],
+  };
+
+  // Starting tiles depends on number of players
+  //    2 players start with 9 tiles each
+  //    3-4 players start with 7 tiles each
+  //    5-6 players start with 6 tiles each
+  const startingTiles = {
+    1: 9,
+    2: 9,
+    3: 7,
+    4: 7,
+    5: 6,
+    6: 6,
+  }[numPlayers]!;
+
+  for(let i = 0; i < numPlayers; i++) {
+    for(let j = 0; j < startingTiles; j++) {
+      history.actions.push({
+        actionType: 'draw',
+        playerIndex: i, 
+      });
+    }
+  }
+
+  // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
+  //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
+  //            First player earns 10 bonus points if they play a triple, 40 points for playing (0,0,0)
+  //   gameBoard.set( "0,0", temp[0] );
+  //   return;
+
+  // Choose a random tile to be the starting tile
+  history.actions.push({actionType: 'init'});
+
+  return history;
 }
