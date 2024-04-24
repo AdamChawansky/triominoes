@@ -1,6 +1,6 @@
 import { permuteBlock } from "./generator";
 import { MAX_DRAW } from "./main";
-import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove } from "./types";
+import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove, Action, GameState } from "./types";
 import { toCoord, toKey } from "./util";
 
 // Function to test if blockInHand fits into given space on game board
@@ -208,6 +208,27 @@ export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoa
     }
   }
   return -5 * MAX_DRAW;
+}
+
+export function determineAction( gameState: GameState, playerIndex: number ): Action {
+  let tilesInHand = gameState.hands[playerIndex];
+  let potentialMoves: PotentialMove[] = searchForMoves( tilesInHand, gameState.gameBoard );
+  // FOR LATER: Create heuristics to decide which move to prioritize
+  // FOR LATER: Implement machine learning to determine best move
+  
+  if( potentialMoves.length > 0 ) {
+    return {
+      actionType: 'play',
+      playerIndex: playerIndex,
+      tilePlayed: potentialMoves[0].placedBlock,
+      coord: potentialMoves[0].coord,
+    };
+  } else {
+    return {
+      actionType: 'draw',
+      playerIndex: playerIndex,
+    };
+  }
 }
 
 

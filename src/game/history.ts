@@ -3,7 +3,7 @@ import { pointsFromPlay } from "./logic";
 import { GameBoard, GameHistory, GameState, NewBlock } from "./types";
 import { toKey } from "./util";
 
-export function simulateHistory(gameHistory: GameHistory): GameState {
+export function replayHistory(gameHistory: GameHistory): GameState {
   const gameBoard: GameBoard = new Map();
   const hands: NewBlock[][] = [[]];
   const scores: number[] = [];

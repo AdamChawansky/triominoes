@@ -1,6 +1,8 @@
 // (0,0,0), (0,0,1), ... (0,0,5), (0,1,1), ... (5,5,5)
 
-import { GameHistory, NewBlock, PlacedBlock } from "./types";
+import { replayHistory } from "./history";
+import { determineAction, takeTurn } from "./logic";
+import { GameHistory, GameState, NewBlock, PlacedBlock } from "./types";
 
 export function genNewBlock(nums: [number, number, number]): NewBlock {
   return {
@@ -114,4 +116,26 @@ export function createGameHistory(numPlayers: number): GameHistory {
   history.actions.push({actionType: 'init'});
 
   return history;
+}
+
+export function simulateGameHistory(gameHistory: GameHistory): GameHistory{
+  const simulatedHistory: GameHistory = {
+    startingDeck: gameHistory.startingDeck,
+    actions: [...gameHistory.actions],
+  }
+  const gameState: GameState = replayHistory(simulatedHistory);
+  let playerIndex = 0;
+
+  while( gameState.hands[0].length > 0 && simulatedHistory.actions.length < 500) {
+    simulatedHistory.actions.push(determineAction(gameState, playerIndex));
+    // todo switch playerIndex?
+
+    // End states:
+    // 1) A player plays their last tile (any hand[i] === 0)
+    //    That player earns 25 points + the total points of everyone else's tiles
+    // 2) The drawPile is empty and all players pass, meaning no more moves possible.
+    //    Each player loses points equal to sum of their own tiles
+  }
+
+  return simulatedHistory;
 }
