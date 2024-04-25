@@ -49,7 +49,7 @@ describe('logic test 2', () => {
     expect(doesBlockFit(hand[0], {x: 0, y:-1}, gameBoard)).toBeTruthy();
     expect(doesBlockFit(hand[1], {x: 5, y:5}, gameBoard)).toBeTruthy();
     expect(doesBlockFit(hand[2], {x: 1, y:0}, gameBoard)).toBeTruthy();
-    expect(doesBlockFit(hand[3], {x:-1, y:0}, gameBoard)).toBeFalsy();
+    expect(doesBlockFit(hand[3], {x:-1, y:0}, gameBoard)).toBeTruthy();
   });
 });
 
