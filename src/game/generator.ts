@@ -111,7 +111,29 @@ export function initializeNewGameHistory(numPlayers: number): GameHistory {
   return history;
 }
 
-export function simulateGameHistory(gameHistory: GameHistory): GameHistory {
+export function eraseGameHistory(gameHistory: GameHistory): GameHistory {
+  const index = gameHistory.actions.findIndex(action => action.actionType === 'init');
+
+  return {
+    startingDeck: gameHistory.startingDeck,
+    actions: [...gameHistory.actions].slice(0, index+1),
+  };
+}
+
+export function simulateOneAction(gameHistory: GameHistory): GameHistory {
+  const simulatedHistory: GameHistory = {
+    startingDeck: gameHistory.startingDeck,
+    actions: [...gameHistory.actions],
+  }
+  let gameState: GameState = replayHistory(simulatedHistory);
+
+  if( gameState.hands[gameState.activePlayer].length > 0 && gameState.drawPile.length > 0) {
+    simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+  }
+  return simulatedHistory;
+}
+
+export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
   const simulatedHistory: GameHistory = {
     startingDeck: gameHistory.startingDeck,
     actions: [...gameHistory.actions],
@@ -134,21 +156,6 @@ export function simulateGameHistory(gameHistory: GameHistory): GameHistory {
   return simulatedHistory;
 }
 
-export function simulateOneAction(gameHistory: GameHistory): GameHistory {
-  const simulatedHistory: GameHistory = {
-    startingDeck: gameHistory.startingDeck,
-    actions: [...gameHistory.actions],
-  }
-  let gameState: GameState = replayHistory(simulatedHistory);
-
-  if( gameState.hands[gameState.activePlayer].length > 0 && gameState.drawPile.length > 0) {
-    simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
-  }
-  return simulatedHistory;
-}
-
 // HOMEWORK FOR ADAM:
-// Add reset button
 // Add log (show it on the screen) --> make a div and add each item (look at hand)
 // Add player scores
-// Add button that simulates one turn (instead of whole game)

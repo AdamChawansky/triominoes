@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { makeNewBlocks, initializeNewGameHistory, simulateGameHistory, simulateOneAction } from '../game/generator.ts';
+import { makeNewBlocks, initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
 import { GameHistory } from '../game/types.ts';
 import { DisplayHand } from './DisplayHand.tsx';
@@ -15,6 +15,10 @@ export function RootDisplay() {
     setGameHistory(initializeNewGameHistory(1));
   }
 
+  function resetGame() {
+    setGameHistory(eraseGameHistory(gameHistory));
+  }
+
   function performUndo() {
     setGameHistory({
       startingDeck: gameHistory.startingDeck,
@@ -27,7 +31,7 @@ export function RootDisplay() {
   }
 
   function simulate() {
-    setGameHistory(simulateGameHistory(gameHistory));
+    setGameHistory(simulateCompleteGame(gameHistory));
   }
 
   return (
@@ -44,6 +48,11 @@ export function RootDisplay() {
         onClick={startNewGame}
       >
         NEW GAME
+      </button>
+      <button
+        onClick={resetGame}
+      >
+        RESET GAME
       </button>
       <button 
         onClick={performUndo}
