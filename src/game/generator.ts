@@ -78,7 +78,7 @@ export function permuteBlock( tile:NewBlock ): PlacedBlock[] {
   }];
 }
 
-export function createGameHistory(numPlayers: number): GameHistory {
+export function initializeNewGameHistory(numPlayers: number): GameHistory {
   const history: GameHistory = {
     startingDeck: makeNewBlocks(),
     actions: [],
@@ -106,28 +106,22 @@ export function createGameHistory(numPlayers: number): GameHistory {
     }
   }
 
-  // FOR LATER: Introduce logic to look through all hands for the "proper" first tile
-  //            (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
-  //            First player earns 10 bonus points if they play a triple, 40 points for playing (0,0,0)
-  //   gameBoard.set( "0,0", temp[0] );
-  //   return;
-
-  // Choose a random tile to be the starting tile
   history.actions.push({actionType: 'init'});
 
   return history;
 }
 
-export function simulateGameHistory(gameHistory: GameHistory): GameHistory{
+export function simulateGameHistory(gameHistory: GameHistory): GameHistory {
   const simulatedHistory: GameHistory = {
     startingDeck: gameHistory.startingDeck,
     actions: [...gameHistory.actions],
   }
-  const gameState: GameState = replayHistory(simulatedHistory);
+  let gameState: GameState = replayHistory(simulatedHistory);
   let playerIndex = 0;
 
-  while( gameState.hands[0].length > 0 && simulatedHistory.actions.length < 500) {
+  while( gameState.hands[0].length > 0 && simulatedHistory.actions.length < 1000) {
     simulatedHistory.actions.push(determineAction(gameState, playerIndex));
+    gameState = replayHistory(simulatedHistory);
     // todo switch playerIndex?
 
     // End states:
@@ -139,3 +133,22 @@ export function simulateGameHistory(gameHistory: GameHistory): GameHistory{
 
   return simulatedHistory;
 }
+
+export function simulateOneAction(gameHistory: GameHistory): GameHistory {
+  const simulatedHistory: GameHistory = {
+    startingDeck: gameHistory.startingDeck,
+    actions: [...gameHistory.actions],
+  }
+  let gameState: GameState = replayHistory(simulatedHistory);
+
+  if( gameState.hands[gameState.activePlayer].length > 0 && gameState.drawPile.length > 0) {
+    simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+  }
+  return simulatedHistory;
+}
+
+// HOMEWORK FOR ADAM:
+// Add reset button
+// Add log (show it on the screen) --> make a div and add each item (look at hand)
+// Add player scores
+// Add button that simulates one turn (instead of whole game)

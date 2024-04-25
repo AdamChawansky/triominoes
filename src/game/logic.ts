@@ -3,6 +3,48 @@ import { MAX_DRAW } from "./main";
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove, Action, GameState } from "./types";
 import { toCoord, toKey } from "./util";
 
+// Look through all hands for the "proper" first play following this order:
+//   (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
+//   First player earns 10 bonus points if they play a triple, 40 total points for playing (0,0,0)
+export function determineFirstPlay(gameState: GameState): [number, number] {
+  const priorities: number[][] = [
+    [5, 5, 5],
+    [4, 4, 4],
+    [3, 3, 3],
+    [2, 2, 2],
+    [1, 1, 1],
+    [0, 0, 0],
+  ];
+
+  for (const priority of priorities) {
+    for (let i = 0; i < gameState.hands.length; i++) {
+      for (let j = 0; j < gameState.hands[i].length; j++) {
+        if (priority === gameState.hands[i][j].numbers)
+          return [i, j];
+      }
+    }
+  }
+
+  let maxSum = -1;
+  let startingPlayer = -1;
+  let startingTileIndex = -1;
+
+  for (let i = 0; i < gameState.hands.length; i++) {
+    const hand = gameState.hands[i];
+    for (let j = 0; j < hand.length; j++) {
+      const tile = hand[j];
+      const sum = tile.numbers.reduce((acc, value) => acc + value, 0);
+      if (sum > maxSum) {
+        maxSum = sum;
+        startingPlayer = i;
+        startingTileIndex = j;
+      }
+    }
+  }
+
+  return [startingPlayer, startingTileIndex];
+}
+
 // Function to test if blockInHand fits into given space on game board
 // Need to check if any of the 3 permutations of blockInHand align
 export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoard: GameBoard ): PlacedBlock | undefined {

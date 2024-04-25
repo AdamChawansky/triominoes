@@ -42,6 +42,7 @@ export type GameState = {
   scores: number[];
   drawPile: NewBlock[];
   gameLog: String[];
+  activePlayer: number,
   lastPlay: Coordinate;
 }
 

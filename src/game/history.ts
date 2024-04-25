@@ -1,5 +1,5 @@
 import { permuteBlock } from "./generator";
-import { pointsFromPlay } from "./logic";
+import { determineFirstPlay, pointsFromPlay } from "./logic";
 import { GameBoard, GameHistory, GameState, NewBlock } from "./types";
 import { toKey } from "./util";
 
@@ -14,6 +14,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
     scores: scores,
     drawPile: [...gameHistory.startingDeck],
     gameLog: [],
+    activePlayer: 0,
     lastPlay: {x: 0, y: 0},
   };
 
@@ -40,9 +41,26 @@ export function replayHistory(gameHistory: GameHistory): GameState {
         gameState.gameLog.push(`Player ${action.playerIndex} can not play or draw and loses 10 points.`);
       }
     } else if(action.actionType === 'init') {
-      // Choose a random tile to be the starting tile
-      const temp = permuteBlock( gameState.drawPile.pop()! );
-      gameState.gameBoard.set( "0,0", temp[0] );
+      const firstPlay: [number, number] = determineFirstPlay(gameState);
+      const playerIndex = firstPlay[0];
+      const tileIndex = firstPlay[1];
+      const tilePlayed = gameState.hands[playerIndex][firstPlay[1]];
+
+      gameState.gameBoard.set("0,0", permuteBlock(tilePlayed)[0]);
+
+      gameState.hands[playerIndex].splice(tileIndex, 1);
+
+      let pointsForTurn = tilePlayed.numbers.reduce((acc, value) => acc + value, 0);
+      if (pointsForTurn === 0) {
+        pointsForTurn += 30; // 30 points for starting with (0,0,0)
+      } else if (tilePlayed.numbers[0] === tilePlayed.numbers[1] && tilePlayed.numbers[1] === tilePlayed.numbers[2]) {
+        pointsForTurn += 10; // 10 bonus points for starting with a triple
+      }
+      gameState.scores[playerIndex] = pointsForTurn;
+
+      gameState.lastPlay = {x:0, y:0};
+      
+      gameState.gameLog.push(`Player ${playerIndex} plays the ${tilePlayed.id} at (0,0) for ${pointsForTurn} points.`);
     } else {
       console.log("Not a valid action.");
     }
@@ -50,12 +68,3 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
   return gameState;
 }
-
-
-// HOMEWORK FOR ADAM 2
-// Write helper function that takes GameHistory and makes the first 10 moves.
-// Make action, add to history, call simulateGame
-// Have to derive history each new play
-
-// HOMEWORK FOR ADAM 3
-// Instead of updating the state, return either Draw or Play action and add to history

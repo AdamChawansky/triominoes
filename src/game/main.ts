@@ -31,6 +31,7 @@ export function simulateGame(): GameState {
     scores: scores,
     drawPile: drawPile,
     gameLog: [],
+    activePlayer: 0,
     lastPlay: {x: 0, y: 0},
   };
 
