@@ -1,5 +1,3 @@
-// (0,0,0), (0,0,1), ... (0,0,5), (0,1,1), ... (5,5,5)
-
 import { replayHistory } from "./history";
 import { determineAction, takeTurn } from "./logic";
 import { GameHistory, GameState, NewBlock, PlacedBlock } from "./types";
@@ -15,6 +13,7 @@ export function makeNewBlocks(): NewBlock[] {
   const newBlocks: NewBlock[] = [];
 
   // Make all of the possible triominoes from (0,0,0) to (5,5,5)
+  // (0,0,0), (0,0,1), ... (0,0,5), (0,1,1), ... (5,5,5)
   for(let i = 0; i <= 5; i++) {
     for(let j = i; j <= 5; j++) {
       for(let k = j; k <=5 ; k++) {

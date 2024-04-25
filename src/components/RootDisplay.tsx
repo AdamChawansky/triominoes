@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { makeNewBlocks, initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
+import { initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
 import { GameHistory } from '../game/types.ts';
 import { DisplayHand } from './DisplayHand.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
+import { DisplayScores } from './DisplayScores.tsx';
 
 export function RootDisplay() {
   const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(1));
@@ -43,6 +44,9 @@ export function RootDisplay() {
       <DisplayHand 
         playerIndex={0}
         gameState={gameState} 
+      />
+      <DisplayScores
+        gameState={gameState}
       />
       <button
         onClick={startNewGame}

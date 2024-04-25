@@ -54,11 +54,27 @@ main {
   font-weight: bold;
 }
 
-/* To implement
-    - Score tracker (top left)
-    - Hand size indicator (top left)
-    - Visible hand at bottom
-    - Clickable draw pile (bottom right)
-    - Running game log (top right)
-    - Game object (which holds log of all plays)
-*/
+.player-scores {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  /* styling */
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 10px;
+  border-collapse: collapse;
+  background-color: white;
+  font-weight: bold;
+
+  width: 300px;
+
+  column-count: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  
+  text-align: center;
+  font-family:Verdana, Geneva, Tahoma, sans-serif
+}

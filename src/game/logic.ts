@@ -1,7 +1,8 @@
 import { permuteBlock } from "./generator";
-import { MAX_DRAW } from "./main";
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove, Action, GameState } from "./types";
 import { toCoord, toKey } from "./util";
+
+const MAX_DRAW = 3;
 
 // Look through all hands for the "proper" first play following this order:
 //   (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
