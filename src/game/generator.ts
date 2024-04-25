@@ -1,5 +1,5 @@
 import { replayHistory } from "./history";
-import { determineAction, takeTurn } from "./logic";
+import { determineAction } from "./logic";
 import { GameHistory, GameState, NewBlock, PlacedBlock } from "./types";
 
 export function genNewBlock(nums: [number, number, number]): NewBlock {
