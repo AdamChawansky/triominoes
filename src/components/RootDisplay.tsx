@@ -6,6 +6,7 @@ import { DisplayHand } from './DisplayHand.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
+import { DisplayGameLog } from './DisplayLog.tsx';
 
 export function RootDisplay() {
   const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(1));
@@ -46,6 +47,9 @@ export function RootDisplay() {
         gameState={gameState} 
       />
       <DisplayScores
+        gameState={gameState}
+      />
+      <DisplayGameLog
         gameState={gameState}
       />
       <button

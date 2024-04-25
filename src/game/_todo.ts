@@ -7,14 +7,9 @@ gameBoard.values();
 gameBoard.entries();
 
 Add style for triangles
-Render the hand (can hard code and refactor later)
+Clickable draw pile (bottom right)
 
-- Score tracker (top left)
-- Hand size indicator (top left)
-- Visible hand at bottom
-- Clickable draw pile (bottom right)
-- Running game log (right side)
-
+Add ability to play solitaire
 Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 

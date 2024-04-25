@@ -18,6 +18,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
     lastPlay: {x: 0, y: 0},
   };
 
+  let gameStarted = false;
   gameHistory.actions.forEach((action) => {
     if(action.actionType === 'play') {
       gameState.gameBoard.set(toKey(action.coord), action.tilePlayed);
@@ -30,15 +31,20 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
       gameState.lastPlay = action.coord;
 
-      gameState.gameLog.push(`Player ${action.playerIndex+1} plays the ${action.tilePlayed.newBlockID} at ${toKey(action.coord)} for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`Player ${action.playerIndex+1} plays the [${action.tilePlayed.newBlockID}] at (${toKey(action.coord)}) for ${pointsForTurn} points.`);
     } else if(action.actionType === 'draw') {
-      if(gameState.drawPile.length > 0) {
+      if (!gameStarted) {
+        // Don't subtract points for drawing initial hand & don't log it
         gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
-        gameState.scores[action.playerIndex] -= 5;
-        gameState.gameLog.push(`Player ${action.playerIndex+1} draws a tile and loses 5 points.`);
       } else {
-        gameState.scores[action.playerIndex] -= 10;
-        gameState.gameLog.push(`Player ${action.playerIndex+1} can not play or draw and loses 10 points.`);
+        if(gameState.drawPile.length > 0) {
+          gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
+          gameState.scores[action.playerIndex] -= 5;
+          gameState.gameLog.push(`Player ${action.playerIndex+1} draws a tile and loses 5 points.`);
+        } else {
+          gameState.scores[action.playerIndex] -= 10;
+          gameState.gameLog.push(`Player ${action.playerIndex+1} can not play or draw and loses 10 points.`);
+        }
       }
     } else if(action.actionType === 'init') {
       const firstPlay: [number, number] = determineFirstPlay(gameState);
@@ -60,7 +66,10 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
       gameState.lastPlay = {x:0, y:0};
       
-      gameState.gameLog.push(`Player ${playerIndex+1} plays the ${tilePlayed.id} at (0,0) for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`All players draw starting tiles.`);
+      gameState.gameLog.push(`Player ${playerIndex+1} plays the [${tilePlayed.id}] at (0,0) for ${pointsForTurn} points.`);
+
+      gameStarted = true;
     } else {
       console.log("Not a valid action.");
     }
