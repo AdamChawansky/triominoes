@@ -14,7 +14,9 @@ Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 
 
-Add end game action -->
+- make Undo stop at INIT
+- investigate scoring
+- Add end game action -->
 
 End states:
   1) A player plays their last tile (any hand[i] === 0)

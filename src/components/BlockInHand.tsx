@@ -1,4 +1,5 @@
 import { NewBlock } from "../game/types";
+import { BlockRender } from "./BlockRender";
 
 export function BlockInHand(props: {
   index: number;
@@ -9,18 +10,11 @@ export function BlockInHand(props: {
   const top = [props.newBlock.numbers[0]];
   const bottom = [props.newBlock.numbers[2], props.newBlock.numbers[1]];
 
-  function onClick() {
-
-  }
-
-  const classNames = [
-    'block', 
-    'block-up',
-  ];
   return (
-    <div className={classNames.join(' ')} onClick={onClick}>
-      <div>{top.join(' ')}</div>
-      <div>{bottom.join(' ')}</div>
-    </div>
+    <BlockRender 
+      top={top}
+      bottom={bottom}
+      orientation={'up'}
+    />
   );
 }

@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
 import { Coordinate, GameState, PlacedBlock } from "../game/types";
+import { BlockRender } from './BlockRender';
 
 export function BlockOnBoard(props: {
   coord: Coordinate;
@@ -20,23 +21,12 @@ export function BlockOnBoard(props: {
     ? [props.placedBlock.bottomLeft, props.placedBlock.bottomRight]
     : [props.placedBlock.bottomCenter];
 
-  function onClick() {
-    // console.log('i clicked on:', props.placedBlock);
-    // const newBoard = new Map(props.game.gameBoard);
-    // newBoard.delete(toKey(props.coord));
-    // props.setGame(newGame);
-  }
-
-  const classNames = [
-    'block', 
-    props.placedBlock.orientation === 'up'
-      ? 'block-up'
-      : 'block-down',
-  ];
   return (
-    <div className={classNames.join(' ')} style={position} onClick={onClick}>
-      <div>{top.join(' ')}</div>
-      <div>{bottom.join(' ')}</div>
-    </div>
+    <BlockRender 
+      style={position}
+      top={top}
+      bottom={bottom}
+      orientation={props.placedBlock.orientation}
+    />
   );
 }
