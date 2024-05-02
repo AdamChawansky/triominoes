@@ -154,7 +154,3 @@ export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
 
   return simulatedHistory;
 }
-
-// HOMEWORK FOR ADAM:
-// Add log (show it on the screen) --> make a div and add each item (look at hand)
-// Add player scores

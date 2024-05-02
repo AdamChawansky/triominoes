@@ -14,6 +14,8 @@ Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 
 
+Add end game action -->
+
 End states:
   1) A player plays their last tile (any hand[i] === 0)
      That player earns 25 points + the total points of everyone else's tiles

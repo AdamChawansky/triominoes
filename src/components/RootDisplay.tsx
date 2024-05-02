@@ -81,7 +81,3 @@ export function RootDisplay() {
     </main>
   );
 }
-
-// Add style for triangles
-// Render the hand (can hard code and refactor later)
-// Add a running score tracker

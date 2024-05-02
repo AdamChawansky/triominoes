@@ -54,7 +54,8 @@ export type GameHistory = {
 export type Action = 
   | InitialTileAction
   | PlayAction
-  | DrawAction;
+  | DrawAction
+  | EndGameAction;
 
 export type PlayAction = {
   actionType: 'play';
@@ -70,4 +71,8 @@ export type DrawAction = {
 
 export type InitialTileAction = {
   actionType: 'init';
+}
+
+export type EndGameAction = {
+  actionType: 'end';
 }
