@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
-import { Action, ActionPusher, GameHistory } from '../game/types.ts';
+import { Action, GameHistory } from '../game/types.ts';
 import { DisplayHand } from './DisplayHand.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
