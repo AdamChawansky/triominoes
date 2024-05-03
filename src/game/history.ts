@@ -70,7 +70,10 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.gameLog.push(`Player ${playerIndex+1} plays the [${tilePlayed.id}] at (0,0) for ${pointsForTurn} points.`);
 
       gameStarted = true;
-    } else {
+    } else if(action.actionType === 'end') {
+      gameState.gameLog.push(`Game over. Player XXX wins.`)
+    }
+    else {
       console.log("Not a valid action.");
     }
   });

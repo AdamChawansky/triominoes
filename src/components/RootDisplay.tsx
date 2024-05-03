@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
-import { GameHistory } from '../game/types.ts';
+import { Action, ActionPusher, GameHistory } from '../game/types.ts';
 import { DisplayHand } from './DisplayHand.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
@@ -36,6 +36,13 @@ export function RootDisplay() {
     setGameHistory(simulateCompleteGame(gameHistory));
   }
 
+  function pushAction(action: Action) {
+    setGameHistory({
+      startingDeck: gameHistory.startingDeck,
+      actions: gameHistory.actions.concat(action),
+    });
+  }
+
   return (
     <main>
       <GameBoardView 
@@ -45,6 +52,7 @@ export function RootDisplay() {
       <DisplayHand 
         playerIndex={0}
         gameState={gameState} 
+        pushAction={pushAction}
       />
       <DisplayScores
         gameState={gameState}

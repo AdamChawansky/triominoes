@@ -4,14 +4,9 @@ export function BlockRender(props: {
   top: number[];
   bottom: number[];
   orientation: 'up' | 'down';
+  onClick?: () => void;
   style?: CSSProperties;
 }) {
-  function onClick() {
-    // console.log('i clicked on:', props.placedBlock);
-    // const newBoard = new Map(props.game.gameBoard);
-    // newBoard.delete(toKey(props.coord));
-    // props.setGame(newGame);
-  }
 
   const classNames = [
     'block-inner', 
@@ -20,11 +15,11 @@ export function BlockRender(props: {
       : 'block-down',
   ];
   return (
-    <div className="block" style={props.style} onClick={onClick}>
+    <div className="block" style={props.style}>
       <div className={classNames.join(' ')}>
         <div>{props.top.join(' ')}</div>
         <div>{props.bottom.join(' ')}</div>
-        <div className="clickzone" onClick={onClick}></div>
+        <div className="clickzone" onClick={props.onClick}></div>
       </div>
     </div>
   );

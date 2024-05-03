@@ -76,3 +76,5 @@ export type InitialTileAction = {
 export type EndGameAction = {
   actionType: 'end';
 }
+
+export type ActionPusher = (action: Action) => void;
