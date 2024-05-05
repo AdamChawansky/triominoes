@@ -7,6 +7,7 @@ export function BlockOnBoard(props: {
   placedBlock: PlacedBlock;
   game: GameState;
   setGame: (newGame: GameState) => void;
+  isPotential?: boolean;
 }) {
   const width = 90;
   const position: CSSProperties = {
@@ -27,6 +28,7 @@ export function BlockOnBoard(props: {
       top={top}
       bottom={bottom}
       orientation={props.placedBlock.orientation}
+      isPotential={props.isPotential}
     />
   );
 }

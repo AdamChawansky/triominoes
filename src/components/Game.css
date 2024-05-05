@@ -39,6 +39,12 @@ main {
   background-image: url('triangle-down.png');
   padding-bottom: 1em;
 }
+.block-inner.block-up.potential {
+  background-image: url('triangle-up-yellow.png');
+}
+.block-inner.block-down.potential {
+  background-image: url('triangle-down-yellow.png');
+}
 .block-inner .clickzone {
   position: absolute;
   z-index: 2;

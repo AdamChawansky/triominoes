@@ -6,6 +6,7 @@ export function BlockRender(props: {
   orientation: 'up' | 'down';
   onClick?: () => void;
   style?: CSSProperties;
+  isPotential?: boolean;
 }) {
 
   const classNames = [
@@ -13,6 +14,9 @@ export function BlockRender(props: {
     props.orientation === 'up'
       ? 'block-up'
       : 'block-down',
+    props.isPotential
+      ? 'potential'
+      : '',
   ];
   return (
     <div className="block" style={props.style}>
