@@ -7,6 +7,7 @@ import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
+import { DisplayValidMoves } from './DisplayValidMoves.tsx';
 
 export function RootDisplay() {
   const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(1));
@@ -47,6 +48,11 @@ export function RootDisplay() {
     <main>
       <GameBoardView 
         gameState={gameState} 
+        setGame={setGame}
+      />
+      <DisplayValidMoves
+        tileInHand={}
+        gameState={gameState}
         setGame={setGame}
       />
       <DisplayHand 
