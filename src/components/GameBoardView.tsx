@@ -1,16 +1,16 @@
 import { searchForMove } from '../game/logic.ts';
-import { GameState } from '../game/types.ts';
+import { GameState, NewBlock } from '../game/types.ts';
 import { toCoord, toKey } from '../game/util.ts';
 import { BlockOnBoard } from './BlockOnBoard';
 import './Game.css';
 
 export function GameBoardView(props: {
-  gameState: GameState;
-  setGame: (newGame: GameState) => void;
+  gameState: GameState,
+  setGame: (newGame: GameState) => void,
+  tileInHand: NewBlock | undefined,
 }) {
   // aka const gameState = props.gameState;
   const { gameState, setGame } = props;
-  const tileInHand = gameState.hands[0][1];
   return (
     <div className="game-board">
       {Array.from(gameState.gameBoard.entries()).map(([coord, placedBlock]) => (
@@ -22,7 +22,7 @@ export function GameBoardView(props: {
           setGame={setGame}
         />
       ))}
-      {searchForMove(tileInHand, gameState.gameBoard).map(potentialMove => (
+      {props.tileInHand ? searchForMove(props.tileInHand, gameState.gameBoard).map(potentialMove => (
         <BlockOnBoard
           key = {toKey(potentialMove.coord)}
           coord = {potentialMove.coord}
@@ -31,7 +31,7 @@ export function GameBoardView(props: {
           setGame={setGame}
           isPotential={true}
         />
-      ))}
+      )) : null}
     </div>
   );
 }
