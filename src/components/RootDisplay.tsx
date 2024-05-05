@@ -51,7 +51,6 @@ export function RootDisplay() {
         setGame={setGame}
       />
       <DisplayValidMoves
-        tileInHand={}
         gameState={gameState}
         setGame={setGame}
       />
