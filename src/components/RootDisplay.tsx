@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
 import { Action, GameHistory, NewBlock } from '../game/types.ts';
@@ -14,14 +14,17 @@ export function RootDisplay() {
   const gameState = replayHistory(gameHistory);
   const setGame = () => {};
 
+  useEffect(() => {
+    // when gameHistory changes, reset hand selection
+    setTileInHand(undefined);
+  }, [gameHistory]);
+
   function startNewGame() {
     setGameHistory(initializeNewGameHistory(1));
-    setTileInHand(undefined);
   }
 
   function resetGame() {
     setGameHistory(eraseGameHistory(gameHistory));
-    setTileInHand(undefined);
   }
 
   function performUndo() {
@@ -29,17 +32,14 @@ export function RootDisplay() {
       startingDeck: gameHistory.startingDeck,
       actions: gameHistory.actions.slice(0, -1),
     });
-    setTileInHand(undefined);
   }
 
   function takeStep() {
     setGameHistory(simulateOneAction(gameHistory));
-    setTileInHand(undefined);
   }
 
   function simulate() {
     setGameHistory(simulateCompleteGame(gameHistory));
-    setTileInHand(undefined);
   }
 
   function pushAction(action: Action) {
@@ -47,7 +47,6 @@ export function RootDisplay() {
       startingDeck: gameHistory.startingDeck,
       actions: gameHistory.actions.concat(action),
     });
-    setTileInHand(undefined);
   }
 
   return (

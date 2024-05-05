@@ -3,7 +3,6 @@ import { ActionPusher, GameState, NewBlock, PlayAction } from "../game/types";
 import { BlockRender } from "./BlockRender";
 
 export function BlockInHand(props: {
-  index: number; // PAUL: what does this index refer to? Do we need it?
   newBlock: NewBlock;
   gameState: GameState;
   pushAction: ActionPusher;

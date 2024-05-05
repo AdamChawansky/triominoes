@@ -17,10 +17,9 @@ export function DisplayHand(props: {
 
   return (
     <div className="player-hand">
-      {playerHand.map((newBlock, index) => (
+      {playerHand.map((newBlock) => (
         <BlockInHand
           key = {newBlock.id}
-          index = {index}
           newBlock = {newBlock}
           gameState={props.gameState}
           pushAction={props.pushAction}
