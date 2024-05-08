@@ -6,7 +6,10 @@ export function BlockRender(props: {
   orientation: 'up' | 'down';
   onClick?: () => void;
   style?: CSSProperties;
-  isPotential?: boolean;
+  blockStyle?: string;
+    // 'selected' = yellow shading in hand
+    // 'playable' = dashed outline of blank tile on board
+    // 'most-recent' = invert color of last tile played
 }) {
 
   const classNames = [
@@ -14,8 +17,8 @@ export function BlockRender(props: {
     props.orientation === 'up'
       ? 'block-up'
       : 'block-down',
-    props.isPotential
-      ? 'potential'
+    props.blockStyle
+      ? props.blockStyle
       : '',
   ];
   return (

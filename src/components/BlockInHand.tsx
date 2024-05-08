@@ -37,7 +37,7 @@ export function BlockInHand(props: {
       bottom={bottom}
       orientation={'up'}
       onClick={onClick}
-      isPotential={props.isSelected}
+      blockStyle={props.isSelected ? 'selected' : ''}
     />
   );
 }

@@ -20,6 +20,7 @@ export function GameBoardView(props: {
           placedBlock = {placedBlock}
           game={gameState}
           setGame={setGame}
+          blockStyle={toKey(gameState.lastPlay) === coord ? 'most-recent' : ''}
         />
       ))}
       {props.tileInHand ? searchForMove(props.tileInHand, gameState.gameBoard).map(potentialMove => (
@@ -29,7 +30,7 @@ export function GameBoardView(props: {
           placedBlock = {potentialMove.placedBlock}
           game={gameState}
           setGame={setGame}
-          isPotential={true}
+          blockStyle={'playable'}
         />
       )) : null}
     </div>

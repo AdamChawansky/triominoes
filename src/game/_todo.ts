@@ -9,6 +9,12 @@ gameBoard.entries();
 Add style for triangles
 Clickable draw pile (bottom right)
 
+May 4 HOMEWORK:
+- on hover, instead of bold use invert triangle (set text white)
+- click selects tile, click again deselects it
+- click selects tile, click board places it (need to add click handler to blocks on board)
+
+
 Add ability to play solitaire
 Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)

@@ -238,7 +238,7 @@ export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoa
           newTiles.splice(index, 1);
           tilesInHand = tilesInHand.concat(newTiles);
 
-          console.log("Tile played: " + potentialMoves[0].placedBlock.newBlockID + " at " + toKey(potentialMoves[0].coord));
+          // console.log("Tile played: " + potentialMoves[0].placedBlock.newBlockID + " at " + toKey(potentialMoves[0].coord));
           gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
 
           pointsForTurn += pointsFromPlay( potentialMoves[0].placedBlock, potentialMoves[0].coord, gameBoard );
@@ -278,7 +278,7 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
 // Function to determine points from placing a tile
 export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: GameBoard ): number {
   let points: number = placedBlock.newBlockID.split(',').map(Number).reduce((sum, num) => sum + num, 0);
-  console.log("Tile points = " + points);
+  // console.log("Tile points = " + points);
   // Determine if placedBlock completes one of 3 possible hexagons (50 points per hexagon)
   // Need to check coordinates of hexagon formed around the 3 vertices of placedBlock
   if( placedBlock.orientation === 'up' ) {
@@ -306,7 +306,7 @@ export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gam
     if( hexAbove ) points += 50;
     if( hexDownLeft ) points += 50;
     if( hexDownRight ) points += 50;
-    console.log("Hexagons" + hexAbove + hexDownLeft + hexDownRight);
+    // console.log("Hexagons" + hexAbove + hexDownLeft + hexDownRight);
   } else {
     // Check Down: (x-1,y), (x+1,y), (x-1,y-1), (x,y-1), (x+1,y-1)
     // Check UpLeft: (x-2,y), (x-1,y), (x-2,y+1), (x-1,y+1), (x,y+1)
@@ -332,7 +332,7 @@ export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gam
     if( hexBelow ) points += 50;
     if( hexUpLeft ) points += 50;
     if( hexUpRight ) points += 50;
-    console.log("Hexagons" + hexBelow + hexUpLeft + hexUpRight);
+    // console.log("Hexagons" + hexBelow + hexUpLeft + hexUpRight);
   }
 
   
@@ -356,7 +356,7 @@ export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gam
     if( bridgeAbove ) points += 40;
     if( bridgeDownLeft ) points += 40;
     if( bridgeDownRight ) points += 40;
-    console.log("Bridges" + bridgeAbove + bridgeDownLeft + bridgeDownRight);
+    // console.log("Bridges" + bridgeAbove + bridgeDownLeft + bridgeDownRight);
   } else {
     // Check Below: (x,y+1) & (x,y-1)
     // Check UpLeft: (x+1,y) & (x-2,y+1)
@@ -373,7 +373,7 @@ export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gam
     if( bridgeBelow ) points += 40;
     if( bridgeUpLeft ) points += 40;
     if( bridgeUpRight ) points += 40;
-    console.log("Bridges" + bridgeBelow + bridgeUpLeft + bridgeUpRight);
+    // console.log("Bridges" + bridgeBelow + bridgeUpLeft + bridgeUpRight);
   }
   
   return points;
