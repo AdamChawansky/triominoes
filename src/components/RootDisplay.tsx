@@ -30,7 +30,7 @@ export function RootDisplay() {
   function performUndo() {
     setGameHistory({
       startingDeck: gameHistory.startingDeck,
-      actions: gameHistory.actions.slice(0, -1),
+      actions: gameHistory.actions[gameHistory.actions.length - 1].actionType === 'init' ? gameHistory.actions : gameHistory.actions.slice(0, -1),
     });
   }
 
