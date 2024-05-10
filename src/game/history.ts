@@ -1,5 +1,5 @@
 import { permuteBlock } from "./generator";
-import { MAX_DRAW, determineFirstPlay, pointsFromPlay } from "./logic";
+import { determineFirstPlay, pointsFromPlay } from "./logic";
 import { GameBoard, GameHistory, GameState, NewBlock } from "./types";
 import { toKey } from "./util";
 
