@@ -43,6 +43,7 @@ export type GameState = {
   drawPile: NewBlock[];
   gameLog: String[];
   activePlayer: number,
+  tilesDrawnThisTurn: number,
   lastPlay: Coordinate;
 }
 

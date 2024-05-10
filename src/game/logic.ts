@@ -2,7 +2,7 @@ import { permuteBlock } from "./generator";
 import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove, Action, GameState } from "./types";
 import { toCoord, toKey } from "./util";
 
-const MAX_DRAW = 3;
+export const MAX_DRAW = 3;
 
 // Look through all hands for the "proper" first play following this order:
 //   (5,5,5) --> (4,4,4) --> (3,3,3) --> (2,2,2) --> (1,1,1) --> (0,0,0) --> highest sum
@@ -258,7 +258,12 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
   let potentialMoves: PotentialMove[] = searchForMoves( tilesInHand, gameState.gameBoard );
   // FOR LATER: Create heuristics to decide which move to prioritize
   // FOR LATER: Implement machine learning to determine best move
-  
+
+  // End states:
+  // 1) A player plays their last tile (any hand[i] === 0)
+  //    That player earns 25 points + the total points of everyone else's tiles
+  // 2) The drawPile is empty and all players pass, meaning no more moves possible.
+  //    Each player loses points equal to sum of their own tiles
   if( potentialMoves.length > 0 ) {
     return {
       actionType: 'play',

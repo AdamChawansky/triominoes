@@ -1,5 +1,5 @@
 import { permuteBlock } from "./generator";
-import { determineFirstPlay, pointsFromPlay } from "./logic";
+import { MAX_DRAW, determineFirstPlay, pointsFromPlay } from "./logic";
 import { GameBoard, GameHistory, GameState, NewBlock } from "./types";
 import { toKey } from "./util";
 
@@ -15,10 +15,12 @@ export function replayHistory(gameHistory: GameHistory): GameState {
     drawPile: [...gameHistory.startingDeck],
     gameLog: [],
     activePlayer: 0,
+    tilesDrawnThisTurn: 0,
     lastPlay: {x: 0, y: 0},
   };
 
-  let gameStarted = false;
+  let gameStarted = false; // flag used to avoid subtracting points for drawing starting tiles
+
   gameHistory.actions.forEach((action) => {
     if(action.actionType === 'play') {
       gameState.gameBoard.set(toKey(action.coord), action.tilePlayed);
@@ -32,18 +34,27 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.lastPlay = action.coord;
 
       gameState.gameLog.push(`Player ${action.playerIndex+1} plays the [${action.tilePlayed.newBlockID}] at (${toKey(action.coord)}) for ${pointsForTurn} points.`);
+      gameState.activePlayer = (action.playerIndex + 1) % gameState.hands.length; // next player's turn
+      gameState.tilesDrawnThisTurn = 0; // reset tiles drawn counter after a play is made
     } else if(action.actionType === 'draw') {
       if (!gameStarted) {
-        // Don't subtract points for drawing initial hand & don't log it
+        // don't subtract points for drawing initial hand & don't log it
         gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
       } else {
         if(gameState.drawPile.length > 0) {
           gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
+          gameState.tilesDrawnThisTurn += 1;
           gameState.scores[action.playerIndex] -= 5;
           gameState.gameLog.push(`Player ${action.playerIndex+1} draws a tile and loses 5 points.`);
+
+          // QUESTION FOR PAUL: At this point, tilesDrawnThisTurn could = MAX_DRAW. But we don't know if the player can make a play or
+          // will end up passing until we look at the next action.
         } else {
           gameState.scores[action.playerIndex] -= 10;
           gameState.gameLog.push(`Player ${action.playerIndex+1} can not play or draw and loses 10 points.`);
+
+          gameState.activePlayer = (gameState.activePlayer + 1) % gameState.hands.length; // next player's turn
+          gameState.tilesDrawnThisTurn = 0;
         }
       }
     } else if(action.actionType === 'init') {
@@ -69,9 +80,12 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.gameLog.push(`All players draw starting tiles.`);
       gameState.gameLog.push(`Player ${playerIndex+1} plays the [${tilePlayed.id}] at (0,0) for ${pointsForTurn} points.`);
 
+      gameState.activePlayer = (playerIndex + 1) % gameState.hands.length;
+
       gameStarted = true;
     } else if(action.actionType === 'end') {
-      gameState.gameLog.push(`Game over. Player XXX wins.`)
+      const winner: number = gameState.scores.indexOf(Math.max(...gameState.scores));
+      gameState.gameLog.push(`Game over. Player ${winner+1} wins!`)
     }
     else {
       console.log("Not a valid action.");

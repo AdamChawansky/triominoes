@@ -132,6 +132,7 @@ export function simulateOneAction(gameHistory: GameHistory): GameHistory {
   return simulatedHistory;
 }
 
+// Plays out the rest of the game from current point, making every player's moves for them
 export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
   const simulatedHistory: GameHistory = {
     startingDeck: gameHistory.startingDeck,
@@ -139,12 +140,20 @@ export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
   }
   let gameState: GameState = replayHistory(simulatedHistory);
   let playerIndex = 0;
+  let gameOver: Boolean = simulatedHistory.actions[simulatedHistory.actions.length - 1].actionType === 'end';
 
-  while( gameState.hands[0].length > 0 && simulatedHistory.actions.length < 1000) {
+  while(!gameOver) {
     simulatedHistory.actions.push(determineAction(gameState, playerIndex));
     gameState = replayHistory(simulatedHistory);
     // todo switch playerIndex?
 
+    gameOver =
+      gameState.hands.some(hand => hand.length === 0) ||
+      simulatedHistory.actions.length > 150;
+
+    if(gameOver) {
+      simulatedHistory.actions.push({actionType: 'end'});
+    }
     // End states:
     // 1) A player plays their last tile (any hand[i] === 0)
     //    That player earns 25 points + the total points of everyone else's tiles
