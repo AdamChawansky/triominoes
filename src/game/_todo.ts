@@ -20,7 +20,6 @@ Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 
 
-- make Undo stop at INIT
 - investigate scoring
 - Add end game action -->
 

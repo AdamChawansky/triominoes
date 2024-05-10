@@ -40,12 +40,14 @@ main {
   padding-bottom: 1em;
 }
 .block-inner.block-up.most-recent {
-  background-image: url('triangle-up-invert.png');
-  color: white;
+  background-image: url('triangle-up-red-outline.png');
+  font-weight: bold;
+  color: red;
 }
 .block-inner.block-down.most-recent {
-  background-image: url('triangle-down-invert.png');
-  color: white;
+  background-image: url('triangle-down-red-outline.png');
+  font-weight: bold;
+  color: red;
 }
 .block-inner.block-up.selected {
   background-image: url('triangle-up-yellow.png');
@@ -74,8 +76,13 @@ main {
   width: 45%;
   height: 45%;
 }
-.block-inner:has(.clickzone:hover) {
-  font-weight: bold;
+.block-inner.block-down:has(.clickzone:hover) {
+  background-image: url('triangle-down-invert.png');
+  color: white;
+}
+.block-inner.block-up:has(.clickzone:hover) {
+  background-image: url('triangle-up-invert.png');
+  color: white;
 }
 
 .player-hand {
