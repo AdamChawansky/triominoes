@@ -30,7 +30,9 @@ export function RootDisplay() {
   function performUndo() {
     setGameHistory({
       startingDeck: gameHistory.startingDeck,
-      actions: gameHistory.actions[gameHistory.actions.length - 1].actionType === 'init' ? gameHistory.actions : gameHistory.actions.slice(0, -1),
+      actions: gameHistory.actions[gameHistory.actions.length - 1].actionType === 'init'
+      ? gameHistory.actions
+      : gameHistory.actions.slice(0, -1),
     });
   }
 
@@ -52,14 +54,15 @@ export function RootDisplay() {
   return (
     <main>
       <GameBoardView 
-        gameState={gameState} 
+        gameState={gameState}
         setGame={setGame}
         tileInHand={tileInHand}
+        setTileInHand={setTileInHand}
+        pushAction={pushAction}
       />
       <DisplayHand 
         playerIndex={0}
         gameState={gameState} 
-        pushAction={pushAction}
         tileInHand={tileInHand}
         setTileInHand={setTileInHand}
       />

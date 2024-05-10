@@ -1,5 +1,5 @@
 import { searchForMove } from '../game/logic.ts';
-import { GameState, NewBlock } from '../game/types.ts';
+import { ActionPusher, Coordinate, GameState, NewBlock, PlayAction } from '../game/types.ts';
 import { toCoord, toKey } from '../game/util.ts';
 import { BlockOnBoard } from './BlockOnBoard';
 import './Game.css';
@@ -8,9 +8,30 @@ export function GameBoardView(props: {
   gameState: GameState,
   setGame: (newGame: GameState) => void,
   tileInHand: NewBlock | undefined,
+  setTileInHand: (b: NewBlock | undefined) => void,
+  pushAction: ActionPusher,
 }) {
   // aka const gameState = props.gameState;
-  const { gameState, setGame } = props;
+  const { gameState, tileInHand, pushAction, setTileInHand } = props;
+
+  function onBlockClick(coord: Coordinate) {
+    if(tileInHand) {
+      const potentialMoves = searchForMove(tileInHand, gameState.gameBoard);
+      const clickedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
+
+      if(clickedMove) {
+        const playTile: PlayAction = {
+          actionType: 'play',
+          playerIndex: gameState.activePlayer,
+          tilePlayed: clickedMove.placedBlock,
+          coord: clickedMove.coord,
+        }
+        pushAction(playTile);
+        setTileInHand(undefined);
+      }
+    }
+  }
+
   return (
     <div className="game-board">
       {Array.from(gameState.gameBoard.entries()).map(([coord, placedBlock]) => (
@@ -18,19 +39,17 @@ export function GameBoardView(props: {
           key = {coord}
           coord = {toCoord(coord)}
           placedBlock = {placedBlock}
-          game={gameState}
-          setGame={setGame}
           blockStyle={toKey(gameState.lastPlay) === coord ? 'most-recent' : ''}
+          onClick={() => onBlockClick(toCoord(coord))}
         />
       ))}
-      {props.tileInHand ? searchForMove(props.tileInHand, gameState.gameBoard).map(potentialMove => (
+      {tileInHand ? searchForMove(tileInHand, gameState.gameBoard).map(potentialMove => (
         <BlockOnBoard
           key = {toKey(potentialMove.coord)}
           coord = {potentialMove.coord}
           placedBlock = {potentialMove.placedBlock}
-          game={gameState}
-          setGame={setGame}
           blockStyle={'playable'}
+          onClick={() => onBlockClick(potentialMove.coord)}
         />
       )) : null}
     </div>

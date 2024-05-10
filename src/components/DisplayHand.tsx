@@ -1,18 +1,21 @@
-import { ActionPusher, GameState, NewBlock } from '../game/types.ts';
+import { GameState, NewBlock } from '../game/types.ts';
 import { BlockInHand } from './BlockInHand.tsx';
 import './Game.css';
 
 export function DisplayHand(props: {
   playerIndex: number,
   gameState: GameState,
-  pushAction: ActionPusher,
   tileInHand: NewBlock | undefined,
   setTileInHand: (b: NewBlock | undefined) => void,
 }) {
   const playerHand = props.gameState.hands[props.playerIndex];
 
   function onClick(tileInHand: NewBlock) {
-    props.setTileInHand(tileInHand);
+    if(props.tileInHand?.id === tileInHand.id) {
+      props.setTileInHand(undefined);
+    } else {
+      props.setTileInHand(tileInHand);
+    }
   }
 
   return (
@@ -22,7 +25,6 @@ export function DisplayHand(props: {
           key = {newBlock.id}
           newBlock = {newBlock}
           gameState={props.gameState}
-          pushAction={props.pushAction}
           isSelected={newBlock.id === props.tileInHand?.id}
           onClick={() => onClick(newBlock)}
         />

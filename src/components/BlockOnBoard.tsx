@@ -1,13 +1,12 @@
 import { CSSProperties } from 'react';
-import { Coordinate, GameState, PlacedBlock } from "../game/types";
+import { Coordinate, PlacedBlock } from "../game/types";
 import { BlockRender } from './BlockRender';
 
 export function BlockOnBoard(props: {
   coord: Coordinate;
   placedBlock: PlacedBlock;
-  game: GameState;
-  setGame: (newGame: GameState) => void;
   blockStyle?: string;
+  onClick: () => void;
 }) {
   const width = 90;
   const position: CSSProperties = {
@@ -29,6 +28,7 @@ export function BlockOnBoard(props: {
       bottom={bottom}
       orientation={props.placedBlock.orientation}
       blockStyle={props.blockStyle}
+      onClick={props.onClick}
     />
   );
 }

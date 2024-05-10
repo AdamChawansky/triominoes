@@ -8,7 +8,7 @@ export function BlockRender(props: {
   style?: CSSProperties;
   blockStyle?: string;
     // 'selected' = yellow shading in hand
-    // 'playable' = dashed outline of blank tile on board
+    // 'playable' = yellow shading w/o numbers
     // 'most-recent' = invert color of last tile played
 }) {
 
