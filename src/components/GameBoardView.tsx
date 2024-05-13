@@ -1,7 +1,7 @@
 import { searchForMove } from '../game/logic.ts';
 import { ActionPusher, Coordinate, GameState, NewBlock, PlayAction } from '../game/types.ts';
 import { toCoord, toKey } from '../game/util.ts';
-import { BlockOnBoard } from './BlockOnBoard';
+import { TileOnBoard } from './BlockOnBoard';
 import './Game.css';
 
 export function GameBoardView(props: {
@@ -35,20 +35,20 @@ export function GameBoardView(props: {
   return (
     <div className="game-board">
       {Array.from(gameState.gameBoard.entries()).map(([coord, placedBlock]) => (
-        <BlockOnBoard
+        <TileOnBoard
           key = {coord}
           coord = {toCoord(coord)}
-          placedBlock = {placedBlock}
-          blockStyle={toKey(gameState.lastPlay) === coord ? 'most-recent' : ''}
+          placedTile = {placedBlock}
+          tileStyle={toKey(gameState.lastPlay) === coord ? 'most-recent' : ''}
           onClick={() => onBlockClick(toCoord(coord))}
         />
       ))}
       {tileInHand ? searchForMove(tileInHand, gameState.gameBoard).map(potentialMove => (
-        <BlockOnBoard
+        <TileOnBoard
           key = {toKey(potentialMove.coord)}
           coord = {potentialMove.coord}
-          placedBlock = {potentialMove.placedBlock}
-          blockStyle={'playable'}
+          placedTile = {potentialMove.placedBlock}
+          tileStyle={'playable'}
           onClick={() => onBlockClick(potentialMove.coord)}
         />
       )) : null}
