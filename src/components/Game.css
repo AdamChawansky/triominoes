@@ -143,6 +143,7 @@ main {
   align-items: center;
 }
 
+
 .player-scores {
   position: absolute;
   top: 10px;
@@ -168,11 +169,11 @@ main {
   font-family:Verdana, Geneva, Tahoma, sans-serif
 }
 
+
 .game-log {
   position: absolute;
   top: 110px;
   right: 10px;
-
   width: 375px;
   height: 75vh;
   border: 1px solid black;
@@ -180,4 +181,38 @@ main {
   padding: 10px;
   background-color: white;
   overflow-y: scroll;
+}
+.game-log-header {
+  margin-top: 0;
+  cursor: pointer;
+}
+.game-log-entries {
+  list-style: none;
+  padding: 0;
+}
+.game-log-entry {
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  border-bottom: 1px solid grey;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .game-log {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    border-radius: 0;
+    transition: max-height 0.3s ease;
+  }
+
+  .game-log.collapsed {
+    max-height: 40px;
+    overflow: hidden;
+  }
 }
