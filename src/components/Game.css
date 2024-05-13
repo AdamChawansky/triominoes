@@ -6,16 +6,19 @@ main {
   height: 100vh;
   background-color: forestgreen;
 }
+.game-board {
+  box-sizing: border-box;
+  padding: 5px;
+}
 
-.tile-container {
+.game-board .tile-container {
   width: 100px;
   height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background-image: url('triangle-up.png');
-  background-size: cover;
+  background-size: contain;
   position: absolute;
   transform: translate(50vw, -50vh);
-  box-sizing: content-box;
 }
 .number {
   position: absolute;
@@ -36,12 +39,12 @@ main {
   top: 20px;
   transform: translateX(-43.3%) rotate(180deg);
 }
-.tile-container-inverted {
+.game-board .tile-container-inverted {
   width: 100px;
   height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
   background-image: url('triangle-down.png');
-  background-size: cover;
+  background-size: contain;
   position: absolute;
   transform: translate(50vw, -50vh);
 }
@@ -53,7 +56,7 @@ main {
 .top-right {
   top: 5px;
   right: 27px;
-  transform: rotate(-120deg);
+  transform: rotate(-125deg);
 }
 .bottom-center {
   bottom: 20px;
@@ -68,6 +71,56 @@ main {
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+/* Not currently functional... but don't really need this functionality */
+.tile-button:has(.clickzone:hover) {
+  background-image: url('triangle-up-invert.png');
+  color: white;
+}
+.tile-container-inverted .tile-button:has(.clickzone:hover) {
+  background-image: url('triangle-down-invert.png');
+  color: white;
+}
+
+/* Additional styling to show most recent play, selected tiles, and playable spaces */
+.tile-container.most-recent {
+  background-image: url('triangle-up-red-outline.png');
+}
+.tile-container-inverted.most-recent {
+  background-image: url('triangle-down-red-outline.png');
+}
+.tile-container.selected {
+  background-image: url('triangle-up-yellow.png');
+}
+.tile-container-inverted.selected {
+  background-image: url('triangle-down-yellow.png');
+}
+.tile-container.playable {
+  background-image: url('triangle-up-yellow.png');
+  color: #ffeb3b;
+}
+.tile-container-inverted.playable {
+  background-image: url('triangle-down-yellow.png');
+  color: #ffeb3b;
+}
+
+
+/* Styling for tiles in hand, removes absolute positioning */
+.tile-container {
+  width: 100px;
+  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background-image: url('triangle-up.png');
+  background-size: cover;
+  position: relative;
+}
+.tile-container-inverted {
+  width: 100px;
+  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  background-image: url('triangle-down.png');
+  background-size: cover;
+  position: relative;
 }
 
 
@@ -101,7 +154,7 @@ main {
   background-color: white;
   font-weight: bold;
 
-  width: 300px;
+  width: 375px;
 
   column-count: 3;
   display: flex;
@@ -115,11 +168,11 @@ main {
 
 .game-log {
   position: absolute;
-  top: 10px;
-  right: 25px;
+  top: 110px;
+  left: 10px;
 
   width: 375px;
-  height: 80vh;
+  height: 75vh;
   border: 1px solid black;
   border-radius: 2px;
   padding: 10px;

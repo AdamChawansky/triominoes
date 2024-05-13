@@ -1,5 +1,5 @@
 import { GameState, NewBlock } from '../game/types.ts';
-import { BlockInHand } from './BlockInHand.tsx';
+import { TileInHand } from './TileInHand.tsx';
 import './Game.css';
 
 export function DisplayHand(props: {
@@ -21,7 +21,7 @@ export function DisplayHand(props: {
   return (
     <div className="player-hand">
       {playerHand.map((newBlock) => (
-        <BlockInHand
+        <TileInHand
           key = {newBlock.id}
           newBlock = {newBlock}
           gameState={props.gameState}

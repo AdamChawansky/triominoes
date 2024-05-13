@@ -1,7 +1,7 @@
 import { searchForMove } from '../game/logic.ts';
 import { ActionPusher, Coordinate, GameState, NewBlock, PlayAction } from '../game/types.ts';
 import { toCoord, toKey } from '../game/util.ts';
-import { TileOnBoard } from './BlockOnBoard';
+import { TileOnBoard } from './TileOnBoard.tsx';
 import './Game.css';
 
 export function GameBoardView(props: {

@@ -6,7 +6,6 @@ gameBoard.keys();
 gameBoard.values();
 gameBoard.entries();
 
-Add style for triangles
 Clickable draw pile (bottom right)
 
 Add ability to play solitaire

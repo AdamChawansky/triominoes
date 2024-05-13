@@ -1,7 +1,7 @@
 import { GameState, NewBlock } from "../game/types";
-import { BlockRender } from "./BlockRender";
+import { TileRender } from "./TileRender";
 
-export function BlockInHand(props: {
+export function TileInHand(props: {
   newBlock: NewBlock;
   gameState: GameState;
   isSelected: boolean;
@@ -15,7 +15,7 @@ export function BlockInHand(props: {
   }
 
   return (
-    <BlockRender 
+    <TileRender 
       top={top}
       bottom={bottom}
       orientation={'up'}

@@ -8,7 +8,7 @@ export function TileOnBoard(props: {
   tileStyle?: string;
   onClick: () => void;
 }) {
-  const width = 100;
+  const width = 96;
   const position: CSSProperties = {
     left: `${props.coord.x * width * 0.5}px`,
     bottom: `${props.coord.y * width * 0.866}px`, /* 0.866 coming from width to height ratio of equilateral triangles */

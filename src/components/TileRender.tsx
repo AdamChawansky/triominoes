@@ -13,13 +13,15 @@ export function TileRender(props: {
 }) {
 
   const classNames = [
+    props.orientation === 'up'
+      ? 'tile-container'
+      : 'tile-container-inverted',
     props.blockStyle
       ? props.blockStyle
       : '',
   ];
   return (
-    <div className= {props.orientation === 'up' ? "tile-container" : "tile-container-inverted"} style={props.style}>
-      <div className={classNames.join(' ')}>
+    <div className= {classNames.join(' ')} style={props.style}>
         {props.orientation === 'up' ? (
           <>
             <span className="number bottom-left">{props.bottom[0]}</span>
@@ -35,6 +37,5 @@ export function TileRender(props: {
         )}
         <button className="tile-button" onClick={props.onClick}></button>
       </div>
-    </div>
   );
 }
