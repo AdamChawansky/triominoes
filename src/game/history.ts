@@ -6,7 +6,7 @@ import { toKey } from "./util";
 export function replayHistory(gameHistory: GameHistory): GameState {
   const gameBoard: GameBoard = new Map();
   const hands: NewTile[][] = [[]];
-  const scores: number[] = [];
+  const scores: number[] = [0];
 
   const gameState: GameState = {
     gameBoard: gameBoard,
@@ -38,6 +38,11 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.tilesDrawnThisTurn = 0; // reset tiles drawn counter after a play is made
     } else if(action.actionType === 'draw') {
       if (!gameStarted) {
+        // fix error from attempting to access inner arrays that don't exist
+        if (!gameState.hands[action.playerIndex]) {
+          gameState.hands[action.playerIndex] = [];
+          gameState.scores[action.playerIndex] = 0;
+        }
         // don't subtract points for drawing initial hand & don't log it
         gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
       } else {
@@ -61,7 +66,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       const firstPlay: [number, number] = determineFirstPlay(gameState);
       const playerIndex = firstPlay[0];
       const tileIndex = firstPlay[1];
-      const tilePlayed = gameState.hands[playerIndex][firstPlay[1]];
+      const tilePlayed = gameState.hands[playerIndex][tileIndex];
 
       gameState.gameBoard.set("0,0", permuteTile(tilePlayed)[0]);
 
@@ -72,6 +77,10 @@ export function replayHistory(gameHistory: GameHistory): GameState {
         pointsForTurn += 30; // 30 points for starting with (0,0,0)
       } else if (tilePlayed.numbers[0] === tilePlayed.numbers[1] && tilePlayed.numbers[1] === tilePlayed.numbers[2]) {
         pointsForTurn += 10; // 10 bonus points for starting with a triple
+      }
+      // fix error from attempting to access inner arrays that don't exist
+      if (!gameState.scores[playerIndex]) {
+        gameState.scores[playerIndex] = 0;
       }
       gameState.scores[playerIndex] = pointsForTurn;
 
@@ -84,8 +93,41 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
       gameStarted = true;
     } else if(action.actionType === 'end') {
+      // Find total remaining points in each player's hand
+      let remainingPointsInHand: number[] = [];
+      let playerWithNoTilesRemaining: number = -1;
+      for (let i = 0; i < gameState.hands.length; i++) {
+        let handValue = 0;
+        for (const tile of gameState.hands[i]) {
+          handValue += tile.numbers.reduce((sum, num) => sum + num, 0);
+        }
+        remainingPointsInHand.push(handValue);
+
+        // Make a note if anyone went out
+        if (gameState.hands[i].length === 0) {
+          playerWithNoTilesRemaining = i;
+        }
+      }
+
+      // If someone went out, they get total points from other players' hands + 25 bonus points
+      if (playerWithNoTilesRemaining != -1) {
+        const bonusPoints = 25 + remainingPointsInHand.reduce((sum, num) => sum + num, 0)
+        gameState.scores[playerWithNoTilesRemaining] += bonusPoints;
+        gameState.gameLog.push(`Player ${playerWithNoTilesRemaining +1} went out and gains ${bonusPoints} bonus points.`);
+      } else {
+        // If no one went out, player(s) with lowest total value hand gain the value in excess of their hand from each other player 
+        const lowestPointHand = Math.min(...remainingPointsInHand);
+        for (let i = 0; i < gameState.scores.length; i++) {
+          for (let j = 0; j < gameState.scores.length; j++) {
+            gameState.scores[i] += Math.max(0, remainingPointsInHand[j] - lowestPointHand);
+          }
+        }
+      }
+
+      // FOR LATER: Games should persist across multiple rounds and only end when one player breaks the total score.
+      // Traditionally this is 400 points, but there should be an option at setup for how many points to play to.
       const winner: number = gameState.scores.indexOf(Math.max(...gameState.scores));
-      gameState.gameLog.push(`Game over. Player ${winner+1} wins!`)
+      gameState.gameLog.push(`Game over. Player ${winner+1} wins!`);
     }
     else {
       console.log("Not a valid action.");

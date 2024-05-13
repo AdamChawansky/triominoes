@@ -8,7 +8,8 @@ export function DisplayHand(props: {
   tileInHand: NewTile | undefined,
   setTileInHand: (b: NewTile | undefined) => void,
 }) {
-  const playerHand = props.gameState.hands[props.playerIndex];
+  // const playerHand = props.gameState.hands[props.playerIndex];
+  const playerHand = props.gameState.hands[props.gameState.activePlayer];
 
   function onClick(tileInHand: NewTile) {
     if(props.tileInHand?.id === tileInHand.id) {

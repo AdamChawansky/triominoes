@@ -8,7 +8,7 @@ export function DisplayScores(props: {
       <div>
         <div>Player</div>
         <div>Score</div>
-        <div>Tiles</div>
+        <div>Tiles in Hand</div>
       </div>
       {props.gameState.scores.map((score, index) => (
         <div key={index}>

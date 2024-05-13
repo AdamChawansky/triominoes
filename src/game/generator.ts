@@ -139,13 +139,11 @@ export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
     actions: [...gameHistory.actions],
   }
   let gameState: GameState = replayHistory(simulatedHistory);
-  let playerIndex = 0;
   let gameOver: Boolean = simulatedHistory.actions[simulatedHistory.actions.length - 1].actionType === 'end';
 
   while(!gameOver) {
-    simulatedHistory.actions.push(determineAction(gameState, playerIndex));
+    simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
     gameState = replayHistory(simulatedHistory);
-    // todo switch playerIndex?
 
     gameOver =
       gameState.hands.some(hand => hand.length === 0) ||

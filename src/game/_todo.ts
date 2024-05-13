@@ -7,14 +7,13 @@ gameBoard.values();
 gameBoard.entries();
 
 Clickable draw pile (bottom right)
+Should game auto-pass for you when you've drawn MAX_TILES and have no play?
 
 Add ability to play solitaire
 Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 
-
 - investigate scoring
-- Add end game action -->
 
 End states:
   1) A player plays their last tile (any hand[i] === 0)
