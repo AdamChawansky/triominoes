@@ -20,7 +20,7 @@ export function RootDisplay() {
   }, [gameHistory]);
 
   function startNewGame() {
-    setGameHistory(initializeNewGameHistory(3));
+    setGameHistory(initializeNewGameHistory(4));
   }
 
   function resetGame() {
