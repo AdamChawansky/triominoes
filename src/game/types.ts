@@ -1,23 +1,23 @@
-export type PlacedBlockA = {
-  newBlockID: string;
+export type PlacedTileA = {
+  newTileID: string;
   orientation: 'up';
   topCenter: number;
   bottomLeft: number;
   bottomRight: number;
 }
 
-export type PlacedBlockB = {
-  newBlockID: string;
+export type PlacedTileB = {
+  newTileID: string;
   orientation: 'down';
   bottomCenter: number;
   topLeft: number;
   topRight: number;
 }
 
-export type PlacedBlock = PlacedBlockA | PlacedBlockB;
+export type PlacedTile = PlacedTileA | PlacedTileB;
 
 // clockwise
-export type NewBlock = {
+export type NewTile = {
   id: string;
   numbers: [number, number, number];
 }
@@ -28,19 +28,19 @@ export type Coordinate = {
 }
 
 // Treat game board  as a hash table with (0,0) as the origin. Keys are (x,y) coordinates.
-export type GameBoard = Map<string, PlacedBlock>;
+export type GameBoard = Map<string, PlacedTile>;
 
 export type PotentialMove = {
   coord: Coordinate;
-  newBlock: NewBlock;
-  placedBlock: PlacedBlock;
+  newTile: NewTile;
+  placedTile: PlacedTile;
 }
 
 export type GameState = {
   gameBoard: GameBoard;
-  hands: NewBlock[][];
+  hands: NewTile[][];
   scores: number[];
-  drawPile: NewBlock[];
+  drawPile: NewTile[];
   gameLog: String[];
   activePlayer: number,
   tilesDrawnThisTurn: number,
@@ -48,7 +48,7 @@ export type GameState = {
 }
 
 export type GameHistory = {
-  startingDeck: NewBlock[];
+  startingDeck: NewTile[];
   actions: Action[]; 
 }
 
@@ -61,7 +61,7 @@ export type Action =
 export type PlayAction = {
   actionType: 'play';
   playerIndex: number;
-  tilePlayed: PlacedBlock;
+  tilePlayed: PlacedTile;
   coord: Coordinate;
 }
 

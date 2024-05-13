@@ -6,7 +6,7 @@ export function TileRender(props: {
   orientation: 'up' | 'down';
   onClick?: () => void;
   style?: CSSProperties;
-  blockStyle?: string;
+  tileStyle?: string;
     // 'selected' = yellow shading in hand
     // 'playable' = yellow shading w/o numbers
     // 'most-recent' = invert color of last tile played
@@ -16,8 +16,8 @@ export function TileRender(props: {
     props.orientation === 'up'
       ? 'tile-container'
       : 'tile-container-inverted',
-    props.blockStyle
-      ? props.blockStyle
+    props.tileStyle
+      ? props.tileStyle
       : '',
   ];
   return (

@@ -1,5 +1,5 @@
 import { searchForMove } from '../game/logic.ts';
-import { ActionPusher, Coordinate, GameState, NewBlock, PlayAction } from '../game/types.ts';
+import { ActionPusher, Coordinate, GameState, NewTile, PlayAction } from '../game/types.ts';
 import { toCoord, toKey } from '../game/util.ts';
 import { TileOnBoard } from './TileOnBoard.tsx';
 import './Game.css';
@@ -7,8 +7,8 @@ import './Game.css';
 export function GameBoardView(props: {
   gameState: GameState,
   setGame: (newGame: GameState) => void,
-  tileInHand: NewBlock | undefined,
-  setTileInHand: (b: NewBlock | undefined) => void,
+  tileInHand: NewTile | undefined,
+  setTileInHand: (b: NewTile | undefined) => void,
   pushAction: ActionPusher,
 }) {
   // aka const gameState = props.gameState;
@@ -23,7 +23,7 @@ export function GameBoardView(props: {
         const playTile: PlayAction = {
           actionType: 'play',
           playerIndex: gameState.activePlayer,
-          tilePlayed: clickedMove.placedBlock,
+          tilePlayed: clickedMove.placedTile,
           coord: clickedMove.coord,
         }
         pushAction(playTile);
@@ -47,7 +47,7 @@ export function GameBoardView(props: {
         <TileOnBoard
           key = {toKey(potentialMove.coord)}
           coord = {potentialMove.coord}
-          placedTile = {potentialMove.placedBlock}
+          placedTile = {potentialMove.placedTile}
           tileStyle={'playable'}
           onClick={() => onBlockClick(potentialMove.coord)}
         />

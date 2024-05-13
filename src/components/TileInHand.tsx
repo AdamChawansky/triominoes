@@ -1,14 +1,14 @@
-import { GameState, NewBlock } from "../game/types";
+import { GameState, NewTile } from "../game/types";
 import { TileRender } from "./TileRender";
 
 export function TileInHand(props: {
-  newBlock: NewBlock;
+  newTile: NewTile;
   gameState: GameState;
   isSelected: boolean;
   onClick: () => void;
 }) {
-  const top = [props.newBlock.numbers[0]];
-  const bottom = [props.newBlock.numbers[2], props.newBlock.numbers[1]];
+  const top = [props.newTile.numbers[0]];
+  const bottom = [props.newTile.numbers[2], props.newTile.numbers[1]];
   
   function onClick() {
     props.onClick();
@@ -20,7 +20,7 @@ export function TileInHand(props: {
       bottom={bottom}
       orientation={'up'}
       onClick={onClick}
-      blockStyle={props.isSelected ? 'selected' : ''}
+      tileStyle={props.isSelected ? 'selected' : ''}
     />
   );
 }

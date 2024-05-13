@@ -1,10 +1,10 @@
 import { CSSProperties } from 'react';
-import { Coordinate, PlacedBlock } from "../game/types";
+import { Coordinate, PlacedTile } from "../game/types";
 import { TileRender } from './TileRender';
 
 export function TileOnBoard(props: {
   coord: Coordinate;
-  placedTile: PlacedBlock;
+  placedTile: PlacedTile;
   tileStyle?: string;
   onClick: () => void;
 }) {
@@ -27,7 +27,7 @@ export function TileOnBoard(props: {
       top={top}
       bottom={bottom}
       orientation={props.placedTile.orientation}
-      blockStyle={props.tileStyle}
+      tileStyle={props.tileStyle}
       onClick={props.onClick}
     />
   );

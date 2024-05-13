@@ -1,5 +1,5 @@
-import { permuteBlock } from "./generator";
-import { NewBlock, PlacedBlock, PlacedBlockA, PlacedBlockB, Coordinate, GameBoard, PotentialMove, Action, GameState } from "./types";
+import { permuteTile } from "./generator";
+import { NewTile, PlacedTile, PlacedTileA, PlacedTileB, Coordinate, GameBoard, PotentialMove, Action, GameState } from "./types";
 import { toCoord, toKey } from "./util";
 
 export const MAX_DRAW = 3;
@@ -48,14 +48,14 @@ export function determineFirstPlay(gameState: GameState): [number, number] {
 
 // Function to test if blockInHand fits into given space on game board
 // Need to check if any of the 3 permutations of blockInHand align
-export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoard: GameBoard ): PlacedBlock | undefined {
+export function doesTileFit( tileInHand: NewTile, coord: Coordinate, gameBoard: GameBoard ): PlacedTile | undefined {
   // Only need to check 3 of the permutations based on space on game board
   // If we assume the block at (0,0) has PlacedBlockA orientation, then
   // all (x,y) where x+y is even will be A, and x+y is odd is B
-  let testBlocks = permuteBlock(blockInHand);
+  let testTiles = permuteTile(tileInHand);
   //console.log(testBlocks);
-  const validPlays = testBlocks.filter( (testBlock)=> {
-    let blockFits = false;
+  const validPlays = testTiles.filter( (testBlock)=> {
+    let tileFits = false;
     // For a block to fit, it must have an orientation where its edge can align with the target piece
     // AND its other edges must also align with the edges of other peices (when they exist)
     //   If x+y EVEN, then the edges to check would be (x-1, y), (x+1, y), and (x, y-1)
@@ -65,23 +65,23 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
     //                DOWN LEFT: (x-2, y), (x-2,y-1), (x-1,y-1)
     //                DOWN RIGHT: (x+2,y), (x+2,y-1), (x+1,y-1)
     if( (coord.x + coord.y) % 2 === 0 && testBlock.orientation === 'up' ) {
-      const toLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y})) as PlacedBlockB | undefined;
-      const toRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y })) as PlacedBlockB | undefined;
-      const toBelow = gameBoard.get(toKey({ x: coord.x, y: coord.y - 1})) as PlacedBlockB | undefined;
+      const toLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y})) as PlacedTileB | undefined;
+      const toRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y })) as PlacedTileB | undefined;
+      const toBelow = gameBoard.get(toKey({ x: coord.x, y: coord.y - 1})) as PlacedTileB | undefined;
 
-      const upLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y + 1})) as PlacedBlockA | undefined;
-      const upMiddle = gameBoard.get(toKey({ x: coord.x, y: coord.y + 1})) as PlacedBlockB | undefined;
-      const upRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y + 1})) as PlacedBlockA | undefined;
+      const upLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y + 1})) as PlacedTileA | undefined;
+      const upMiddle = gameBoard.get(toKey({ x: coord.x, y: coord.y + 1})) as PlacedTileB | undefined;
+      const upRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y + 1})) as PlacedTileA | undefined;
 
-      const leftUp = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y})) as PlacedBlockA | undefined;
-      const leftMiddle = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y - 1})) as PlacedBlockB | undefined;
-      const leftDown = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y - 1})) as PlacedBlockA | undefined;
+      const leftUp = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y})) as PlacedTileA | undefined;
+      const leftMiddle = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y - 1})) as PlacedTileB | undefined;
+      const leftDown = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y - 1})) as PlacedTileA | undefined;
 
-      const rightUp = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y})) as PlacedBlockA | undefined;
-      const rightMiddle = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y - 1})) as PlacedBlockB | undefined;
-      const rightDown = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y - 1})) as PlacedBlockA | undefined;
+      const rightUp = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y})) as PlacedTileA | undefined;
+      const rightMiddle = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y - 1})) as PlacedTileB | undefined;
+      const rightDown = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y - 1})) as PlacedTileA | undefined;
 
-      blockFits =
+      tileFits =
       (toLeft === undefined || (testBlock.bottomLeft === toLeft.bottomCenter && testBlock.topCenter === toLeft.topRight)) &&
       (toRight === undefined || (testBlock.bottomRight === toRight.bottomCenter && testBlock.topCenter === toRight.topLeft)) &&
       (toBelow === undefined || (testBlock.bottomLeft === toBelow.topLeft && testBlock.bottomRight === toBelow.topRight)) &&
@@ -104,23 +104,23 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
     //                UP LEFT: (x-2,y), (x-2,y+1), (x-1,y+1)
     //                UP RIGHT: (x+1,y+1), (x+2,y+1), (x+2,y)
     else if( Math.abs((coord.x + coord.y)) % 2 === 1 && testBlock.orientation === 'down' ) {
-      const toLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y})) as PlacedBlockA | undefined;
-      const toRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y })) as PlacedBlockA | undefined;
-      const toAbove = gameBoard.get(toKey({ x: coord.x, y: coord.y + 1})) as PlacedBlockA | undefined;
+      const toLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y})) as PlacedTileA | undefined;
+      const toRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y })) as PlacedTileA | undefined;
+      const toAbove = gameBoard.get(toKey({ x: coord.x, y: coord.y + 1})) as PlacedTileA | undefined;
 
-      const downLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y - 1})) as PlacedBlockB | undefined;
-      const downMiddle = gameBoard.get(toKey({ x: coord.x, y: coord.y - 1})) as PlacedBlockA | undefined;
-      const downRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y - 1})) as PlacedBlockB | undefined;
+      const downLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y - 1})) as PlacedTileB | undefined;
+      const downMiddle = gameBoard.get(toKey({ x: coord.x, y: coord.y - 1})) as PlacedTileA | undefined;
+      const downRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y - 1})) as PlacedTileB | undefined;
 
-      const leftDown = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y})) as PlacedBlockB | undefined;
-      const leftMiddle = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y + 1})) as PlacedBlockA | undefined;
-      const leftUp = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y + 1})) as PlacedBlockB | undefined;
+      const leftDown = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y})) as PlacedTileB | undefined;
+      const leftMiddle = gameBoard.get(toKey({ x: coord.x - 2, y: coord.y + 1})) as PlacedTileA | undefined;
+      const leftUp = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y + 1})) as PlacedTileB | undefined;
 
-      const rightUp = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y + 1})) as PlacedBlockB | undefined;
-      const rightMiddle = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y + 1})) as PlacedBlockA | undefined;
-      const rightDown = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y})) as PlacedBlockB | undefined;
+      const rightUp = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y + 1})) as PlacedTileB | undefined;
+      const rightMiddle = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y + 1})) as PlacedTileA | undefined;
+      const rightDown = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y})) as PlacedTileB | undefined;
 
-      blockFits =
+      tileFits =
       (toLeft === undefined || (testBlock.topLeft === toLeft.topCenter && testBlock.bottomCenter === toLeft.bottomRight)) &&
       (toRight === undefined || (testBlock.bottomCenter === toRight.bottomLeft && testBlock.topRight === toRight.topCenter)) &&
       (toAbove === undefined || (testBlock.topLeft === toAbove.bottomLeft && testBlock.topRight === toAbove.bottomRight)) &&
@@ -135,7 +135,7 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
       (rightDown === undefined || testBlock.topRight === rightDown.topLeft);
     }
 
-    return blockFits;
+    return tileFits;
   });
   return validPlays[0];
 }
@@ -146,10 +146,10 @@ export function doesBlockFit( blockInHand: NewBlock, coord: Coordinate, gameBoar
 // 2) the space is adjacent to the edge of another already PlacedBlock
 export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
   const availableKeys = new Set<string>();
-  gameBoard.forEach((placedBlock, key) => {
+  gameBoard.forEach((placedTile, key) => {
     const coord = toCoord(key);
     const neighbors: Coordinate[] = [];
-    if (placedBlock.orientation === 'up') {
+    if (placedTile.orientation === 'up') {
       neighbors.push(...[
         { x: coord.x-1, y: coord.y },
         { x: coord.x+1, y: coord.y },
@@ -176,17 +176,17 @@ export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
 
 // To determine if a blockInHand can be placed, we need to check all gameboard entries
 // Then we can loop through those to see if any of the NewBlocks in hand fit
-export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ): PotentialMove[] {
+export function searchForMoves( tilesInHand: NewTile[], gameBoard: GameBoard ): PotentialMove[] {
   const toReturn: PotentialMove[] = [];
   const availableSpaces = getAvailableCoords(gameBoard);
   tilesInHand.forEach(tile => {
     availableSpaces.forEach(coord => {
-      const potentialMove = doesBlockFit(tile, coord, gameBoard);
+      const potentialMove = doesTileFit(tile, coord, gameBoard);
       if( potentialMove ) {
         toReturn.push( {
           coord: coord,
-          newBlock: tile,
-          placedBlock: potentialMove,
+          newTile: tile,
+          placedTile: potentialMove,
         });
       }
     });
@@ -195,16 +195,16 @@ export function searchForMoves( tilesInHand: NewBlock[], gameBoard: GameBoard ):
 }
 
 // A refactor of the above function that takes a single tile rather than an array
-export function searchForMove( tileInHand: NewBlock, gameBoard: GameBoard ): PotentialMove[] {
+export function searchForMove( tileInHand: NewTile, gameBoard: GameBoard ): PotentialMove[] {
   const toReturn: PotentialMove[] = [];
   const availableSpaces = getAvailableCoords(gameBoard);
   availableSpaces.forEach(coord => {
-    const potentialMove = doesBlockFit(tileInHand, coord, gameBoard);
+    const potentialMove = doesTileFit(tileInHand, coord, gameBoard);
     if( potentialMove ) {
       toReturn.push( {
         coord: coord,
-        newBlock: tileInHand,
-        placedBlock: potentialMove,
+        newTile: tileInHand,
+        placedTile: potentialMove,
       });
     }
   });
@@ -212,21 +212,21 @@ export function searchForMove( tileInHand: NewBlock, gameBoard: GameBoard ): Pot
 }
 
 
-export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoard: GameBoard ): number {
+export function takeTurn( tilesInHand: NewTile[], drawPile: NewTile[], gameBoard: GameBoard ): number {
   let potentialMoves: PotentialMove[] = searchForMoves( tilesInHand, gameBoard );
   let pointsForTurn: number = 0;
   // FOR LATER: Create heuristics to decide which move to prioritize
   // FOR LATER: Implement machine learning to determine best move
   
   if( potentialMoves.length > 0 ) {
-    let index = tilesInHand.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
+    let index = tilesInHand.findIndex(tile => tile.id === potentialMoves[0].newTile.id);
     tilesInHand.splice(index, 1);
-    gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
+    gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedTile );
     return pointsForTurn;
   } else {
     // If no move exists for all tiles in hand, then draw (up to MAX_DRAW) new tiles
     // Check whether each new tile can be played before drawing another
-    let newTiles: NewBlock[] = [];
+    let newTiles: NewTile[] = [];
     for( let i = 0; i < MAX_DRAW; i++ ) {
       if( drawPile.length > 0 ) {
         newTiles.push( drawPile.pop()! );
@@ -234,14 +234,14 @@ export function takeTurn( tilesInHand: NewBlock[], drawPile: NewBlock[], gameBoa
         potentialMoves = searchForMoves( [newTiles[i]], gameBoard );
         if( potentialMoves.length > 0 ) {
           // Play that tile
-          let index = newTiles.findIndex(tile => tile.id === potentialMoves[0].newBlock.id);
+          let index = newTiles.findIndex(tile => tile.id === potentialMoves[0].newTile.id);
           newTiles.splice(index, 1);
           tilesInHand = tilesInHand.concat(newTiles);
 
           // console.log("Tile played: " + potentialMoves[0].placedBlock.newBlockID + " at " + toKey(potentialMoves[0].coord));
-          gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedBlock );
+          gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedTile );
 
-          pointsForTurn += pointsFromPlay( potentialMoves[0].placedBlock, potentialMoves[0].coord, gameBoard );
+          pointsForTurn += pointsFromPlay( potentialMoves[0].placedTile, potentialMoves[0].coord, gameBoard );
           return pointsForTurn;
         }
       } else {
@@ -268,7 +268,7 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
     return {
       actionType: 'play',
       playerIndex: playerIndex,
-      tilePlayed: potentialMoves[0].placedBlock,
+      tilePlayed: potentialMoves[0].placedTile,
       coord: potentialMoves[0].coord,
     };
   } else {
@@ -281,12 +281,12 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
 
 
 // Function to determine points from placing a tile
-export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gameBoard: GameBoard ): number {
-  let points: number = placedBlock.newBlockID.split(',').map(Number).reduce((sum, num) => sum + num, 0);
+export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameBoard: GameBoard ): number {
+  let points: number = placedTile.newTileID.split(',').map(Number).reduce((sum, num) => sum + num, 0);
   // console.log("Tile points = " + points);
   // Determine if placedBlock completes one of 3 possible hexagons (50 points per hexagon)
   // Need to check coordinates of hexagon formed around the 3 vertices of placedBlock
-  if( placedBlock.orientation === 'up' ) {
+  if( placedTile.orientation === 'up' ) {
     // Check Up: (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)
     // Check DownLeft: (x-2,y), (x-1,y), (x-2,y-1), (x-1,y-1), (x,y-1)
     // Check DownRight: (x+1,y), (x+2,y), (x,y-1), (x+1,y-1), (x-1,y+1)
@@ -345,7 +345,7 @@ export function pointsFromPlay( placedBlock: PlacedBlock, coord: Coordinate, gam
   // Assuming all previous moves were legal, you only need to check
   // if matching one edge of a placedBlock with the point DIRECTLY OPPOSITE
   // (There seem to be other definitions of a bridge, but this is my interpretation.)
-  if( placedBlock.orientation === 'up' ) {
+  if( placedTile.orientation === 'up' ) {
     // Check Above: (x,y-1) & (x,y+1)
     // Check DownLeft: (x+1,y) & (x-2,y-1)
     // Check DownRight: (x-1,y) & (x+2,y-1)

@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest'
-import { makeNewBlocks } from '../generator';
+import { makeNewTiles } from '../generator';
 
 describe('generator tests', () => {
   test('makeNewBlocks', () => {
-    const newBlocks = makeNewBlocks();
+    const newBlocks = makeNewTiles();
     expect(newBlocks.length).toBe(56);
 
     const findOneBlock = newBlocks.filter(block => {

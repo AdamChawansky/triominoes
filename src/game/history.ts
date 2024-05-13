@@ -1,11 +1,11 @@
-import { permuteBlock } from "./generator";
+import { permuteTile } from "./generator";
 import { determineFirstPlay, pointsFromPlay } from "./logic";
-import { GameBoard, GameHistory, GameState, NewBlock } from "./types";
+import { GameBoard, GameHistory, GameState, NewTile } from "./types";
 import { toKey } from "./util";
 
 export function replayHistory(gameHistory: GameHistory): GameState {
   const gameBoard: GameBoard = new Map();
-  const hands: NewBlock[][] = [[]];
+  const hands: NewTile[][] = [[]];
   const scores: number[] = [];
 
   const gameState: GameState = {
@@ -25,7 +25,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
     if(action.actionType === 'play') {
       gameState.gameBoard.set(toKey(action.coord), action.tilePlayed);
 
-      const index = gameState.hands[action.playerIndex].findIndex(tile => tile.id === action.tilePlayed.newBlockID);
+      const index = gameState.hands[action.playerIndex].findIndex(tile => tile.id === action.tilePlayed.newTileID);
       gameState.hands[action.playerIndex].splice(index, 1);
 
       const pointsForTurn = pointsFromPlay(action.tilePlayed, action.coord, gameState.gameBoard);
@@ -33,7 +33,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
       gameState.lastPlay = action.coord;
 
-      gameState.gameLog.push(`Player ${action.playerIndex+1} plays the [${action.tilePlayed.newBlockID}] at (${toKey(action.coord)}) for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`Player ${action.playerIndex+1} plays the [${action.tilePlayed.newTileID}] at (${toKey(action.coord)}) for ${pointsForTurn} points.`);
       gameState.activePlayer = (action.playerIndex + 1) % gameState.hands.length; // next player's turn
       gameState.tilesDrawnThisTurn = 0; // reset tiles drawn counter after a play is made
     } else if(action.actionType === 'draw') {
@@ -63,7 +63,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       const tileIndex = firstPlay[1];
       const tilePlayed = gameState.hands[playerIndex][firstPlay[1]];
 
-      gameState.gameBoard.set("0,0", permuteBlock(tilePlayed)[0]);
+      gameState.gameBoard.set("0,0", permuteTile(tilePlayed)[0]);
 
       gameState.hands[playerIndex].splice(tileIndex, 1);
 
