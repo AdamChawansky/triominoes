@@ -1,6 +1,6 @@
 import { replayHistory } from "./history";
 import { determineAction } from "./logic";
-import { GameHistory, GameState, NewTile, PlacedTile } from "./types";
+import { EndGameAction, GameHistory, GameState, NewTile, PlacedTile } from "./types";
 
 export function genNewTile(nums: [number, number, number]): NewTile {
   return {
@@ -126,8 +126,22 @@ export function simulateOneAction(gameHistory: GameHistory): GameHistory {
   }
   let gameState: GameState = replayHistory(simulatedHistory);
 
-  if( gameState.hands[gameState.activePlayer].length > 0 && gameState.drawPile.length > 0) {
-    simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+  let isEmpty: Boolean = false;
+  for (let i=0; i < gameState.hands.length; i++) {
+    if (gameState.hands[i].length === 0) {
+      isEmpty = true;
+    }
+  }
+  
+  if( gameHistory.actions[gameHistory.actions.length - 1].actionType != 'end') {
+    if (isEmpty) {
+      const endGame: EndGameAction = {
+        actionType: `end`
+      }
+      simulatedHistory.actions.push(endGame);
+    } else {
+      simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+    }
   }
   return simulatedHistory;
 }

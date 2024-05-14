@@ -140,7 +140,7 @@ main {
 
 .player-hand {
   /* positioning */
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 0);
@@ -181,7 +181,7 @@ main {
   margin-bottom: 10px;
   
   text-align: center;
-  font-family:Verdana, Geneva, Tahoma, sans-serif
+  font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
 
