@@ -17,6 +17,8 @@ main {
 }
 
 .game-board {
+  position: relative;
+  height: 75vh;
   box-sizing: border-box;
   border: black;
   border-radius: 5px;
@@ -30,7 +32,7 @@ main {
   background-image: url('triangle-up.png');
   background-size: contain;
   position: absolute;
-  transform: translate(50vw, -50vh);
+  /* transform: translate(50vw, -50vh); */
 }
 .number {
   position: absolute;
@@ -58,7 +60,7 @@ main {
   background-image: url('triangle-down.png');
   background-size: contain;
   position: absolute;
-  transform: translate(50vw, -50vh);
+  /* transform: translate(50vw, -50vh); */
 }
 .top-left {
   top: 5px;

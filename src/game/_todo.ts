@@ -13,6 +13,9 @@ Add ability to play solitaire
 Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 
+KNOWN BUGS:
+- 
+
 - investigate scoring
 
 End states:
