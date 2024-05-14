@@ -7,8 +7,19 @@ main {
   background-color: forestgreen;
   color: black;
 }
+
+.buttons-container {
+  /* border: 1px solid black; */
+  border-radius: 1px;
+  padding: 10px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .game-board {
   box-sizing: border-box;
+  border: black;
+  border-radius: 5px;
   padding: 5px;
 }
 
@@ -25,7 +36,6 @@ main {
   position: absolute;
   font-size: 20px;
   font-weight: bold;
-  color: black;
 }
 .bottom-left {
   bottom: 5px;
@@ -87,9 +97,11 @@ main {
 /* Additional styling to show most recent play, selected tiles, and playable spaces */
 .tile-container.most-recent {
   background-image: url('triangle-up-red-outline.png');
+  color: red;
 }
 .tile-container-inverted.most-recent {
   background-image: url('triangle-down-red-outline.png');
+  color: red;
 }
 .tile-container.selected {
   background-image: url('triangle-up-yellow.png');
@@ -134,7 +146,10 @@ main {
   transform: translate(-50%, 0);
 
   /* styling */
-  border: 2px solid white;
+  border: 5px solid black;
+  border-radius: 10px;
+  background-color: black;
+  /* width: 75%; */
 
   /* layout blocks horizontally */
   display: flex;
@@ -182,6 +197,10 @@ main {
   background-color: white;
   overflow-y: scroll;
 }
+.game-log.collapsed {
+  max-height: 30px;
+  overflow: hidden;
+}
 .game-log-header {
   margin-top: 0;
   cursor: pointer;
@@ -198,21 +217,32 @@ main {
   text-align: left;
 }
 
-@media (max-width: 768px) {
+
+@media (max-width: 1024px) {
+  .player-scores {
+    position: static;
+    width: 75%;
+    margin: auto;
+  
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 10px;
+
+    font-weight: bold;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+  }
+
   .game-log {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: auto;
+    position: static;
+    width: 75%;
+    margin: auto;
+    /* height: auto; */
     max-height: 200px;
     border-radius: 0;
     transition: max-height 0.3s ease;
   }
-
   .game-log.collapsed {
-    max-height: 40px;
+    max-height: 30px;
     overflow: hidden;
   }
 }

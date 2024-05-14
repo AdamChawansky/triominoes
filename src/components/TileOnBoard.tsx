@@ -11,7 +11,7 @@ export function TileOnBoard(props: {
   const width = 96;
   const position: CSSProperties = {
     left: `${props.coord.x * width * 0.5}px`,
-    bottom: `${props.coord.y * width * 0.866}px`, /* 0.866 coming from width to height ratio of equilateral triangles */
+    bottom: `${props.coord.y * width * 0.88}px`, /* 0.866 coming from width to height ratio of equilateral triangles */
   };
 
   const top = props.placedTile.orientation === 'up'

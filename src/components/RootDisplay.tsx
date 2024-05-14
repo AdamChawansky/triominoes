@@ -53,6 +53,13 @@ export function RootDisplay() {
 
   return (
     <main>
+      <div className="buttons-container">
+        <button onClick={startNewGame}>NEW GAME</button>
+        <button onClick={resetGame}>RESET GAME</button>
+        <button onClick={performUndo}>UNDO</button>
+        <button onClick={takeStep}>STEP</button>
+        <button onClick={simulate}>SIMULATE!</button>
+      </div>
       <GameBoardView 
         gameState={gameState}
         setGame={setGame}
@@ -72,31 +79,6 @@ export function RootDisplay() {
       <DisplayGameLog
         gameState={gameState}
       />
-      <button
-        onClick={startNewGame}
-      >
-        NEW GAME
-      </button>
-      <button
-        onClick={resetGame}
-      >
-        RESET GAME
-      </button>
-      <button 
-        onClick={performUndo}
-      >
-        UNDO
-      </button>
-      <button
-        onClick={takeStep}
-      >
-        STEP
-      </button>
-      <button
-        onClick={simulate}
-      >
-        SIMULATE!  
-      </button>
     </main>
   );
 }
