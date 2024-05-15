@@ -183,25 +183,29 @@ main {
 
 
 .game-log {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   border: 1px solid black;
   border-radius: 4px;
-  /* box-sizing: border-box; */
-  padding: 10px;
   background-color: white;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .game-log.collapsed {
-  max-height: 30px;
-  overflow: hidden;
+  max-height: 50px;
 }
 .game-log-header {
   margin-top: 0;
+  margin-bottom: 0;
+  padding: 10px;
   cursor: pointer;
+  background-color: white;
 }
 .game-log-entries {
+  margin-top: 0;
   list-style: none;
   padding: 0;
+  overflow-y: auto;
 }
 .game-log-entry {
   margin-bottom: 4px;
