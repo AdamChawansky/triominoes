@@ -53,32 +53,40 @@ export function RootDisplay() {
 
   return (
     <main>
-      <div className="buttons-container">
-        <button onClick={startNewGame}>NEW GAME</button>
-        <button onClick={resetGame}>RESET GAME</button>
-        <button onClick={performUndo}>UNDO</button>
-        <button onClick={takeStep}>STEP</button>
-        <button onClick={simulate}>SIMULATE!</button>
+      <div className="top-container">
+        <div className="left-container">
+          <div className="buttons-container">
+            <button onClick={startNewGame}>NEW GAME</button>
+            <button onClick={resetGame}>RESET GAME</button>
+            <button onClick={performUndo}>UNDO</button>
+            <button onClick={takeStep}>STEP</button>
+            <button onClick={simulate}>SIMULATE!</button>
+          </div>
+            <GameBoardView 
+              gameState={gameState}
+              setGame={setGame}
+              tileInHand={tileInHand}
+              setTileInHand={setTileInHand}
+              pushAction={pushAction}
+          />
+        </div>
+        <div className="right-container">
+          <DisplayScores
+            gameState={gameState}
+          />
+          <DisplayGameLog
+            gameState={gameState}
+          />
+        </div>
       </div>
-      <GameBoardView 
-        gameState={gameState}
-        setGame={setGame}
-        tileInHand={tileInHand}
-        setTileInHand={setTileInHand}
-        pushAction={pushAction}
-      />
-      <DisplayHand 
-        playerIndex={0}
-        gameState={gameState} 
-        tileInHand={tileInHand}
-        setTileInHand={setTileInHand}
-      />
-      <DisplayScores
-        gameState={gameState}
-      />
-      <DisplayGameLog
-        gameState={gameState}
-      />
+      <div className="bottom-container">
+        <DisplayHand 
+            playerIndex={0}
+            gameState={gameState} 
+            tileInHand={tileInHand}
+            setTileInHand={setTileInHand}
+        />
+      </div>
     </main>
   );
 }

@@ -3,7 +3,7 @@ import { ActionPusher, Coordinate, GameState, NewTile, PlayAction } from '../gam
 import { toCoord, toKey } from '../game/util.ts';
 import { TileOnBoard } from './TileOnBoard.tsx';
 import './Game.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function GameBoardView(props: {
   gameState: GameState,
@@ -14,22 +14,45 @@ export function GameBoardView(props: {
 }) {
   // aka const gameState = props.gameState;
   const { gameState, tileInHand, pushAction, setTileInHand } = props;
-  const [playAreaWidth, setPlayAreaWidth] = useState(window.innerWidth);
-  const [playAreaHeight, setPlayAreaHeight] = useState(window.innerHeight);
+
+  // Grab gameBoard height & width to keep tiles centered
+  const gameBoardRef = useRef<HTMLDivElement>(null);
+  const [gameBoardWidth, setGameBoardWidth] = useState(0);
+  const [gameBoardHeight, setGameBoardHeight] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
-      setPlayAreaWidth(window.innerWidth);
-      setPlayAreaHeight(window.innerHeight);
+      if (gameBoardRef.current) {
+        setGameBoardWidth(gameBoardRef.current.clientWidth);
+        setGameBoardHeight(gameBoardRef.current.clientHeight);
+      }
     };
-
+  
     window.addEventListener('resize', handleResize);
-
+  
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  
+
+  const width = 96;
+  const height = width * 0.88;
+
+  const placedTilesWithCoords = Array.from(gameState.gameBoard.entries());
+
+  // Find min & max X & Y coordinates
+  const minX = Math.min(...placedTilesWithCoords.map(([coord]) => toCoord(coord).x));
+  const maxX = Math.max(...placedTilesWithCoords.map(([coord]) => toCoord(coord).x));
+  const minY = Math.min(...placedTilesWithCoords.map(([coord]) => toCoord(coord).y));
+  const maxY = Math.max(...placedTilesWithCoords.map(([coord]) => toCoord(coord).y));
+
+  const boardWidth = (maxX - minX + 1) * width * 0.5;
+  const boardHeight = (maxY - minY + 1) * height;
+
+  const offsetX = (gameBoardWidth - boardWidth) / 2;
+  const offsetY = (gameBoardHeight - boardHeight) / 2;
+
+  // Allow players to place tiles in available spaces based on selected tileInHand
   function onBlockClick(coord: Coordinate) {
     if(tileInHand) {
       const potentialMoves = searchForMove(tileInHand, gameState.gameBoard);
@@ -48,24 +71,8 @@ export function GameBoardView(props: {
     }
   }
 
-  const width = 96;
-  const height = width * 0.88;
-
-  const placedTilesWithCoords = Array.from(gameState.gameBoard.entries());
-
-  const minX = Math.min(...placedTilesWithCoords.map(([coord]) => toCoord(coord).x));
-  const maxX = Math.max(...placedTilesWithCoords.map(([coord]) => toCoord(coord).x));
-  const minY = Math.min(...placedTilesWithCoords.map(([coord]) => toCoord(coord).y));
-  const maxY = Math.max(...placedTilesWithCoords.map(([coord]) => toCoord(coord).y));
-
-  const boardWidth = (maxX - minX + 1) * width * 0.5;
-  const boardHeight = (maxY - minY + 1) * height;
-
-  const offsetX = (playAreaWidth - boardWidth) / 2;
-  const offsetY = (playAreaHeight - boardHeight) / 2;
-
   return (
-    <div className="game-board">
+    <div className="game-board" ref={gameBoardRef}>
       {Array.from(gameState.gameBoard.entries()).map(([coord, placedBlock]) => (
         <TileOnBoard
           key = {coord}

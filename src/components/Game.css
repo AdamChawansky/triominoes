@@ -2,27 +2,56 @@ main {
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
   background-color: forestgreen;
   color: black;
 }
 
+/* Holds all game components except player hand */
+.top-container {
+  display: flex;
+  flex: 1;
+}
+
+/* Holds buttons and game-board */
+.left-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+/* Holds scores and game log */
+.right-container {
+  width: 375px;
+  height: calc(100vh - 150px);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+/* Holds buttons */
 .buttons-container {
-  /* border: 1px solid black; */
   border-radius: 1px;
   padding: 10px;
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* Used to automatically reposition tiles so they stay centered on board */
 .game-board {
   position: relative;
-  height: 75vh;
-  box-sizing: border-box;
-  border: black;
-  border-radius: 5px;
-  padding: 5px;
+  flex: 1;
+}
+
+/* Holds player hand */
+.bottom-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
 
 .game-board .tile-container {
@@ -32,7 +61,6 @@ main {
   background-image: url('triangle-up.png');
   background-size: contain;
   position: absolute;
-  /* transform: translate(50vw, -50vh); */
 }
 .number {
   position: absolute;
@@ -60,7 +88,6 @@ main {
   background-image: url('triangle-down.png');
   background-size: contain;
   position: absolute;
-  /* transform: translate(50vw, -50vh); */
 }
 .top-left {
   top: 5px;
@@ -139,48 +166,16 @@ main {
   position: relative;
 }
 
-
-.player-hand {
-  /* positioning */
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-
-  /* styling */
-  border: 5px solid black;
-  border-radius: 10px;
-  background-color: black;
-  /* width: 75%; */
-
-  /* layout blocks horizontally */
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-
 .player-scores {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  /* styling */
   border: 1px solid black;
   border-radius: 4px;
   padding: 10px;
-  border-collapse: collapse;
   background-color: white;
   font-weight: bold;
 
-  width: 375px;
-
-  column-count: 3;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 10px;
   
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif
@@ -188,16 +183,13 @@ main {
 
 
 .game-log {
-  position: absolute;
-  top: 110px;
-  right: 10px;
-  width: 375px;
-  height: 75vh;
+  flex: 1;
   border: 1px solid black;
-  border-radius: 2px;
+  border-radius: 4px;
+  /* box-sizing: border-box; */
   padding: 10px;
   background-color: white;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .game-log.collapsed {
   max-height: 30px;
@@ -217,6 +209,18 @@ main {
   padding-left: 5px;
   border-bottom: 1px solid grey;
   text-align: left;
+}
+
+
+.player-hand {
+  border: 5px solid black;
+  border-radius: 10px;
+  background-color: black;
+  min-width: 75%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 
