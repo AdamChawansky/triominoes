@@ -229,30 +229,52 @@ main {
 
 
 @media (max-width: 1024px) {
+  main {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .top-container {
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .buttons-container {
+    order: 1;
+  }
+  .left-container {
+    flex-direction: column;
+    padding: 10px;
+    order: 2;
+  }
+  .right-container {
+    width: auto;
+    padding: 10px;
+    height: auto;
+    order: 1;
+  }
   .player-scores {
-    position: static;
-    width: 75%;
-    margin: auto;
-  
-    border: 1px solid black;
+    margin: 0;
     border-radius: 4px;
     padding: 10px;
-
     font-weight: bold;
-    font-family:Verdana, Geneva, Tahoma, sans-serif
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
-
   .game-log {
-    position: static;
-    width: 75%;
-    margin: auto;
-    /* height: auto; */
-    max-height: 200px;
+    margin: 0;
     border-radius: 0;
     transition: max-height 0.3s ease;
+    overflow: hidden;
   }
   .game-log.collapsed {
-    max-height: 30px;
-    overflow: hidden;
+    max-height: 50px;
+  }
+  .game-board {
+    flex: 1;
+    order: 2;
+  }
+  .bottom-container {
+    padding: 10px;
+    order: 3;
   }
 }
