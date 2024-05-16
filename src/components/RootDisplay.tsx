@@ -8,7 +8,10 @@ import { GameBoardView } from './GameBoardView.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
 
-export function RootDisplay() {
+export function RootDisplay(props: {
+  numPlayers: number,
+  playerName: string,
+}) {
   const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(1));
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
   const gameState = replayHistory(gameHistory);

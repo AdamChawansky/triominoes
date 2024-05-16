@@ -28,6 +28,7 @@ export function GameBoardView(props: {
       }
     };
   
+    handleResize();
     window.addEventListener('resize', handleResize);
   
     return () => {

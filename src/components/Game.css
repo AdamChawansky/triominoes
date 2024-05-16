@@ -223,6 +223,7 @@ main {
   border-radius: 10px;
   background-color: black;
   min-width: 75%;
+  min-height: 87px;
 
   display: flex;
   flex-direction: row;
