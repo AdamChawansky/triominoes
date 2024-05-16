@@ -61,6 +61,7 @@ main {
   background-image: url('triangle-up.png');
   background-size: contain;
   position: absolute;
+  cursor: pointer;
 }
 .number {
   position: absolute;
@@ -88,6 +89,7 @@ main {
   background-image: url('triangle-down.png');
   background-size: contain;
   position: absolute;
+  cursor: pointer;
 }
 .top-left {
   top: 5px;
@@ -103,22 +105,13 @@ main {
   bottom: 20px;
   left: 43.3%;
 }
-.tile-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
+
 /* Not currently functional... but don't really need this functionality */
-.tile-button:has(.clickzone:hover) {
+.tile-container:hover {
   background-image: url('triangle-up-invert.png');
   color: white;
 }
-.tile-container-inverted .tile-button:has(.clickzone:hover) {
+.tile-container-inverted:hover {
   background-image: url('triangle-down-invert.png');
   color: white;
 }
@@ -134,9 +127,11 @@ main {
 }
 .tile-container.selected {
   background-image: url('triangle-up-yellow.png');
+  color: black;
 }
 .tile-container-inverted.selected {
   background-image: url('triangle-down-yellow.png');
+  color: black;
 }
 .tile-container.playable {
   background-image: url('triangle-up-yellow.png');

@@ -21,21 +21,20 @@ export function TileRender(props: {
       : '',
   ];
   return (
-    <div className= {classNames.join(' ')} style={props.style}>
-        {props.orientation === 'up' ? (
-          <>
-            <span className="number bottom-left">{props.bottom[0]}</span>
-            <span className="number bottom-right">{props.bottom[1]}</span>
-            <span className="number top-center">{props.top[0]}</span>
-          </>
-        ) : (
-          <>
-            <span className="number top-left">{props.top[0]}</span>
-            <span className="number top-right">{props.top[1]}</span>
-            <span className="number bottom-center">{props.bottom[0]}</span>
-          </>
-        )}
-        <button className="tile-button" onClick={props.onClick}></button>
-      </div>
+    <div className= {classNames.join(' ')} style={props.style} onClick={props.onClick}>
+      {props.orientation === 'up' ? (
+        <>
+          <span className="number bottom-left">{props.bottom[0]}</span>
+          <span className="number bottom-right">{props.bottom[1]}</span>
+          <span className="number top-center">{props.top[0]}</span>
+        </>
+      ) : (
+        <>
+          <span className="number top-left">{props.top[0]}</span>
+          <span className="number top-right">{props.top[1]}</span>
+          <span className="number bottom-center">{props.bottom[0]}</span>
+        </>
+      )}
+    </div>
   );
 }
