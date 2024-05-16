@@ -14,6 +14,12 @@ Add ability to play solitaire
 Add ability to play versus computer
 Add ability to play versus another human (like Paul's Avalon site)
 
+Homework:
+- Try doing something in UI where I enter a room number
+- Grab the room number from database
+- Subscribing to updates... stay tuned!
+
+
 KNOWN BUGS:
 - 
 
