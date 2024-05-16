@@ -11,7 +11,7 @@ export function DisplayScores(props: {
         <div>Tiles in Hand</div>
       </div>
       {props.gameState.scores.map((score, index) => (
-        <div key={index}>
+        <div key={index} className={props.gameState.activePlayer === index ? "active" : ""}>
           <div>{index+1}</div>
           <div>{score}</div>
           <div>{props.gameState.hands[index].length}</div>

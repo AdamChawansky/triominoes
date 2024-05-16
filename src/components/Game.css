@@ -175,7 +175,14 @@ main {
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif
 }
-
+.player-scores > div {
+  padding: 7px;
+  border: 2px solid white;
+}
+.player-scores > div.active {
+  border-color: red;
+  border-radius: 5px;
+}
 
 .game-log {
   display: flex;

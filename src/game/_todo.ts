@@ -8,6 +8,7 @@ gameBoard.entries();
 
 Clickable draw pile (bottom right)
 Should game auto-pass for you when you've drawn MAX_TILES and have no play?
+Actually, make a "pass" action that you have to manually select.
 
 Add ability to play solitaire
 Add ability to play versus computer
