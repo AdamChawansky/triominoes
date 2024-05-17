@@ -4,7 +4,6 @@ import { toCoord, toKey } from '../game/util.ts';
 import { TileOnBoard } from './TileOnBoard.tsx';
 import './Game.css';
 import { useEffect, useRef, useState } from 'react';
-import { initializeNewGameHistory } from '../game/generator.ts';
 
 export function GameBoardView(props: {
   gameState: GameState,

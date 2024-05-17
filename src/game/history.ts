@@ -10,6 +10,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
   const gameState: GameState = {
     gameBoard: gameBoard,
+    playerNames: [],
     hands: hands,
     scores: scores,
     drawPile: [...gameHistory.startingDeck],
