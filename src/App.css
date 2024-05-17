@@ -16,6 +16,13 @@
   cursor: pointer;
 }
   
-.loading-screen.button:hover {
+.loading-screen .button:hover {
     background-color: #A0522D;
+}
+
+.loading-screen.input-field {
+  font-size: 18px;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
 }

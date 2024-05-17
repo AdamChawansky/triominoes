@@ -13,7 +13,7 @@ function App() {
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
   const [gameId, setGameId] = useState('');
-  const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'gameStarted'>('landing');
+  const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'roomCreated'>('landing');
 
   const handleCreateNewGame = () => {
     setGameStatus('newGame');
@@ -23,9 +23,9 @@ function App() {
     setGameStatus('joinGame');
   };
 
-  const handleStartGame = () => {
-    if (numPlayers !== undefined && playerName.trim() !== '') {
-      setGameStatus('gameStarted');
+  const handleCreateRoom = () => {
+    if (numPlayers !== undefined && !isNaN(numPlayers) && playerName.trim() !== '') {
+      setGameStatus('roomCreated');
     }
   };
 
@@ -39,13 +39,16 @@ function App() {
     );
   } else if (gameStatus === 'newGame') {
     return (
-      <div>
+      <div className="loading-screen">
         <h2>Create New Game</h2>
         <label>
           Number of Players:
-          <select value={numPlayers} onChange={(n) => setNumPlayers(Number(n.target.value))}>
+          <select
+            className="input-field"
+            value={numPlayers}
+            onChange={(e) => setNumPlayers(Number(e.target.value))}>
             <option value="">Select number of players</option>
-            {[...Array(6)].map((_, i) => (
+              {[...Array(6)].map((_,i) => (
               <option key={i+1} value={i+1}>
                 {i+1}
               </option>
@@ -56,29 +59,35 @@ function App() {
         <label>
           Player Name: 
           <input
+            className="input-field"
             type="text"
             value={playerName}
-            onChange={(s) => setPlayerName(s.target.value)}
+            onChange={(e) => setPlayerName(e.target.value)}
+            placeholder="Enter your name"
           />
         </label>
         <br />
-        <button onClick={handleStartGame}>Start Game</button>
+        <button className="button" onClick={handleCreateRoom}>Create Room</button>
       </div>
     );
   } else if (gameStatus === 'joinGame') {
+    // FOR LATER: Add ability for URL to automatically take you to 'joinGame' and populate Game ID
     return (
-      <div>
+      <div className="loading-screen">
           <h2>Join a Game</h2>
           <label>
               Game ID:
-              <input type="text" value={gameId} onChange={(s) => setGameId(s.target.value)}/>
+              <input className="input-field" type="text" value={gameId} onChange={(e) => setGameId(e.target.value)}/>
           </label>
           <br />
-          <button onClick={handleJoinExistingGame}>Join Game</button>
+          <button className="button" onClick={handleJoinExistingGame}>Join Game</button>
       </div>
     );
-  } else if (gameStatus === 'gameStarted') {
+  } else if (gameStatus === 'roomCreated') {
     return <RootDisplay numPlayers={numPlayers!} playerName={playerName}/>;
+    // Should this be the same as the 'enterRoom' status? They both send you to the same place, whether locally and/or firebase
+  } else if (gameStatus === 'enterRoom') {
+    // This is where you would grab gameHistory from firebase nad use it to generate RootDisplay
   } else {
     console.log("Invalid Game Status");
     return null;

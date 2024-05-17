@@ -38,6 +38,7 @@ export type PotentialMove = {
 
 export type GameState = {
   gameBoard: GameBoard;
+  playerNames: string[];
   hands: NewTile[][];
   scores: number[];
   drawPile: NewTile[];
@@ -53,10 +54,17 @@ export type GameHistory = {
 }
 
 export type Action = 
+  | AddPlayerAction
   | InitialTileAction
   | PlayAction
   | DrawAction
+  | PassAction
   | EndGameAction;
+
+export type AddPlayerAction = {
+  actionType: 'add-player';
+  playerName: string;
+}
 
 export type PlayAction = {
   actionType: 'play';
@@ -67,6 +75,11 @@ export type PlayAction = {
 
 export type DrawAction = {
   actionType: 'draw';
+  playerIndex: number;
+}
+
+export type PassAction = {
+  actionType: 'pass'
   playerIndex: number;
 }
 

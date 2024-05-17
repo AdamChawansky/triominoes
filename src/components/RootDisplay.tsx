@@ -11,8 +11,9 @@ import { DisplayGameLog } from './DisplayLog.tsx';
 export function RootDisplay(props: {
   numPlayers: number,
   playerName: string,
+  // Should RootDisplay start getting gameHistory from firebase?
 }) {
-  const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(1));
+  const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(props.numPlayers));
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
   const gameState = replayHistory(gameHistory);
   const setGame = () => {};
@@ -23,7 +24,7 @@ export function RootDisplay(props: {
   }, [gameHistory]);
 
   function startNewGame() {
-    setGameHistory(initializeNewGameHistory(4));
+    setGameHistory(initializeNewGameHistory(props.numPlayers));
   }
 
   function resetGame() {
@@ -52,6 +53,14 @@ export function RootDisplay(props: {
       startingDeck: gameHistory.startingDeck,
       actions: gameHistory.actions.concat(action),
     });
+  }
+
+  // FOR LATER: Add button that indicates to start game when all human players have joined.
+  // Should it shuffle, deal, and init all at once? 
+  if(gameState.gameBoard.size === -1) {
+    <div>
+      <button onClick={startNewGame}>THIS BUTTON SHOULD BE IN THE MIDDLE OF GAMEBOARD?</button>
+    </div>
   }
 
   return (

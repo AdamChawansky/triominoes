@@ -7,8 +7,6 @@ gameBoard.values();
 gameBoard.entries();
 
 Clickable draw pile (bottom right)
-Should game auto-pass for you when you've drawn MAX_TILES and have no play?
-Actually, make a "pass" action that you have to manually select.
 
 Add ability to play solitaire
 Add ability to play versus computer
@@ -23,7 +21,10 @@ Homework:
 KNOWN BUGS:
 - 
 
+FOR LATER:
 - investigate scoring
+- display room ID in top left corner, make it clickable so it copies URL to clipboard and auto-fills join room
+- 
 
 End states:
   1) A player plays their last tile (any hand[i] === 0)
