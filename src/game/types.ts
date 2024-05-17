@@ -1,3 +1,8 @@
+// These components are used with the firebase
+export const QueryParam = {
+  GameID: 'gameID',
+} as const;
+
 export type PlacedTileA = {
   newTileID: string;
   orientation: 'up';

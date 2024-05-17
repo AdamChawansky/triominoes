@@ -1,30 +1,69 @@
 import { useEffect, useState } from 'react';
-import { initializeNewGameHistory, simulateCompleteGame, simulateOneAction, eraseGameHistory } from '../game/generator.ts';
+import { eraseGameHistory, simulateCompleteGame, simulateOneAction } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
 import { Action, GameHistory, NewTile } from '../game/types.ts';
+import { getGameHistory, saveGameHistory } from '../online/firebaseApi.ts';
 import { DisplayHand } from './DisplayHand.tsx';
+import { DisplayGameLog } from './DisplayLog.tsx';
+import { DisplayScores } from './DisplayScores.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
-import { DisplayScores } from './DisplayScores.tsx';
-import { DisplayGameLog } from './DisplayLog.tsx';
+
+(window as any).fbapi = {
+  getGameHistory,
+  saveGameHistory,
+};
 
 export function RootDisplay(props: {
+  gameID: string,
   numPlayers: number,
   playerName: string,
-  // Should RootDisplay start getting gameHistory from firebase?
 }) {
-  const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(props.numPlayers));
+  const [gameHistory, setGameHistory] = useState<GameHistory>({
+    startingDeck: [],
+    actions: [
+      { actionType: 'add-player', playerName: props.playerName },
+    ],
+  });
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
-  const gameState = replayHistory(gameHistory);
-  const setGame = () => {};
+
+  useEffect(() => {
+    const fetchGameHistory = async () => {
+      try {
+        const gameID = props.gameID;
+        const gameHistory = await getGameHistory(gameID);
+        if (gameHistory) {
+          setGameHistory(gameHistory);
+        }
+      } catch (error) {
+        console.error('Error fetching game history:', error);
+      }
+    };
+  
+    fetchGameHistory();
+  }, [props.gameID]);
 
   useEffect(() => {
     // when gameHistory changes, reset hand selection
     setTileInHand(undefined);
   }, [gameHistory]);
+  
+  if (gameHistory === null) {
+    return <div>Loading game history...</div>;
+  }
+
+  const gameState = replayHistory(gameHistory);
+  const setGame = () => {};
 
   function startNewGame() {
-    setGameHistory(initializeNewGameHistory(props.numPlayers));
+    const newGameHistory: GameHistory = {
+      startingDeck: [],
+      actions: [
+        { actionType: 'add-player', playerName: props.playerName },
+      ],
+    };
+    setGameHistory(newGameHistory);
+    saveGameHistory(props.gameID, newGameHistory);
   }
 
   function resetGame() {

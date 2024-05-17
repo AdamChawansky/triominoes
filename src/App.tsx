@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css'
 import { RootDisplay } from './components/RootDisplay'
 import { getMessage, setMessage } from './online/firebaseApi';
+import { QueryParam } from './game/types';
 
 (window as any).fbapi = {
   setMessage,
@@ -10,10 +11,14 @@ import { getMessage, setMessage } from './online/firebaseApi';
 
 /* App runs a function and returns something that looks like HTML */
 function App() {
+  const searchParams = new URLSearchParams(window.location.search);
+  let gameID = searchParams.get(QueryParam.GameID);
+  const playerID = new Date().getTime().toString();
+
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
   const [gameId, setGameId] = useState('');
-  const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'roomCreated'>('landing');
+  const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'enterRoom'>('landing');
 
   const handleCreateNewGame = () => {
     setGameStatus('newGame');
@@ -24,8 +29,12 @@ function App() {
   };
 
   const handleCreateRoom = () => {
-    if (numPlayers !== undefined && !isNaN(numPlayers) && playerName.trim() !== '') {
-      setGameStatus('roomCreated');
+    if (gameID) {
+      setGameStatus('enterRoom');
+    } else if (numPlayers !== undefined && !isNaN(numPlayers) && playerName.trim() !== '') {
+      // generate random string to be gameID
+      gameID = "garage";
+      setGameStatus('enterRoom');
     }
   };
 
@@ -80,14 +89,22 @@ function App() {
               <input className="input-field" type="text" value={gameId} onChange={(e) => setGameId(e.target.value)}/>
           </label>
           <br />
+          <label>
+          Player Name: 
+          <input
+            className="input-field"
+            type="text"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            placeholder="Enter your name"
+          />
+        </label>
+        <br />
           <button className="button" onClick={handleJoinExistingGame}>Join Game</button>
       </div>
     );
-  } else if (gameStatus === 'roomCreated') {
-    return <RootDisplay numPlayers={numPlayers!} playerName={playerName}/>;
-    // Should this be the same as the 'enterRoom' status? They both send you to the same place, whether locally and/or firebase
   } else if (gameStatus === 'enterRoom') {
-    // This is where you would grab gameHistory from firebase nad use it to generate RootDisplay
+    return <RootDisplay gameID={gameID!} numPlayers={numPlayers!} playerName={playerName}/>;
   } else {
     console.log("Invalid Game Status");
     return null;
