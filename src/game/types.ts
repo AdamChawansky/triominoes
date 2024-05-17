@@ -3,6 +3,13 @@ export const QueryParam = {
   GameID: 'gameID',
 } as const;
 
+export interface FirebaseGameData {
+  gameID: string;
+  numPlayers: number;
+  humanPlayers: string[];
+  gameHistory: GameHistory;
+}
+
 export type PlacedTileA = {
   newTileID: string;
   orientation: 'up';
