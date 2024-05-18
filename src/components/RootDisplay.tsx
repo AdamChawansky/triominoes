@@ -2,72 +2,54 @@ import { useEffect, useState } from 'react';
 import { eraseGameHistory, initializeNewGameHistory, simulateCompleteGame, simulateOneAction } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
 import { Action, FirebaseGameData, GameHistory, NewTile } from '../game/types.ts';
-import { getGameData, saveGameData } from '../online/firebaseApi.ts';
+import { firebaseGetGameData, firebaseSaveGameData, firebaseSubscribeGameData } from '../online/firebaseApi.ts';
 import { DisplayHand } from './DisplayHand.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
 
-(window as any).fbapi = {
-  getGameData,
-  saveGameData,
-};
+// (window as any).fbapi = {
+//   getGameData,
+//   saveGameData,
+// };
 
 export function RootDisplay(props: {
-  importedGameData: FirebaseGameData,
+  initialGameData: FirebaseGameData,
 }) {
-  const [gameData, setGameData] = useState<FirebaseGameData>(props.importedGameData);
-  const [gameHistory, setGameHistory] = useState<GameHistory>(initializeNewGameHistory(gameData.numPlayers));
+  // local state
+  const [gameData, setGameData] = useState<FirebaseGameData>(props.initialGameData);
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
 
-  const gameState = replayHistory(gameHistory);
-  const setGame = () => {};
-
+  // on first render
   useEffect(() => {
-    setGameHistory(gameData.gameHistory);
-  }, [gameData.gameHistory]);
+    async function doTheThing() {
+      await firebaseSubscribeGameData(
+        props.initialGameData,
+        gameData => setGameData(gameData),
+      );
+    }
+    doTheThing();
+  }, []);
 
-  // useEffect(() => {
-  //   const fetchGameData = async () => {
-  //     try {
-  //       const gameID = props.importedGameData.gameID;
-  //       const gameData = await getGameData(gameID);
-  //       if (gameData) {
-  //         setGameHistory(gameData.gameHistory);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching game history:', error);
-  //     }
-  //   };
-  
-  //   fetchGameData();
-  // }, [props.importedGameData.gameID]);
-
-  // when gameHistory changes, reset hand selection --> but maybe don't want that behavior from other people playing
-  // useEffect(() => {
-  //   setTileInHand(undefined);
-  // }, [gameHistory]);
+  // helpers
+  const gameHistory = gameData.gameHistory;
+  function setGameHistory(newGameHistory: GameHistory) {
+    firebaseSaveGameData({
+      ...gameData,
+      gameHistory: newGameHistory,
+    });
+  }
+  const gameState = replayHistory(gameHistory);
   
   function startNewGame() {
     const newGameHistory = initializeNewGameHistory(gameData.numPlayers);
-
-    const updatedGameData: FirebaseGameData = {
-      ...gameData,
-      gameHistory: newGameHistory,
-    };
-    setGameData(updatedGameData);
-    saveGameData(updatedGameData);
+    setGameHistory(newGameHistory);
   }
 
   function resetGame() {
     const resetGameHistory = eraseGameHistory(gameData.gameHistory);
-    const updatedGameData: FirebaseGameData = {
-      ...gameData,
-      gameHistory: resetGameHistory,
-    };
-    setGameData(updatedGameData);
-    saveGameData(updatedGameData);
+    setGameHistory(resetGameHistory);
   }
 
   function performUndo() {
@@ -77,35 +59,17 @@ export function RootDisplay(props: {
       ? gameData.gameHistory.actions
       : gameData.gameHistory.actions.slice(0, -1),
     };
-
-    const updatedGameData: FirebaseGameData = {
-      ...gameData,
-      gameHistory: newGameHistory,
-    };
-    setGameData(updatedGameData);
-    saveGameData(updatedGameData);
+    setGameHistory(newGameHistory);
   }
 
   function takeStep() {
     const newGameHistory = simulateOneAction(gameData.gameHistory);
-
-    const updatedGameData: FirebaseGameData = {
-      ...gameData,
-      gameHistory: newGameHistory,
-    };
-    setGameData(updatedGameData);
-    saveGameData(updatedGameData);
+    setGameHistory(newGameHistory);
   }
 
   function simulate() {
     const newGameHistory = simulateCompleteGame(gameData.gameHistory);
-
-    const updatedGameData: FirebaseGameData = {
-      ...gameData,
-      gameHistory: newGameHistory,
-    };
-    setGameData(updatedGameData);
-    saveGameData(updatedGameData);
+    setGameHistory(newGameHistory);
   }
 
   function pushAction(action: Action) {
@@ -113,13 +77,7 @@ export function RootDisplay(props: {
       startingDeck: gameData.gameHistory.startingDeck,
       actions: gameData.gameHistory.actions.concat(action),
     };
-
-    const updatedGameData: FirebaseGameData = {
-      ...gameData,
-      gameHistory: newGameHistory,
-    };
-    setGameData(updatedGameData);
-    saveGameData(updatedGameData);
+    setGameHistory(newGameHistory);
   }
 
   // FOR LATER: Add button that indicates to start game when all human players have joined.
@@ -143,7 +101,6 @@ export function RootDisplay(props: {
           </div>
             <GameBoardView 
               gameState={gameState}
-              setGame={setGame}
               tileInHand={tileInHand}
               setTileInHand={setTileInHand}
               pushAction={pushAction}

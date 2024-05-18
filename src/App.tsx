@@ -2,11 +2,11 @@ import { useState } from 'react';
 import './App.css';
 import { RootDisplay } from './components/RootDisplay';
 import { FirebaseGameData, QueryParam } from './game/types';
-import { getGameData, saveGameData } from './online/firebaseApi';
+import { firebaseGetGameData, firebaseSaveGameData, firebaseSubscribeGameData } from './online/firebaseApi';
 
 (window as any).fbapi = {
-  saveGameData,
-  getGameData,
+  saveGameData: firebaseSaveGameData,
+  getGameData: firebaseGetGameData,
 };
 
 function generateGameID() {
@@ -29,7 +29,7 @@ function App() {
   const [playerName, setPlayerName] = useState('');
   const [gameID, setGameID] = useState(gameIDFromURL || '');
   const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'enterRoom'>('landing');
-  const [gameData, setGameData] = useState<FirebaseGameData | null>(null);
+  const [initialGameData, setInitialGameData] = useState<FirebaseGameData | null>(null);
 
   // Player selects "Create New Game"
   const handleCreateNewGame = () => {
@@ -41,11 +41,14 @@ function App() {
     setGameStatus('joinGame');
   };
 
+  // FOR LATER: Make these two buttons
+  // 
+
   // Player selects "Join Game" or "Create Room"
   const handleEnterRoom = async () => {
     if (gameID !== '' && playerName.trim() !== '') {
       // Retrieve the existing game data
-      const existingGameData = await getGameData(gameID);
+      const existingGameData = await firebaseGetGameData(gameID);
       if (existingGameData) {
         // Add the new player to the humanPlayers array & AddPlayer action
         const updatedGameData: FirebaseGameData = {
@@ -61,8 +64,10 @@ function App() {
         };
 
         // Save the updated game data to Firebase
-        await saveGameData(updatedGameData);
-        setGameData(updatedGameData);
+        await firebaseSaveGameData(updatedGameData);
+
+        // get to RootDisplay
+        setInitialGameData(updatedGameData);
         setGameStatus('enterRoom');
       } else {
         console.log('Invalid Game ID');
@@ -83,10 +88,9 @@ function App() {
           actions: [],
         },
       };
-
-      // Save the new game data to Firebase
-      await saveGameData(newGameData);
-      setGameData(newGameData);
+      
+      // Later, up-sert the playerName
+      setInitialGameData(newGameData);
       setGameStatus('enterRoom');
     }
   };
@@ -99,7 +103,8 @@ function App() {
         <button className="button" onClick={handleJoinExistingGame}>Join a Game</button>
       </div>
     );
-  } else if (gameStatus === 'newGame') {
+  } 
+  if (gameStatus === 'newGame') {
     return (
       <div className="loading-screen">
         <h2>Create New Game</h2>
@@ -132,7 +137,9 @@ function App() {
         <button className="button" onClick={handleEnterRoom}>Create Room</button>
       </div>
     );
-  } else if (gameStatus === 'joinGame') {
+  }
+  
+  if (gameStatus === 'joinGame') {
     // FOR LATER: Add ability for URL to automatically take you to 'joinGame' and populate Game ID
     return (
       <div className="loading-screen">
@@ -156,12 +163,15 @@ function App() {
           <button className="button" onClick={handleEnterRoom}>Join Game</button>
       </div>
     );
-  } else if (gameStatus === 'enterRoom') {
-    return <RootDisplay importedGameData={gameData!}/>;
-  } else {
-    console.log("Invalid Game Status");
-    return null;
   }
+  
+  if (gameStatus === 'enterRoom' && initialGameData) {
+    return <RootDisplay initialGameData={initialGameData}/>;
+  }
+
+  // else
+  console.log("Invalid Game Status");
+  return null;
 }
 
 export default App

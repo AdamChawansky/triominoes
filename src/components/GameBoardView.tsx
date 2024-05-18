@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 
 export function GameBoardView(props: {
   gameState: GameState,
-  setGame: (newGame: GameState) => void,
   tileInHand: NewTile | undefined,
   setTileInHand: (b: NewTile | undefined) => void,
   pushAction: ActionPusher,
