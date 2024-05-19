@@ -104,3 +104,12 @@ export type EndGameAction = {
 }
 
 export type ActionPusher = (action: Action) => void;
+
+export interface Message {
+  player: string;
+  content: string;
+}
+
+export interface MessageHistory {
+  messages: Message[];
+}

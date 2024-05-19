@@ -2,17 +2,13 @@ import { useEffect, useState } from 'react';
 import { eraseGameHistory, initializeNewGameHistory, simulateCompleteGame, simulateOneAction } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
 import { Action, FirebaseGameData, GameHistory, NewTile } from '../game/types.ts';
-import { firebaseGetGameData, firebaseSaveGameData, firebaseSubscribeGameData } from '../online/firebaseApi.ts';
+import { firebaseSaveGameData, firebaseSubscribeGameData } from '../online/firebaseApi.ts';
 import { DisplayHand } from './DisplayHand.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
 import './Game.css';
 import { GameBoardView } from './GameBoardView.tsx';
-
-// (window as any).fbapi = {
-//   getGameData,
-//   saveGameData,
-// };
+import ChatComponent from './ChatComponent.tsx';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
@@ -23,13 +19,13 @@ export function RootDisplay(props: {
 
   // on first render
   useEffect(() => {
-    async function doTheThing() {
+    async function startSubscription() {
       await firebaseSubscribeGameData(
         props.initialGameData,
         gameData => setGameData(gameData),
       );
     }
-    doTheThing();
+    startSubscription();
   }, []);
 
   // helpers
@@ -53,31 +49,31 @@ export function RootDisplay(props: {
   }
 
   function performUndo() {
-    const newGameHistory = {
+    const updatedGameHistory = {
       startingDeck: gameData.gameHistory.startingDeck,
       actions: gameData.gameHistory.actions[gameData.gameHistory.actions.length - 1].actionType === 'init'
       ? gameData.gameHistory.actions
       : gameData.gameHistory.actions.slice(0, -1),
     };
-    setGameHistory(newGameHistory);
+    setGameHistory(updatedGameHistory);
   }
 
   function takeStep() {
-    const newGameHistory = simulateOneAction(gameData.gameHistory);
-    setGameHistory(newGameHistory);
+    const updatedGameHistory = simulateOneAction(gameData.gameHistory);
+    setGameHistory(updatedGameHistory);
   }
 
   function simulate() {
-    const newGameHistory = simulateCompleteGame(gameData.gameHistory);
-    setGameHistory(newGameHistory);
+    const updatedGameHistory = simulateCompleteGame(gameData.gameHistory);
+    setGameHistory(updatedGameHistory);
   }
 
   function pushAction(action: Action) {
-    const newGameHistory = {
+    const updatedGameHistory = {
       startingDeck: gameData.gameHistory.startingDeck,
       actions: gameData.gameHistory.actions.concat(action),
     };
-    setGameHistory(newGameHistory);
+    setGameHistory(updatedGameHistory);
   }
 
   // FOR LATER: Add button that indicates to start game when all human players have joined.
@@ -113,6 +109,7 @@ export function RootDisplay(props: {
           <DisplayGameLog
             gameState={gameState}
           />
+          <ChatComponent playerName={gameState.playerNames[gameState.activePlayer]}/>
         </div>
       </div>
       <div className="bottom-container">
