@@ -12,6 +12,7 @@ import ChatComponent from './ChatComponent.tsx';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
+  localPlayerName: string,
 }) {
   // local state
   const [gameData, setGameData] = useState<FirebaseGameData>(props.initialGameData);
@@ -87,6 +88,9 @@ export function RootDisplay(props: {
   return (
     <main>
       <div className="top-container">
+        <DisplayScores
+          gameState={gameState}
+        />
         <div className="left-container">
           <div className="buttons-container">
             <button onClick={startNewGame}>NEW GAME</button>
@@ -103,13 +107,11 @@ export function RootDisplay(props: {
           />
         </div>
         <div className="right-container">
-          <DisplayScores
-            gameState={gameState}
-          />
+
           <DisplayGameLog
             gameState={gameState}
           />
-          <ChatComponent playerName={gameState.playerNames[gameState.activePlayer]}/>
+          <ChatComponent playerName={props.localPlayerName}/>
         </div>
       </div>
       <div className="bottom-container">

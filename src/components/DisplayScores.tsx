@@ -5,16 +5,20 @@ export function DisplayScores(props: {
 }) {
   return (
     <div className="player-scores">
-      <div>
+      <div className="player-scores-header">
         <div>Player</div>
         <div>Score</div>
-        <div>Tiles in Hand</div>
       </div>
       {props.gameState.scores.map((score, index) => (
-        <div key={index} className={props.gameState.activePlayer === index ? "active" : ""}>
-          <div>{index+1}</div>
-          <div>{score}</div>
-          <div>{props.gameState.hands[index].length}</div>
+        <div
+          key={index}
+          className={`player-score-item ${props.gameState.activePlayer === index ? "active" : ""}`}
+          data-tiles={props.gameState.hands[index].length}
+        >
+          <div className="player-score-details">
+            <div>{props.gameState.playerNames[index + 1]}</div>
+            <div>{score}</div>
+          </div>
         </div>
       ))}
     </div>

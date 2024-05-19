@@ -7,6 +7,8 @@ main {
   width: 100vw;
   height: 100vh;
   background-color: forestgreen;
+  /* background-image: url('felt-background.jpg');
+  background-size: contain; */
   color: black;
 }
 
@@ -14,6 +16,7 @@ main {
 .top-container {
   display: flex;
   flex: 1;
+  padding: 10px;
 }
 
 /* Holds buttons and game-board */
@@ -162,32 +165,85 @@ main {
 }
 
 .player-scores {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 300px;
   border: 1px solid black;
   border-radius: 4px;
   padding: 10px;
   background-color: white;
-  font-weight: bold;
-
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  
+  text-align: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.player-scores-header {
+  display: flex;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding-left: 40px;
+}
+
+.player-scores-header > div {
+  flex: 0 0 auto;
+  margin-right: 10px;
   text-align: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif
 }
-.player-scores > div {
-  padding: 7px;
-  border: 2px solid white;
+
+.player-score-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 5px;
 }
-.player-scores > div.active {
-  border-color: red;
-  border-radius: 5px;
+
+.player-score-item::before {
+  content: "";
+  display: inline-block;
+  width: 30px;
+  height: 25.98px;
+  margin-right: 10px;
+  background-image: url('triangle-up.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.player-score-item::after {
+  content: attr(data-tiles);
+  position: absolute;
+  top: 60%;
+  left: 15px;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.player-name {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.player-score {
+  flex: 0 0 auto;
+}
+
+.player-score-details {
+  display: flex;
+  flex: 1;
+  text-align: center;
+}
+
+.player-score-details > div {
+  flex: 1;
 }
 
 .game-log {
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 60vh;
   border: 1px solid black;
   border-radius: 4px;
   background-color: white;
@@ -235,8 +291,8 @@ main {
 .chat-component {
   display: flex;
   flex-direction: column;
-  height: 200px;
-  border: 1px solid #ccc;
+  height: 40vh;
+  border: 1px solid black;
   border-radius: 4px;
   overflow: hidden;
   background-color: white;

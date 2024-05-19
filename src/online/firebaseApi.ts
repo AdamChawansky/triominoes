@@ -1,5 +1,5 @@
 import { get, getDatabase, onValue, ref, set } from "firebase/database";
-import { FirebaseGameData, GameHistory } from "../game/types";
+import { FirebaseGameData } from "../game/types";
 import { firebaseApp } from "./firebaseApp";
 
 // https://console.firebase.google.com/u/0/project/triominoes-7043f/database/triominoes-7043f-default-rtdb/data
@@ -21,14 +21,14 @@ export function firebaseSaveGameData(gameData: FirebaseGameData) {
   const db = getDatabase(firebaseApp);
   const gameDataRef = ref(db, `games/${gameData.gameID}`);
   set(gameDataRef, gameData);
-  console.log('Game data saved at ' + Date.now());
+  // console.log('Game data saved at ' + Date.now());
 }
 
 export async function firebaseGetGameData(gameId: string): Promise<FirebaseGameData | null> {
   const db = getDatabase(firebaseApp);
   const gameDataRef = ref(db, `games/${gameId}`);
   const snapshot = await get(gameDataRef);
-  console.log('Game data accessed at ' + Date.now());
+  // console.log('Game data accessed at ' + Date.now());
   return snapshot.exists() ? sanitizeGameData(snapshot.val()) : null;
 }
 

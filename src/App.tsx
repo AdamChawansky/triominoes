@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import { RootDisplay } from './components/RootDisplay';
 import { FirebaseGameData, QueryParam } from './game/types';
-import { firebaseGetGameData, firebaseSaveGameData, firebaseSubscribeGameData } from './online/firebaseApi';
+import { firebaseGetGameData, firebaseSaveGameData } from './online/firebaseApi';
 
 (window as any).fbapi = {
   saveGameData: firebaseSaveGameData,
@@ -166,7 +166,7 @@ function App() {
   }
   
   if (gameStatus === 'enterRoom' && initialGameData) {
-    return <RootDisplay initialGameData={initialGameData}/>;
+    return <RootDisplay initialGameData={initialGameData} localPlayerName={playerName}/>;
   }
 
   // else
