@@ -1,0 +1,82 @@
+main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  background-color: forestgreen;
+  /* background-image: url('felt-background.jpg');
+  background-size: contain; */
+  color: black;
+}
+
+/* Holds buttons, game-board, and player hand */
+.left-container {
+  flex: 1;
+  width: calc(100vw - 375px);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+/* Holds scores, game log, and chat */
+.right-container {
+  width: 375px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+/* Holds buttons */
+.buttons-container {
+  border-radius: 1px;
+  padding: 10px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Holds player hand */
+.bottom-container {
+  display: flex;
+  justify-content: center;
+}
+
+
+
+/* Mobile phone styling */
+/* Need separate tablet styling */
+@media (max-width: 1024px) {
+  main {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .top-container {
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+  }
+  .buttons-container {
+    order: 1;
+  }
+  .left-container {
+    flex-direction: column;
+    padding: 10px;
+    order: 2;
+  }
+  .right-container {
+    width: auto;
+    padding: 10px;
+    height: auto;
+    order: 1;
+  }
+  .bottom-container {
+    padding: 10px;
+    order: 3;
+  }
+}

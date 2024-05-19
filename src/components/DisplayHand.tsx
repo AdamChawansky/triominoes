@@ -1,6 +1,6 @@
 import { GameState, NewTile } from '../game/types.ts';
 import { TileInHand } from './TileInHand.tsx';
-import './Game.css';
+import './DisplayHand.css';
 
 export function DisplayHand(props: {
   playerIndex: number,

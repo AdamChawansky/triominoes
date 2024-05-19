@@ -1,0 +1,17 @@
+.player-hand {
+  border: 5px solid black;
+  border-radius: 10px;
+  background-color: black;
+  min-width: 50%;
+  max-width: 85%;
+  min-height: 87px;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+
+  /* Tried to get tiles to space out evenly between multiple rows */
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+}

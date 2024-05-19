@@ -2,7 +2,7 @@ import { searchForMove } from '../game/logic.ts';
 import { ActionPusher, Coordinate, GameState, NewTile, PlayAction } from '../game/types.ts';
 import { toCoord, toKey } from '../game/util.ts';
 import { TileOnBoard } from './TileOnBoard.tsx';
-import './Game.css';
+import './DisplayGameBoard.css';
 import { useEffect, useRef, useState } from 'react';
 
 export function GameBoardView(props: {

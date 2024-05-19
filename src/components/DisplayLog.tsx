@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GameState } from "../game/types";
+import './DisplayLog.css'
 
 export function DisplayGameLog(props: {
   gameState: GameState,

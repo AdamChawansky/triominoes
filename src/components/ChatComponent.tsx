@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Message, MessageHistory } from '../game/types';
+import './ChatComponent.css'
 
 const initialMessageHistory: MessageHistory = {
     messages: [],

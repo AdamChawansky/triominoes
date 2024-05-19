@@ -1,0 +1,84 @@
+.player-scores {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 300px;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: white;
+  justify-content: space-between;
+  text-align: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.player-scores-header {
+  display: flex;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding-left: 40px;
+}
+
+.player-scores-header > div {
+  flex: 0 0 auto;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.player-score-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.player-score-item::before {
+  content: "";
+  display: inline-block;
+  width: 30px;
+  height: 25.98px;
+  margin-right: 10px;
+  background-image: url('triangle-up.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.player-score-item::after {
+  content: attr(data-tiles);
+  position: absolute;
+  top: 60%;
+  left: 15px;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.player-name {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.player-score {
+  flex: 0 0 auto;
+}
+
+.player-score-details {
+  display: flex;
+  flex: 1;
+  text-align: center;
+}
+
+.player-score-details > div {
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .player-scores {
+    margin: 0;
+    border-radius: 4px;
+    padding: 10px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+}

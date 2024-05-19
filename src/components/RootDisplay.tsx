@@ -6,8 +6,8 @@ import { firebaseSaveGameData, firebaseSubscribeGameData } from '../online/fireb
 import { DisplayHand } from './DisplayHand.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
-import './Game.css';
-import { GameBoardView } from './GameBoardView.tsx';
+import './RootDisplay.css';
+import { GameBoardView } from './DisplayGameBoard.tsx';
 import ChatComponent from './ChatComponent.tsx';
 
 export function RootDisplay(props: {
@@ -87,10 +87,6 @@ export function RootDisplay(props: {
 
   return (
     <main>
-      <div className="top-container">
-        <DisplayScores
-          gameState={gameState}
-        />
         <div className="left-container">
           <div className="buttons-container">
             <button onClick={startNewGame}>NEW GAME</button>
@@ -99,28 +95,30 @@ export function RootDisplay(props: {
             <button onClick={takeStep}>STEP</button>
             <button onClick={simulate}>SIMULATE!</button>
           </div>
-            <GameBoardView 
-              gameState={gameState}
-              tileInHand={tileInHand}
-              setTileInHand={setTileInHand}
-              pushAction={pushAction}
-          />
-        </div>
-        <div className="right-container">
-
-          <DisplayGameLog
+          <GameBoardView 
             gameState={gameState}
-          />
-          <ChatComponent playerName={props.localPlayerName}/>
-        </div>
-      </div>
-      <div className="bottom-container">
-        <DisplayHand 
-            playerIndex={0}
-            gameState={gameState} 
             tileInHand={tileInHand}
             setTileInHand={setTileInHand}
+            pushAction={pushAction}
+          />
+          <div className="bottom-container">
+            <DisplayHand 
+                playerIndex={0}
+                gameState={gameState} 
+                tileInHand={tileInHand}
+                setTileInHand={setTileInHand}
+            />
+          </div>
+        </div>
+      <div className="right-container">
+        <DisplayScores
+          gameState={gameState}
         />
+        <DisplayGameLog
+          gameState={gameState}
+        />
+        <ChatComponent
+          playerName={props.localPlayerName}/>
       </div>
     </main>
   );

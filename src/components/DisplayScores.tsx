@@ -1,4 +1,5 @@
 import { GameState } from "../game/types";
+import './DisplayScores.css';
 
 export function DisplayScores(props: {
   gameState: GameState,
