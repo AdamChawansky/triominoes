@@ -1,8 +1,7 @@
 .player-scores {
   display: flex;
-  flex: 0 0 auto;
+  flex: 0 0 auto; /* don't grow, shrink, and set size as content size */
   flex-direction: column;
-  height: 300px;
   border: 1px solid black;
   border-radius: 4px;
   padding: 10px;
@@ -12,24 +11,10 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.player-scores-header {
-  display: flex;
-  font-weight: bold;
-  margin-bottom: 5px;
-  padding-left: 40px;
-}
-
-.player-scores-header > div {
-  flex: 0 0 auto;
-  margin-right: 10px;
-  text-align: center;
-}
-
 .player-score-item {
   display: flex;
-  align-items: center;
   position: relative;
-  margin-bottom: 5px;
+  margin: 2px;
 }
 
 .player-score-item::before {

@@ -1,6 +1,7 @@
 /* Chat component styling */
 .chat-component {
   display: flex;
+  flex: 1;
   flex-direction: column;
   height: 40vh;
   border: 1px solid black;

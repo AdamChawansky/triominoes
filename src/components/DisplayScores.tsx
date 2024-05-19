@@ -1,15 +1,9 @@
 import { GameState } from "../game/types";
 import './DisplayScores.css';
 
-export function DisplayScores(props: {
-  gameState: GameState,
-}) {
+export function DisplayScores(props: { gameState: GameState }) {
   return (
     <div className="player-scores">
-      <div className="player-scores-header">
-        <div>Player</div>
-        <div>Score</div>
-      </div>
       {props.gameState.scores.map((score, index) => (
         <div
           key={index}
@@ -17,8 +11,9 @@ export function DisplayScores(props: {
           data-tiles={props.gameState.hands[index].length}
         >
           <div className="player-score-details">
-            <div>{props.gameState.playerNames[index + 1]}</div>
-            <div>{score}</div>
+            {/* <div className="player-name">{props.gameState.playerNames[index + 1]}</div> */}
+            <div className="player-number">Player {index + 1}</div>
+            <div className="player-score">{score} points</div>
           </div>
         </div>
       ))}
