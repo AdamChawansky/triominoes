@@ -22,32 +22,58 @@ function generateGameID() {
 /* App runs a function and returns something that looks like HTML */
 function App() {
   const searchParams = new URLSearchParams(window.location.search);
-  let gameIDFromURL = searchParams.get(QueryParam.GameID);
-  // const playerID = new Date().getTime().toString();
-  console.log(gameIDFromURL);
+  let gameIDFromURL = searchParams.get(QueryParam.gameID);
+  const playerID = new Date().getTime().toString();
+
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
   const [gameID, setGameID] = useState(gameIDFromURL || '');
   const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'enterRoom'>('landing');
   const [initialGameData, setInitialGameData] = useState<FirebaseGameData | null>(null);
 
-  // if ()
-
   // Player selects "Create New Game"
   const handleCreateNewGame = () => {
     setGameStatus('newGame');
   };
 
-  // Player selects "Join a Game" or uses link with gameID already included
+  // Player selects "Join a Game"
   const handleJoinExistingGame = () => {
     setGameStatus('joinGame');
   };
+  
+  // Player uses link with gameID alread included
+  if (gameIDFromURL) {
+    setGameStatus('joinGame');
+    setGameID(gameIDFromURL);
+  }
 
-  // FOR LATER: Make these two buttons
-  // 
+  // Player is creating a new game
+  const handleEnterNewRoom = async () => {
+    if (numPlayers && !isNaN(numPlayers) && playerName.trim() !== '') {
+      // Generate random string to be gameID
+      const newGameID = generateGameID();
+      setGameID(newGameID);
+      console.log('New room created: ' + newGameID);
 
-  // Player selects "Join Game" or "Create Room"
-  const handleEnterRoom = async () => {
+      // Create a new FirebaseGameData object
+      const newGameData: FirebaseGameData = {
+        gameID: newGameID,
+        numPlayers: numPlayers,
+        gameHistory: {
+          startingDeck: [],
+          actions: [],
+        },
+        players: [ {playerID: playerID, playerName: playerName} ],
+      };
+      
+      // Later, up-sert the playerName
+      setInitialGameData(newGameData);
+      setGameStatus('enterRoom');
+    }
+  };
+
+  // Player is joining an existing game
+  const handleEnterExistingRoom = async () => {
     if (gameID !== '' && playerName.trim() !== '') {
       // Retrieve the existing game data
       const existingGameData = await firebaseGetGameData(gameID);
@@ -55,14 +81,10 @@ function App() {
         // Add the new player to the humanPlayers array & AddPlayer action
         const updatedGameData: FirebaseGameData = {
           ...existingGameData,
-          humanPlayers: [...existingGameData.humanPlayers, playerName],
-          gameHistory: {
-            startingDeck: existingGameData.gameHistory.startingDeck,
-            actions: [...existingGameData.gameHistory.actions, {
-              actionType: 'add-player',
-              playerName: playerName,
-            }],
-          },
+          players: [...existingGameData.players, {
+            playerID: playerID,
+            playerName: playerName,
+          }],
         };
 
         // Save the updated game data to Firebase
@@ -74,26 +96,6 @@ function App() {
       } else {
         console.log('Invalid Game ID');
       }
-    } else if (gameStatus === 'newGame' && numPlayers !== undefined && !isNaN(numPlayers) && playerName.trim() !== '') {
-      // Generate random string to be gameID
-      const newGameID = generateGameID();
-      setGameID(newGameID);
-      console.log('New room created: ' + newGameID);
-
-      // Create a new FirebaseGameData object
-      const newGameData: FirebaseGameData = {
-        gameID: newGameID,
-        numPlayers: numPlayers,
-        humanPlayers: [playerName],
-        gameHistory: {
-          startingDeck: [],
-          actions: [],
-        },
-      };
-      
-      // Later, up-sert the playerName
-      setInitialGameData(newGameData);
-      setGameStatus('enterRoom');
     }
   };
 
@@ -136,7 +138,7 @@ function App() {
           />
         </label>
         <br />
-        <button className="button" onClick={handleEnterRoom}>Create Room</button>
+        <button className="button" onClick={handleEnterNewRoom}>Create Room</button>
       </div>
     );
   }
@@ -162,13 +164,13 @@ function App() {
           />
         </label>
         <br />
-          <button className="button" onClick={handleEnterRoom}>Join Game</button>
+          <button className="button" onClick={handleEnterExistingRoom}>Join Game</button>
       </div>
     );
   }
   
   if (gameStatus === 'enterRoom' && initialGameData) {
-    return <RootDisplay initialGameData={initialGameData} localPlayerName={playerName}/>;
+    return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID}/>;
   }
 
   // else

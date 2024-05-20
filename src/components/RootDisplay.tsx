@@ -13,11 +13,13 @@ import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
-  localPlayerName: string,
+  localPlayerID: string,
 }) {
   // local state
   const [gameData, setGameData] = useState<FirebaseGameData>(props.initialGameData);
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
+  const playerIndex = gameData.players.findIndex((player) => player.playerID === props.localPlayerID);
+  const playerName = playerIndex !== -1 ? gameData.players[playerIndex].playerName : '';
 
   // on first render
   useEffect(() => {
@@ -91,7 +93,7 @@ export function RootDisplay(props: {
   return (
     <main>
         <div className="left-container">
-        <CopyToClipboard toCopy={"https://adamchawansky.github.io/triominoes/room=?" + gameData.gameID}/>
+        <CopyToClipboard toCopy={"https://adamchawansky.github.io/triominoes/?id=" + gameData.gameID}/>
           <div className="buttons-container">
             <button className="button" onClick={startNewGame}>(RE)START GAME</button>
             <button className="button" onClick={resetGame}>RESET GAME</button>
@@ -107,7 +109,7 @@ export function RootDisplay(props: {
           />
           <div className="bottom-container">
             <DisplayHand 
-                playerIndex={0}
+                playerIndex={playerIndex}
                 gameState={gameState} 
                 tileInHand={tileInHand}
                 setTileInHand={setTileInHand}
@@ -122,7 +124,7 @@ export function RootDisplay(props: {
           gameState={gameState}
         />
         <ChatComponent
-          playerName={props.localPlayerName}/>
+          playerName={playerName}/>
       </div>
     </main>
   );

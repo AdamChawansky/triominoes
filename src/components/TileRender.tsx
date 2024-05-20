@@ -9,8 +9,8 @@ export function TileRender(props: {
   style?: CSSProperties;
   tileStyle?: string;
     // 'selected' = yellow shading in hand
-    // 'playable' = yellow shading w/o numbers
-    // 'most-recent' = invert color of last tile played
+    // 'playable' = black outline, no numbers
+    // 'most-recent' = red star in center of tile
 }) {
 
   const classNames = [

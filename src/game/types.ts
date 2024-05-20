@@ -1,13 +1,16 @@
 // These components are used with the firebase
 export const QueryParam = {
-  GameID: 'gameID',
+  gameID: 'id',
 } as const;
 
 export interface FirebaseGameData {
   gameID: string;
   numPlayers: number;
-  humanPlayers: string[];
   gameHistory: GameHistory;
+  players: {
+    playerID: string;
+    playerName: string
+  }[];
 }
 
 export type PlacedTileA = {
