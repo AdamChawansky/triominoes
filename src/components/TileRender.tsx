@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import './TileRender.css'
+import './DisplayGameBoard.css'
 
 export function TileRender(props: {
   top: number[];

@@ -99,7 +99,7 @@
   width: 100px;
   height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  background-image: url('triangle-up.png');
+  background-image: url('triangle-up-beige.png');
   background-size: cover;
   position: relative;
 }
@@ -108,7 +108,7 @@
   width: 100px;
   height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-  background-image: url('triangle-down.png');
+  background-image: url('triangle-down-beige.png');
   background-size: cover;
   position: relative;
 }

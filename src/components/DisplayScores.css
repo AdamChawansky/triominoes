@@ -2,7 +2,7 @@
   display: flex;
   flex: 0 0 auto; /* don't grow, shrink, and set size as content size */
   flex-direction: column;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 4px;
   padding: 10px;
   background-color: #F0F0F0;

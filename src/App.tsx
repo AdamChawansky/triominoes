@@ -24,12 +24,14 @@ function App() {
   const searchParams = new URLSearchParams(window.location.search);
   let gameIDFromURL = searchParams.get(QueryParam.GameID);
   // const playerID = new Date().getTime().toString();
-
+  console.log(gameIDFromURL);
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
   const [gameID, setGameID] = useState(gameIDFromURL || '');
   const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'enterRoom'>('landing');
   const [initialGameData, setInitialGameData] = useState<FirebaseGameData | null>(null);
+
+  // if ()
 
   // Player selects "Create New Game"
   const handleCreateNewGame = () => {

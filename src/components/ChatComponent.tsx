@@ -58,7 +58,7 @@ const ChatComponent: React.FC<{playerName: string}> = ({playerName}) => {
           onKeyPress={handleKeyPress}
           placeholder="Type your message..."
         />
-        <button onClick={handleSendMessage}>Send</button>
+        {/* <button onClick={handleSendMessage}>Send</button> */}
       </div>
     </div>
   );

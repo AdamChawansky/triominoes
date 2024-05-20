@@ -40,6 +40,21 @@ main {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.buttons-container .button {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #8B4513;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+  
+.buttons-container .button:hover {
+    background-color: #A0522D;
+}
+
 /* Holds player hand */
 .bottom-container {
   display: flex;

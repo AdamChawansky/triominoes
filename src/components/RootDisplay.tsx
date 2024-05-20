@@ -92,11 +92,11 @@ export function RootDisplay(props: {
         <div className="left-container">
         <CopyToClipboard toCopy={"https://adamchawansky.github.io/triominoes/room=?" + gameData.gameID}/>
           <div className="buttons-container">
-            <button onClick={startNewGame}>NEW GAME</button>
-            <button onClick={resetGame}>RESET GAME</button>
-            <button onClick={performUndo}>UNDO</button>
-            <button onClick={takeStep}>STEP</button>
-            <button onClick={simulate}>SIMULATE!</button>
+            <button className="button" onClick={startNewGame}>(RE)START GAME</button>
+            {/* <button className="button" onClick={resetGame}>RESET GAME</button> */}
+            <button className="button" onClick={performUndo}>UNDO</button>
+            <button className="button" onClick={takeStep}>STEP</button>
+            <button className="button" onClick={simulate}>SIMULATE!</button>
           </div>
           <GameBoardView 
             gameState={gameState}
