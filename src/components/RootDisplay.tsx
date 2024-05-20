@@ -45,10 +45,11 @@ export function RootDisplay(props: {
     setGameHistory(newGameHistory);
   }
 
-  function resetGame() {
-    const resetGameHistory = eraseGameHistory(gameData.gameHistory);
-    setGameHistory(resetGameHistory);
-  }
+  // FOR LATER: Implement admin mode to toggle this button on 
+  // function resetGame() {
+  //   const resetGameHistory = eraseGameHistory(gameData.gameHistory);
+  //   setGameHistory(resetGameHistory);
+  // }
 
   function performUndo() {
     const updatedGameHistory = {
