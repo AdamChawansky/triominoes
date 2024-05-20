@@ -4,10 +4,10 @@
   flex: 1;
   flex-direction: column;
   height: 40vh;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 4px;
   overflow: hidden;
-  background-color: white;
+  background-color: #F0F0F0;
 }
 
 .message-container {

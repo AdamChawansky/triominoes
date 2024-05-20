@@ -2,13 +2,26 @@
   display: flex;
   flex: 0 0 auto; /* don't grow, shrink, and set size as content size */
   flex-direction: column;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 4px;
   padding: 10px;
-  background-color: white;
+  background-color: #F0F0F0;
+  color: black;
+  /* font-weight: bold; */
   justify-content: space-between;
   text-align: left;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.player-name-container {
+  display: flex;
+  align-items: center;
+}
+
+.active-player-gif {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 
 .player-score-item {
@@ -39,9 +52,34 @@
   color: black;
 }
 
-.player-name {
+.player-number {
   flex: 0 0 auto;
   margin-right: 10px;
+  font-weight: bold;
+}
+
+.player-color-red {
+  color: red;
+}
+
+.player-color-blue {
+  color: blue;
+}
+
+.player-color-green {
+  color: green;
+}
+
+.player-color-purple {
+  color: purple;
+}
+
+.player-color-brown {
+  color: brown;
+}
+
+.player-color-orange {
+  color: orange;
 }
 
 .player-score {

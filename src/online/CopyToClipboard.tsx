@@ -1,5 +1,5 @@
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
-import styles from './CopyToClipboard.module.css';
+import styles from '../online/CopyToClipboard.module.css';
 
 export function CopyToClipboard(props: {
   toCopy: string;

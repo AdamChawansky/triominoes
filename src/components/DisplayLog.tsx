@@ -11,12 +11,12 @@ export function DisplayGameLog(props: { gameState: GameState }) {
   };
 
   useEffect(() => {
-    scrollToTop();
+    scrollToBottom();
   }, [props.gameState]);
 
-  const scrollToTop = () => {
+  const scrollToBottom = () => {
     if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop = 0;
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
     }
   };
 
@@ -27,7 +27,7 @@ export function DisplayGameLog(props: { gameState: GameState }) {
       </h3>
       {!isCollapsed && (
         <ul className="game-log-entries" ref={messageContainerRef}>
-          {[...props.gameState.gameLog].reverse().map((entry, index) => (
+          {props.gameState.gameLog.map((entry, index) => (
             <li key={index} className="game-log-entry">
               {entry}
             </li>

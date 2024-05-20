@@ -3,20 +3,21 @@
   flex-direction: column;
   flex: 1;
   height: 60vh;
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 4px;
-  background-color: white;
+  background-color: #F0F0F0;
   overflow: hidden;
 }
 .game-log.collapsed {
   max-height: 50px;
+  background-color: #F0F0F0;
 }
 .game-log-header {
   margin-top: 0;
   margin-bottom: 0;
   padding: 10px;
   cursor: pointer;
-  background-color: white;
+  background-color: #F0F0F0;
 }
 .game-log-entries {
   margin-top: 0;
@@ -25,6 +26,7 @@
   overflow-y: auto;
 }
 .game-log-entry {
+  background-color: #F0F0F0;
   margin-bottom: 4px;
   padding-bottom: 4px;
   padding-left: 5px;

@@ -34,7 +34,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
       gameState.lastPlay = action.coord;
 
-      gameState.gameLog.push(`Player ${action.playerIndex+1} plays the [${action.tilePlayed.newTileID}] at (${toKey(action.coord)}) for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`Player ${action.playerIndex+1} plays [${action.tilePlayed.newTileID}] for ${pointsForTurn} points.`);
       gameState.activePlayer = (action.playerIndex + 1) % gameState.hands.length; // next player's turn
       gameState.tilesDrawnThisTurn = 0; // reset tiles drawn counter after a play is made
     } else if(action.actionType === 'draw') {
@@ -88,7 +88,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.lastPlay = {x:0, y:0};
       
       gameState.gameLog.push(`All players draw starting tiles.`);
-      gameState.gameLog.push(`Player ${playerIndex+1} plays the [${tilePlayed.id}] at (0,0) for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`Player ${playerIndex+1} plays [${tilePlayed.id}] for ${pointsForTurn} points.`);
 
       gameState.activePlayer = (playerIndex + 1) % gameState.hands.length;
 

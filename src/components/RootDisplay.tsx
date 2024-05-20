@@ -9,6 +9,7 @@ import { DisplayScores } from './DisplayScores.tsx';
 import './RootDisplay.css';
 import { GameBoardView } from './DisplayGameBoard.tsx';
 import ChatComponent from './ChatComponent.tsx';
+import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
@@ -85,9 +86,11 @@ export function RootDisplay(props: {
     </div>
   }
 
+
   return (
     <main>
         <div className="left-container">
+        <CopyToClipboard toCopy={"https://adamchawansky.github.io/triominoes/room=?" + gameData.gameID}/>
           <div className="buttons-container">
             <button onClick={startNewGame}>NEW GAME</button>
             <button onClick={resetGame}>RESET GAME</button>
