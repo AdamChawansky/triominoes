@@ -7,12 +7,12 @@ import { firebaseApp } from "./firebaseApp";
 function sanitizeGameData(raw: FirebaseGameData): FirebaseGameData {
   return {
     ...raw,
-    humanPlayers: raw.humanPlayers ?? [], // if first element is undefined or null, return the second element
     gameHistory: {
       ...raw.gameHistory,
       startingDeck: raw.gameHistory?.startingDeck ?? [],
       actions: raw.gameHistory?.actions ?? [],
     },
+    players: raw.players ?? [], // if first element is undefined or null, return the second element
   };
 }
 
