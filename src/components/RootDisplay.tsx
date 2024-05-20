@@ -46,10 +46,10 @@ export function RootDisplay(props: {
   }
 
   // FOR LATER: Implement admin mode to toggle this button on 
-  // function resetGame() {
-  //   const resetGameHistory = eraseGameHistory(gameData.gameHistory);
-  //   setGameHistory(resetGameHistory);
-  // }
+  function resetGame() {
+    const resetGameHistory = eraseGameHistory(gameData.gameHistory);
+    setGameHistory(resetGameHistory);
+  }
 
   function performUndo() {
     const updatedGameHistory = {
@@ -94,7 +94,7 @@ export function RootDisplay(props: {
         <CopyToClipboard toCopy={"https://adamchawansky.github.io/triominoes/room=?" + gameData.gameID}/>
           <div className="buttons-container">
             <button className="button" onClick={startNewGame}>(RE)START GAME</button>
-            {/* <button className="button" onClick={resetGame}>RESET GAME</button> */}
+            <button className="button" onClick={resetGame}>RESET GAME</button>
             <button className="button" onClick={performUndo}>UNDO</button>
             <button className="button" onClick={takeStep}>STEP</button>
             <button className="button" onClick={simulate}>SIMULATE!</button>
