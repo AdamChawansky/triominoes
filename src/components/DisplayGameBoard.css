@@ -56,22 +56,24 @@
 }
 
 .tile-container:hover {
-  background-image: url('triangle-up-invert.png');
-  color: white;
+  /* background-image: url('triangle-up-invert.png'); */
+  /* color: white; */
+  transform: translateY(-2px);
 }
 .tile-container-inverted:hover {
-  background-image: url('triangle-down-invert.png');
-  color: white;
+  /* background-image: url('triangle-down-invert.png'); */
+  /* color: white; */
+  transform: translateY(-2px);
 }
 
 /* Additional styling to show most recent play, selected tiles, and playable spaces */
 .tile-container.most-recent {
-  background-image: url('triangle-up-red-outline.png');
-  color: red;
+  background-image: url('triangle-up-red-star.png');
+  /* color: red; */
 }
 .tile-container-inverted.most-recent {
-  background-image: url('triangle-down-red-outline.png');
-  color: red;
+  background-image: url('triangle-down-red-star.png');
+  /* color: red; */
 }
 .tile-container.selected {
   background-image: url('triangle-up-yellow.png');
@@ -82,12 +84,12 @@
   color: black;
 }
 .tile-container.playable {
-  background-image: url('triangle-up-yellow.png');
-  color: #ffeb3b;
+  background-image: url('triangle-up-empty.png');
+  color: transparent;
 }
 .tile-container-inverted.playable {
-  background-image: url('triangle-down-yellow.png');
-  color: #ffeb3b;
+  background-image: url('triangle-down-empty.png');
+  color: transparent;
 }
 
 
