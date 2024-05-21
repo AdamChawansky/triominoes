@@ -32,8 +32,6 @@ export function RootDisplay(props: {
 
   const playerIndex = gameData.players.findIndex((player) => player.playerID === props.localPlayerID);
   const playerName = playerIndex !== -1 ? gameData.players[playerIndex].playerName : '';
-  console.log(gameData.players);
-  console.log(props.localPlayerID, playerIndex, playerName);
 
   // helpers
   const gameHistory = gameData.gameHistory;

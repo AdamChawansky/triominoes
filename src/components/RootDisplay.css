@@ -52,7 +52,8 @@ main {
 }
   
 .buttons-container .button:hover {
-    background-color: #A0522D;
+  background-color: #D3D3D3;
+  color: black;
 }
 
 /* Holds player hand */
