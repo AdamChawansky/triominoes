@@ -41,11 +41,11 @@ main {
 }
 
 .buttons-container .button {
-  font-size: 18px;
+  font-size: 14px;
   padding: 10px 20px;
   margin: 5px;
-  background-color: #8B4513;
-  color: white;
+  background-color: black;
+  color: whitesmoke;
   border: none;
   border-radius: 8px;
   cursor: pointer;

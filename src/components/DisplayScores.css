@@ -5,12 +5,13 @@
   border: 1px solid black;
   border-radius: 4px;
   padding: 10px;
-  background-color: #F0F0F0;
+  background-color: #FFFFF0;
   color: black;
+  margin-bottom: 2px;
   /* font-weight: bold; */
   justify-content: space-between;
   text-align: left;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .player-name-container {

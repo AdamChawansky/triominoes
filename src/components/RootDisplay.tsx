@@ -18,9 +18,7 @@ export function RootDisplay(props: {
   // local state
   const [gameData, setGameData] = useState<FirebaseGameData>(props.initialGameData);
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
-  const playerIndex = gameData.players.findIndex((player) => player.playerID === props.localPlayerID);
-  const playerName = playerIndex !== -1 ? gameData.players[playerIndex].playerName : '';
-
+  
   // on first render
   useEffect(() => {
     async function startSubscription() {
@@ -31,6 +29,10 @@ export function RootDisplay(props: {
     }
     startSubscription();
   }, []);
+
+  const playerIndex = gameData.players.findIndex((player) => player.playerID === props.localPlayerID);
+  const playerName = playerIndex !== -1 ? gameData.players[playerIndex].playerName : '';
+  console.log(props.localPlayerID, playerIndex, playerName);
 
   // helpers
   const gameHistory = gameData.gameHistory;
@@ -84,18 +86,19 @@ export function RootDisplay(props: {
   // FOR LATER: Add button that indicates to start game when all human players have joined.
   // Should it shuffle, deal, and init all at once? 
   if(gameState.gameBoard.size === -1) {
-    <div>
-      <button onClick={startNewGame}>THIS BUTTON SHOULD BE IN THE MIDDLE OF GAMEBOARD?</button>
-    </div>
+    return (
+      <div>
+      <button onClick={startNewGame}>START GAME</button>
+      </div>
+    )
   }
-
 
   return (
     <main>
         <div className="left-container">
-        <CopyToClipboard toCopy={"https://adamchawansky.github.io/triominoes/?id=" + gameData.gameID}/>
+        <CopyToClipboard toCopy={gameData.gameID}/>
           <div className="buttons-container">
-            <button className="button" onClick={startNewGame}>(RE)START GAME</button>
+            <button className="button" onClick={startNewGame}>RESTART GAME</button>
             <button className="button" onClick={resetGame}>RESET GAME</button>
             <button className="button" onClick={performUndo}>UNDO</button>
             <button className="button" onClick={takeStep}>STEP</button>

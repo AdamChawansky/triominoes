@@ -6,8 +6,9 @@
   height: 40vh;
   border: 1px solid black;
   border-radius: 4px;
+  padding-bottom: 2px;
   overflow: hidden;
-  background-color: #F0F0F0;
+  background-color: #FFFFF0;
 }
 
 .message-container {

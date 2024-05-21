@@ -5,19 +5,20 @@
   height: 60vh;
   border: 1px solid black;
   border-radius: 4px;
-  background-color: #F0F0F0;
+  margin-bottom: 2px;
+  background-color: #FFFFF0; /* ivory */
   overflow: hidden;
 }
 .game-log.collapsed {
   max-height: 50px;
-  background-color: #F0F0F0;
+  background-color: #FFFFF0;
 }
 .game-log-header {
   margin-top: 0;
   margin-bottom: 0;
   padding: 10px;
   cursor: pointer;
-  background-color: #F0F0F0;
+  background-color: #FFFFF0;
 }
 .game-log-entries {
   margin-top: 0;
@@ -26,7 +27,7 @@
   overflow-y: auto;
 }
 .game-log-entry {
-  background-color: #F0F0F0;
+  background-color: #FFFFF0;
   margin-bottom: 4px;
   padding-bottom: 4px;
   padding-left: 5px;
