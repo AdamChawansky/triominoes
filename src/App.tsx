@@ -19,11 +19,13 @@ function generateGameID() {
   return gameID;
 }
 
+  const playerID = new Date().getTime().toString();
+  // const playerID = Math.random().toString(36).substr(2, 9);
+
 /* App runs a function and returns something that looks like HTML */
 function App() {
   const searchParams = new URLSearchParams(window.location.search);
   let gameIDFromURL = searchParams.get(QueryParam.gameID);
-  const playerID = new Date().getTime().toString();
 
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
@@ -53,7 +55,6 @@ function App() {
       // Generate random string to be gameID
       const newGameID = generateGameID();
       setGameID(newGameID);
-      console.log('New room created: ' + newGameID);
 
       // Create a new FirebaseGameData object
       const newGameData: FirebaseGameData = {
