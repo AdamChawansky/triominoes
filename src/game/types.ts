@@ -58,8 +58,9 @@ export type GameState = {
   scores: number[];
   drawPile: NewTile[];
   gameLog: String[];
-  activePlayer: number,
-  tilesDrawnThisTurn: number,
+  activePlayer: number;
+  tilesDrawnThisTurn: number;
+  consecutivePasses: number;
   lastPlay: Coordinate;
 }
 

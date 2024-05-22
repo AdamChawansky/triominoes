@@ -17,6 +17,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
     gameLog: [],
     activePlayer: 0,
     tilesDrawnThisTurn: 0,
+    consecutivePasses: 0,
     lastPlay: {x: 0, y: 0},
   };
 
@@ -36,9 +37,10 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
       gameState.lastPlay = action.coord;
 
-      gameState.gameLog.push(`Player ${action.playerIndex+1} plays [${action.tilePlayed.newTileID}] for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`${gameState.playerNames[action.playerIndex]} plays [${action.tilePlayed.newTileID}] for ${pointsForTurn} points.`);
       gameState.activePlayer = (action.playerIndex + 1) % gameState.hands.length; // next player's turn
       gameState.tilesDrawnThisTurn = 0; // reset tiles drawn counter after a play is made
+      gameState.consecutivePasses = 0;
     } else if(action.actionType === 'draw') {
       if (!gameStarted) {
         // fix error from attempting to access inner arrays that don't exist
@@ -49,22 +51,23 @@ export function replayHistory(gameHistory: GameHistory): GameState {
         // don't subtract points for drawing initial hand & don't log it
         gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
       } else {
+        // FOR LATER: Do I need to check if they can draw? There shouldn't be draw actions if not.
         if(gameState.drawPile.length > 0) {
           gameState.hands[action.playerIndex].push(gameState.drawPile.pop()!);
           gameState.tilesDrawnThisTurn += 1;
           gameState.scores[action.playerIndex] -= 5;
-          gameState.gameLog.push(`Player ${action.playerIndex+1} draws a tile and loses 5 points.`);
-
-          // QUESTION FOR PAUL: At this point, tilesDrawnThisTurn could = MAX_DRAW. But we don't know if the player can make a play or
-          // will end up passing until we look at the next action.
+          gameState.gameLog.push(`${gameState.playerNames[action.playerIndex]} draws a tile and loses 5 points.`);
         } else {
-          gameState.scores[action.playerIndex] -= 10;
-          gameState.gameLog.push(`Player ${action.playerIndex+1} can not play or draw and loses 10 points.`);
-
-          gameState.activePlayer = (gameState.activePlayer + 1) % gameState.hands.length; // next player's turn
-          gameState.tilesDrawnThisTurn = 0;
+          console.log("Can't draw, deck is empty.");
         }
       }
+    } else if(action.actionType === 'pass') {
+      gameState.scores[action.playerIndex] -= 10;
+      gameState.gameLog.push(`Player ${gameState.playerNames[action.playerIndex]} can not play and loses 10 points.`);
+
+      gameState.activePlayer = (gameState.activePlayer + 1) % gameState.hands.length; // next player's turn
+      gameState.tilesDrawnThisTurn = 0;
+      gameState.consecutivePasses++;
     } else if(action.actionType === 'init') {
       const firstPlay: [number, number] = determineFirstPlay(gameState);
       const playerIndex = firstPlay[0];
@@ -90,7 +93,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.lastPlay = {x:0, y:0};
       
       gameState.gameLog.push(`All players draw starting tiles.`);
-      gameState.gameLog.push(`Player ${playerIndex+1} plays [${tilePlayed.id}] for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`${gameState.playerNames[playerIndex]} plays [${tilePlayed.id}] for ${pointsForTurn} points.`);
 
       gameState.activePlayer = (playerIndex + 1) % gameState.hands.length;
 
@@ -116,7 +119,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       if (playerWithNoTilesRemaining != -1) {
         const bonusPoints = 25 + remainingPointsInHand.reduce((sum, num) => sum + num, 0)
         gameState.scores[playerWithNoTilesRemaining] += bonusPoints;
-        gameState.gameLog.push(`Player ${playerWithNoTilesRemaining +1} went out and gains ${bonusPoints} bonus points.`);
+        gameState.gameLog.push(`${gameState.playerNames[playerWithNoTilesRemaining]} went out and gains ${bonusPoints} bonus points.`);
       } else {
         // If no one went out, player(s) with lowest total value hand gain the value in excess of their hand from each other player 
         const lowestPointHand = Math.min(...remainingPointsInHand);
@@ -130,7 +133,8 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       // FOR LATER: Games should persist across multiple rounds and only end when one player breaks the total score.
       // Traditionally this is 400 points, but there should be an option at setup for how many points to play to.
       const winner: number = gameState.scores.indexOf(Math.max(...gameState.scores));
-      gameState.gameLog.push(`Game over. Player ${winner+1} wins!`);
+      gameState.gameLog.push(`Game over. ${gameState.playerNames[winner]} wins!`);
+      gameState.activePlayer = -1; // Deactivate active-player.gif
     }
     else {
       console.log("Not a valid action.");

@@ -93,7 +93,7 @@ export function initializeNewGameHistory(numPlayers: number, playerNames: string
     } else {
       history.actions.push({
         actionType: 'add-player',
-        playerName: "COM " + `${i + 1 - playerNames.length}`,
+        playerName: "Computer " + `${i + 1 - playerNames.length}`,
       });
     }
   }
