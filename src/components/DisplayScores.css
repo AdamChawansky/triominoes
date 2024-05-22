@@ -58,6 +58,7 @@
 
 .player-score {
   flex: 1; 
+  text-align: right;
 }
 
 .player-score-details {
@@ -66,7 +67,7 @@
   text-align: center;
 }
 
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
   .player-scores {
     margin: 0;
     border-radius: 4px;
@@ -74,4 +75,4 @@
     font-weight: bold;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
-}
+} */

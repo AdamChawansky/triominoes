@@ -6,25 +6,19 @@ gameBoard.keys();
 gameBoard.values();
 gameBoard.entries();
 
-Clickable draw pile (bottom right)
-
-Add ability to play solitaire
-Add ability to play versus computer
-Add ability to play versus another human (like Paul's Avalon site)
-
 Homework:
-- Try doing something in UI where I enter a room number
-- Grab the room number from database
-- Subscribing to updates... stay tuned!
-
+- 
 
 KNOWN BUGS:
+- investigate scoring (seems like you can get bridge/hexagon at same time)
 - 
 
 FOR LATER:
-- investigate scoring
-- display room ID in top left corner, make it clickable so it copies URL to clipboard and auto-fills join room
-- 
+- Add PassAction & associated game logic
+- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
+- Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
+- Optimize for mobile & tablets
+- Add ability for players to undo by selecting point in data log
 
 End states:
   1) A player plays their last tile (any hand[i] === 0)
