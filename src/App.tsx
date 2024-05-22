@@ -62,9 +62,15 @@ function App() {
         numPlayers: numPlayers,
         gameHistory: {
           startingDeck: [],
-          actions: [],
+          actions: [{
+            actionType: 'add-player',
+            playerName: playerName,
+          }],
         },
-        players: [ {playerID: playerID, playerName: playerName} ],
+        players: [{
+          playerID: playerID,
+          playerName: playerName
+        }],
       };
       
       // Later, up-sert the playerName
@@ -82,6 +88,13 @@ function App() {
         // Add the new player to the humanPlayers array & AddPlayer action
         const updatedGameData: FirebaseGameData = {
           ...existingGameData,
+          gameHistory: {
+            startingDeck: [...existingGameData.gameHistory.startingDeck],
+            actions: [...existingGameData.gameHistory.actions, {
+              actionType: 'add-player',
+              playerName: playerName,
+            }],
+          },
           players: [...existingGameData.players, {
             playerID: playerID,
             playerName: playerName,

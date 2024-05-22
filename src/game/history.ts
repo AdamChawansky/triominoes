@@ -23,7 +23,9 @@ export function replayHistory(gameHistory: GameHistory): GameState {
   let gameStarted = false; // flag used to avoid subtracting points for drawing starting tiles
 
   gameHistory.actions.forEach((action) => {
-    if(action.actionType === 'play') {
+    if(action.actionType === 'add-player') {
+      gameState.playerNames.push(action.playerName);
+    } else if(action.actionType === 'play') {
       gameState.gameBoard.set(toKey(action.coord), action.tilePlayed);
 
       const index = gameState.hands[action.playerIndex].findIndex(tile => tile.id === action.tilePlayed.newTileID);

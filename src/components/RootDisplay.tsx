@@ -44,7 +44,8 @@ export function RootDisplay(props: {
   const gameState = replayHistory(gameHistory);
   
   function startNewGame() {
-    const newGameHistory = initializeNewGameHistory(gameData.numPlayers);
+    const playerNames = gameData.players.map(player => player.playerName);
+    const newGameHistory = initializeNewGameHistory(gameData.numPlayers, playerNames);
     setGameHistory(newGameHistory);
   }
 

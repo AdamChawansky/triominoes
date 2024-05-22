@@ -1,6 +1,7 @@
 .player-scores {
   display: flex;
-  flex: 0 0 auto; /* don't grow, shrink, and set size as content size */
+  /* don't grow, shrink, and set size as content size */
+  /* flex: 0 0 auto; */
   flex-direction: column;
   border: 1px solid black;
   border-radius: 4px;
@@ -9,12 +10,12 @@
   color: black;
   margin-bottom: 2px;
   /* font-weight: bold; */
-  justify-content: space-between;
+  /* justify-content: space-between; */
   text-align: left;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.player-name-container {
+.player-active-box {
   display: flex;
   align-items: center;
 }
@@ -53,8 +54,9 @@
   color: black;
 }
 
-.player-number {
+.player-name {
   flex: 0 0 auto;
+  text-align: left;
   margin-right: 10px;
   font-weight: bold;
 }
@@ -69,9 +71,9 @@
   text-align: center;
 }
 
-.player-score-details > div {
+/* .player-score-details > div {
   flex: 1;
-}
+} */
 
 @media (max-width: 1024px) {
   .player-scores {

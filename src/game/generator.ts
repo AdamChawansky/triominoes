@@ -77,12 +77,26 @@ export function permuteTile( tile:NewTile ): PlacedTile[] {
   }];
 }
 
-export function initializeNewGameHistory(numPlayers: number): GameHistory {
+export function initializeNewGameHistory(numPlayers: number, playerNames: string[]): GameHistory {
   const history: GameHistory = {
     startingDeck: makeNewTiles(),
     actions: [],
   };
 
+  // Generate AddPlayer actions
+  for(let i = 0; i < numPlayers; i++) {
+    if(i < playerNames.length) {
+      history.actions.push({
+        actionType: 'add-player',
+        playerName: playerNames[i],
+      });
+    } else {
+      history.actions.push({
+        actionType: 'add-player',
+        playerName: "COM " + `${i + 1 - playerNames.length}`,
+      });
+    }
+  }
   // Starting tiles depends on number of players
   //    2 players start with 9 tiles each
   //    3-4 players start with 7 tiles each

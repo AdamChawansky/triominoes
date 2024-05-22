@@ -51,7 +51,7 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number}> = ({
         {messageHistory.messages.map((message, index) => (
           <div key={index} className="message">
             <span className={`player ${playerColors[message.playerIndex]}`}>
-              {message.player}:
+              {message.player + `: `}
             </span>
             <span className="content">{message.content}</span>
           </div>
