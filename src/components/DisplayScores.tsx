@@ -23,10 +23,10 @@ export function DisplayScores(props: { gameState: GameState }) {
           <div className="player-score-details">
             <div className="player-active-box">
               {props.gameState.activePlayer === index && (
-                <img src='../../public/assets/active_player.gif' alt="Active Player" className="active-player-gif" />
+                <img src='../../public/assets/active_player.gif' 
+                alt="Active Player"
+                className="active-player-gif" />
               )}
-              <div className={`player-name ${playerColors[index]}`}>
-              </div>
             </div>
             <div className={`player-name ${playerColors[index]}`}>
               {props.gameState.playerNames[index]}
