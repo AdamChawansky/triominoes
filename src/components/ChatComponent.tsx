@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Message, MessageHistory } from '../game/types';
 import './ChatComponent.css'
+import { playerColors } from './DisplayScores';
 
 const initialMessageHistory: MessageHistory = {
     messages: [],
   };
   
-const ChatComponent: React.FC<{playerName: string}> = ({playerName}) => {
+const ChatComponent: React.FC<{playerName: string; playerIndex: number}> = ({
+  playerName,
+  playerIndex,
+}) => {
   const [messageHistory, setMessageHistory] = useState<MessageHistory>(initialMessageHistory);
   const [inputMessage, setInputMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
@@ -19,6 +23,7 @@ const ChatComponent: React.FC<{playerName: string}> = ({playerName}) => {
     if (inputMessage.trim() !== '') {
       const newMessage: Message = {
         player: playerName,
+        playerIndex: playerIndex,
         content: inputMessage.trim(),
       };
       setMessageHistory((prevHistory) => ({
@@ -45,7 +50,9 @@ const ChatComponent: React.FC<{playerName: string}> = ({playerName}) => {
       <div className="message-container" ref={messageContainerRef}>
         {messageHistory.messages.map((message, index) => (
           <div key={index} className="message">
-            <span className="player">{message.player}: </span>
+            <span className={`player ${playerColors[message.playerIndex]}`}>
+              {message.player}:
+            </span>
             <span className="content">{message.content}</span>
           </div>
         ))}

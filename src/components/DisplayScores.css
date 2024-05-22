@@ -59,30 +59,6 @@
   font-weight: bold;
 }
 
-.player-color-red {
-  color: red;
-}
-
-.player-color-blue {
-  color: blue;
-}
-
-.player-color-green {
-  color: green;
-}
-
-.player-color-purple {
-  color: purple;
-}
-
-.player-color-brown {
-  color: brown;
-}
-
-.player-color-orange {
-  color: orange;
-}
-
 .player-score {
   flex: 0 0 auto;
 }

@@ -110,6 +110,7 @@ export type ActionPusher = (action: Action) => void;
 
 export interface Message {
   player: string;
+  playerIndex: number;
   content: string;
 }
 

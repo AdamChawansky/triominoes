@@ -126,7 +126,8 @@ export function RootDisplay(props: {
           gameState={gameState}
         />
         <ChatComponent
-          playerName={playerName}/>
+          playerName={playerName}
+          playerIndex={playerIndex}/>
       </div>
     </main>
   );

@@ -1,7 +1,7 @@
 import { GameState } from "../game/types";
 import './DisplayScores.css';
 
-const playerColors = [
+export const playerColors = [
   'player-color-red',
   'player-color-blue',
   'player-color-green',
