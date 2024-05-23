@@ -23,7 +23,7 @@ export function DisplayScores(props: { gameState: GameState }) {
           <div className="player-score-details">
             <div className="player-active-box">
               {props.gameState.activePlayer === index && (
-                <img src='/assets/active-player.gif' 
+                <img src='./active-player.gif' 
                 alt="Active Player"
                 className="active-player-gif" />
               )}
