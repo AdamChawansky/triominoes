@@ -18,6 +18,7 @@ export function RootDisplay(props: {
   // local state
   const [gameData, setGameData] = useState<FirebaseGameData>(props.initialGameData);
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
+  const [gameInProgress, setGameInProgress] = useState(false);
   
   // on first render
   useEffect(() => {
@@ -42,14 +43,14 @@ export function RootDisplay(props: {
     });
   }
   const gameState = replayHistory(gameHistory);
-  
+
   function startNewGame() {
     const playerNames = gameData.players.map(player => player.playerName);
     const newGameHistory = initializeNewGameHistory(gameData.numPlayers, playerNames);
     setGameHistory(newGameHistory);
+    setGameInProgress(true);
   }
 
-  // FOR LATER: Implement admin mode to toggle this button on 
   function resetGame() {
     const resetGameHistory = eraseGameHistory(gameData.gameHistory);
     setGameHistory(resetGameHistory);
@@ -73,6 +74,7 @@ export function RootDisplay(props: {
   function simulate() {
     const updatedGameHistory = simulateCompleteGame(gameData.gameHistory);
     setGameHistory(updatedGameHistory);
+    setGameInProgress(false);
   }
 
   function pushAction(action: Action) {
@@ -82,6 +84,19 @@ export function RootDisplay(props: {
     };
     setGameHistory(updatedGameHistory);
   }
+
+  // Automate computer plays
+  useEffect(() => {
+    if( gameInProgress ) {
+      const activePlayerName = gameState.playerNames[gameState.activePlayer];
+      if( activePlayerName.startsWith("Computer")) {
+        const timer = setTimeout(() => {
+          takeStep();
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [gameInProgress, gameHistory.actions]);
 
   // FOR LATER: Add button that indicates to start game when all human players have joined.
   // Should it shuffle, deal, and init all at once? 

@@ -15,7 +15,9 @@ KNOWN BUGS:
 
 FOR LATER:
 - Add PassAction & associated game logic
-- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
++- Automate computer plays, with 1s delay
++- Make TileInHand draggable to GameBoard
++- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
 - Add ability for players to undo by selecting point in data log
