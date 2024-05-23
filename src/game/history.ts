@@ -63,7 +63,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       }
     } else if(action.actionType === 'pass') {
       gameState.scores[action.playerIndex] -= 10;
-      gameState.gameLog.push(`Player ${gameState.playerNames[action.playerIndex]} can not play and loses 10 points.`);
+      gameState.gameLog.push(`${gameState.playerNames[action.playerIndex]} can not play and loses 10 points.`);
 
       gameState.activePlayer = (gameState.activePlayer + 1) % gameState.hands.length; // next player's turn
       gameState.tilesDrawnThisTurn = 0;

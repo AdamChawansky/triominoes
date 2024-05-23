@@ -271,11 +271,22 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
       tilePlayed: potentialMoves[0].placedTile,
       coord: potentialMoves[0].coord,
     };
-  } else {
+  } else if( gameState.consecutivePasses === gameState.playerNames.length ) {
     return {
-      actionType: 'draw',
-      playerIndex: playerIndex,
+      actionType: 'end',
     };
+  } else {
+    if( gameState.drawPile.length > 0 && gameState.tilesDrawnThisTurn < MAX_DRAW ) {
+      return {
+        actionType: 'draw',
+        playerIndex: playerIndex,
+      };
+    } else {
+      return {
+        actionType: 'pass',
+        playerIndex: playerIndex,
+      };
+    }
   }
 }
 

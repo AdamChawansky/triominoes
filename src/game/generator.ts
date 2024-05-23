@@ -148,11 +148,10 @@ export function simulateOneAction(gameHistory: GameHistory): GameHistory {
   }
   
   if( gameHistory.actions[gameHistory.actions.length - 1].actionType != 'end') {
-    if (isEmpty) {
-      const endGame: EndGameAction = {
-        actionType: `end`
-      }
-      simulatedHistory.actions.push(endGame);
+    if (isEmpty || gameState.consecutivePasses === gameState.playerNames.length) {
+      simulatedHistory.actions.push({
+        actionType: 'end',
+      });
     } else {
       simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
     }
@@ -175,7 +174,8 @@ export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
 
     gameOver =
       gameState.hands.some(hand => hand.length === 0) ||
-      simulatedHistory.actions.length > 150;
+      gameState.consecutivePasses === gameState.playerNames.length ||
+      simulatedHistory.actions.length > 500;
 
     if(gameOver) {
       simulatedHistory.actions.push({actionType: 'end'});

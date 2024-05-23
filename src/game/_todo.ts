@@ -14,7 +14,6 @@ KNOWN BUGS:
 - 
 
 FOR LATER:
-- Add PassAction & associated game logic
 - Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
