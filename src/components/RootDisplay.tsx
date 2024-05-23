@@ -69,6 +69,9 @@ export function RootDisplay(props: {
   function takeStep() {
     const updatedGameHistory = simulateOneAction(gameData.gameHistory);
     setGameHistory(updatedGameHistory);
+    if( updatedGameHistory.actions[updatedGameHistory.actions.length - 1].actionType === 'end' ) {
+      setGameInProgress(false);
+    }
   }
 
   function simulate() {

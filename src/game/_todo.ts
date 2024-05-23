@@ -16,7 +16,6 @@ KNOWN BUGS:
 FOR LATER:
 <<<<<<< HEAD
 - Add PassAction & associated game logic
-+- Automate computer plays, with 1s delay
 +- Make TileInHand draggable to GameBoard
 +- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
 =======
