@@ -67,7 +67,7 @@ main {
 }
 
 .player-color-blue {
-  color: blue;
+  color: #0000ff;
 }
 
 .player-color-green {
@@ -75,15 +75,15 @@ main {
 }
 
 .player-color-purple {
-  color: purple;
+  color: #ff00ff;
 }
 
 .player-color-brown {
-  color: brown;
+  color: #008080;
 }
 
 .player-color-orange {
-  color: orange;
+  color: #a52a2a;
 }
 
 

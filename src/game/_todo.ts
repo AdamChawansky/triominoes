@@ -15,6 +15,7 @@ KNOWN BUGS:
 
 FOR LATER:
 - Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
+---> Add visualization of how many tiles remain in draw pile
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
 - Add ability for players to undo by selecting point in data log

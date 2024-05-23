@@ -3,6 +3,7 @@ import './App.css';
 import { RootDisplay } from './components/RootDisplay';
 import { FirebaseGameData, QueryParam } from './game/types';
 import { firebaseGetGameData, firebaseSaveGameData } from './online/firebaseApi';
+import { Admin } from './components/Admin';
 
 (window as any).fbapi = {
   saveGameData: firebaseSaveGameData,
@@ -184,7 +185,11 @@ function App() {
   }
   
   if (gameStatus === 'enterRoom' && initialGameData) {
-    return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID}/>;
+    if (playerName==='admin') {
+      return <Admin initialGameData={initialGameData} localPlayerID={playerID}/>;
+    } else {
+      return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID}/>;
+    }
   }
 
   // else

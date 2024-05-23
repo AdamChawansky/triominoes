@@ -1,6 +1,6 @@
 import { replayHistory } from "./history";
 import { determineAction } from "./logic";
-import { EndGameAction, GameHistory, GameState, NewTile, PlacedTile } from "./types";
+import { GameHistory, GameState, NewTile, PlacedTile } from "./types";
 
 export function genNewTile(nums: [number, number, number]): NewTile {
   return {
