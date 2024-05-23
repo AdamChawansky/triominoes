@@ -1,5 +1,5 @@
 import { replayHistory } from "./history";
-import { determineAction } from "./logic";
+import { MAX_DRAW, determineAction } from "./logic";
 import { GameHistory, GameState, NewTile, PlacedTile } from "./types";
 
 export function genNewTile(nums: [number, number, number]): NewTile {
@@ -148,12 +148,29 @@ export function simulateOneAction(gameHistory: GameHistory): GameHistory {
   }
   
   if( gameHistory.actions[gameHistory.actions.length - 1].actionType != 'end') {
-    if (isEmpty || gameState.consecutivePasses === gameState.playerNames.length) {
+    if (isEmpty || (gameState.consecutivePasses === gameState.playerNames.length && gameState.drawPile.length === 0)) {
       simulatedHistory.actions.push({
         actionType: 'end',
       });
     } else {
-      simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+      // Automatically make a play for computer
+      const activePlayerName = gameState.playerNames[gameState.activePlayer];
+      if( activePlayerName.startsWith("Computer") ) {
+        simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+      } else {
+        // Don't automatically make a play for human. Let them draw up to MAX_DRAW and then pass.
+        if( gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ) {
+          simulatedHistory.actions.push({
+            actionType: 'draw',
+            playerIndex: gameState.activePlayer,
+          });
+        } else {
+          simulatedHistory.actions.push({
+            actionType: 'pass',
+            playerIndex: gameState.activePlayer,
+          });
+        }
+      }
     }
   }
   return simulatedHistory;
@@ -174,7 +191,7 @@ export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
 
     gameOver =
       gameState.hands.some(hand => hand.length === 0) ||
-      gameState.consecutivePasses === gameState.playerNames.length ||
+      (gameState.consecutivePasses === gameState.playerNames.length && gameState.drawPile.length === 0) ||
       simulatedHistory.actions.length > 500;
 
     if(gameOver) {

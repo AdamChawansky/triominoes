@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { eraseGameHistory, initializeNewGameHistory, simulateCompleteGame, simulateOneAction } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
-import { Action, FirebaseGameData, GameHistory, NewTile } from '../game/types.ts';
+import { Action, FirebaseGameData, GameHistory, GameState, NewTile } from '../game/types.ts';
 import { firebaseSaveGameData, firebaseSubscribeGameData } from '../online/firebaseApi.ts';
 import { DisplayHand } from './DisplayHand.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
@@ -10,6 +10,7 @@ import './RootDisplay.css';
 import { GameBoardView } from './DisplayGameBoard.tsx';
 import ChatComponent from './ChatComponent.tsx';
 import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
+import { MAX_DRAW } from '../game/logic.ts';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
@@ -66,6 +67,7 @@ export function RootDisplay(props: {
     setGameHistory(updatedGameHistory);
   }
 
+  // Automatically makes first available action: play / draw / pass
   function takeStep() {
     const updatedGameHistory = simulateOneAction(gameData.gameHistory);
     setGameHistory(updatedGameHistory);
@@ -111,6 +113,15 @@ export function RootDisplay(props: {
     )
   }
 
+  // Rename STEP button as either DRAW or PASS
+  function getDrawPassButtonLabel(gameState: GameState) {
+    if( gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ) {
+      return "DRAW";
+    } else {
+      return "PASS";
+    }
+  }
+
   return (
     <main>
         <div className="left-container">
@@ -119,7 +130,7 @@ export function RootDisplay(props: {
             <button className="button" onClick={startNewGame}>RESTART GAME</button>
             <button className="button" onClick={resetGame}>RESET GAME</button>
             <button className="button" onClick={performUndo}>UNDO</button>
-            <button className="button" onClick={takeStep}>STEP</button>
+            <button className="button" onClick={takeStep}>{getDrawPassButtonLabel(gameState)}</button>
             <button className="button" onClick={simulate}>SIMULATE!</button>
           </div>
           <GameBoardView 
