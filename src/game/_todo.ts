@@ -16,7 +16,7 @@ KNOWN BUGS:
 
 FOR LATER:
 - Add PassAction & associated game logic
-- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
+- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
 - Create admin view
@@ -29,8 +29,4 @@ End states:
      That player earns 25 points + the total points of everyone else's tiles
   2) The drawPile is empty and all players pass, meaning no more moves possible.
      Each player loses points equal to sum of their own tiles
-
-
-
-
 */

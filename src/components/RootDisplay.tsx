@@ -103,22 +103,22 @@ export function RootDisplay(props: {
     }
   }, [gameInProgress, gameHistory.actions]);
 
-  // FOR LATER: Add button that indicates to start game when all human players have joined.
-  // Should it shuffle, deal, and init all at once? 
-  if(gameState.gameBoard.size === -1) {
-    return (
-      <div>
-      <button onClick={startNewGame}>START GAME</button>
-      </div>
-    )
+  // Determine the button label and onClick handler based on the game state
+  function getButtonLabel(gameState: GameState) {
+    if( gameState.gameBoard.size === 0) {
+      return "START GAME";
+    } else if( gameHistory.actions[gameHistory.actions.length - 1].actionType === 'end' ) {
+      return "NEW GAME";
+    } else {
+      return gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ? "DRAW" : "PASS";
+    }
   }
 
-  // Rename STEP button as either DRAW or PASS
-  function getDrawPassButtonLabel(gameState: GameState) {
-    if( gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ) {
-      return "DRAW";
+  function getButtonClick(gameState: GameState) {
+    if( gameState.gameBoard.size === 0 || gameHistory.actions[gameHistory.actions.length - 1].actionType === 'end' ) {
+      return startNewGame;
     } else {
-      return "PASS";
+      return takeStep;
     }
   }
 
@@ -127,11 +127,7 @@ export function RootDisplay(props: {
         <div className="left-container">
         <CopyToClipboard toCopy={gameData.gameID}/>
           <div className="buttons-container">
-            <button className="button" onClick={startNewGame}>RESTART GAME</button>
-            <button className="button" onClick={resetGame}>RESET GAME</button>
-            <button className="button" onClick={performUndo}>UNDO</button>
-            <button className="button" onClick={takeStep}>{getDrawPassButtonLabel(gameState)}</button>
-            <button className="button" onClick={simulate}>SIMULATE!</button>
+            <button className="button" onClick={getButtonClick(gameState)}>{getButtonLabel(gameState)}</button>
           </div>
           <GameBoardView 
             gameState={gameState}
