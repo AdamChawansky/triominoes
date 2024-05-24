@@ -84,11 +84,11 @@
   color: black;
 }
 .tile-container.playable {
-  background-image: url('triangle-up-empty.png');
+  background-image: url('triangle-up-darkgreen.png');
   color: transparent;
 }
 .tile-container-inverted.playable {
-  background-image: url('triangle-down-empty.png');
+  background-image: url('triangle-down-darkgreen.png');
   color: transparent;
 }
 
