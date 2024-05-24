@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { eraseGameHistory, initializeNewGameHistory, simulateCompleteGame, simulateOneAction } from '../game/generator.ts';
+import { initializeNewGameHistory, simulateOneAction } from '../game/generator.ts';
 import { replayHistory } from '../game/history.ts';
+import { MAX_DRAW } from '../game/logic.ts';
 import { Action, FirebaseGameData, GameHistory, GameState, NewTile } from '../game/types.ts';
+import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
 import { firebaseSaveGameData, firebaseSubscribeGameData } from '../online/firebaseApi.ts';
+import ChatComponent from './ChatComponent.tsx';
+import { GameBoardView } from './DisplayGameBoard.tsx';
 import { DisplayHand } from './DisplayHand.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
 import './RootDisplay.css';
-import { GameBoardView } from './DisplayGameBoard.tsx';
-import ChatComponent from './ChatComponent.tsx';
-import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
-import { MAX_DRAW } from '../game/logic.ts';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
@@ -52,21 +52,6 @@ export function RootDisplay(props: {
     setGameInProgress(true);
   }
 
-  function resetGame() {
-    const resetGameHistory = eraseGameHistory(gameData.gameHistory);
-    setGameHistory(resetGameHistory);
-  }
-
-  function performUndo() {
-    const updatedGameHistory = {
-      startingDeck: gameData.gameHistory.startingDeck,
-      actions: gameData.gameHistory.actions[gameData.gameHistory.actions.length - 1].actionType === 'init'
-      ? gameData.gameHistory.actions
-      : gameData.gameHistory.actions.slice(0, -1),
-    };
-    setGameHistory(updatedGameHistory);
-  }
-
   // Automatically makes first available action: play / draw / pass
   function takeStep() {
     const updatedGameHistory = simulateOneAction(gameData.gameHistory);
@@ -74,12 +59,6 @@ export function RootDisplay(props: {
     if( updatedGameHistory.actions[updatedGameHistory.actions.length - 1].actionType === 'end' ) {
       setGameInProgress(false);
     }
-  }
-
-  function simulate() {
-    const updatedGameHistory = simulateCompleteGame(gameData.gameHistory);
-    setGameHistory(updatedGameHistory);
-    setGameInProgress(false);
   }
 
   function pushAction(action: Action) {
@@ -97,7 +76,7 @@ export function RootDisplay(props: {
       if( activePlayerName.startsWith("Computer")) {
         const timer = setTimeout(() => {
           takeStep();
-        }, 1000);
+        }, 200);
         return () => clearTimeout(timer);
       }
     }
