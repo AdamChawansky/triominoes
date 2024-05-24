@@ -7,6 +7,8 @@ export function TileOnBoard(props: {
   placedTile: PlacedTile;
   tileStyle?: string;
   onClick: () => void;
+  onDragOver?: (event: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (event: React.DragEvent<HTMLDivElement>) => void;
   position: CSSProperties;
 }) {
   const top = props.placedTile.orientation === 'up'
@@ -24,6 +26,8 @@ export function TileOnBoard(props: {
       orientation={props.placedTile.orientation}
       tileStyle={props.tileStyle}
       onClick={props.onClick}
+      onDragOver={props.onDragOver}
+      onDrop={props.onDrop}
     />
   );
 }

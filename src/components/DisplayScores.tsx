@@ -11,7 +11,7 @@ export const playerColors = [
 ];
 
 export function DisplayScores(props: { gameState: GameState }) {
-  console.log(props.gameState);
+  // console.log(props.gameState);
   return (
     <div className="player-scores">
       {props.gameState.scores.map((score, index) => (

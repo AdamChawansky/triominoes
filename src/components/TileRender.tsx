@@ -11,6 +11,10 @@ export function TileRender(props: {
     // 'selected' = yellow shading in hand
     // 'playable' = black outline, no numbers
     // 'most-recent' = red star in center of tile
+  draggable?: boolean; // Makes tile draggable
+  onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void; // sets data of dragged tile
+  onDragOver?: (event: React.DragEvent<HTMLDivElement>) => void; // enables dropping of dragged tile
+  onDrop?: (event: React.DragEvent<HTMLDivElement>) => void; // places tile when dropped onto valid space
 }) {
 
   const classNames = [
@@ -22,7 +26,15 @@ export function TileRender(props: {
       : '',
   ];
   return (
-    <div className= {classNames.join(' ')} style={props.style} onClick={props.onClick}>
+    <div
+      className={classNames.join(' ')}
+      style={props.style}
+      onClick={props.onClick}
+      draggable={props.draggable}
+      onDragStart={props.onDragStart}
+      onDragOver={props.onDragOver}
+      onDrop={props.onDrop}
+    >
       {props.orientation === 'up' ? (
         <>
           <span className="number bottom-left">{props.bottom[0]}</span>

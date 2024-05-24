@@ -71,6 +71,31 @@ export function GameBoardView(props: {
     }
   }
 
+  // Allow players to place tiles in available spaces by dragging and dropping
+  function onBlockDrop(event: React.DragEvent<HTMLDivElement>, coord: Coordinate) {
+    event.preventDefault();
+    const tileData = event.dataTransfer.getData('text/plain');
+    // console.log('Tile Data: ', tileData);
+    const droppedTile: NewTile = JSON.parse(tileData);
+    // console.log('Dropped Tile: ', droppedTile);
+
+    const potentialMoves = searchForMove(droppedTile, gameState.gameBoard);
+    // console.log('Potential Moves: ', potentialMoves);
+    const droppedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
+    // console.log('Dropped Move: ', droppedMove);
+
+    if(droppedMove) {
+      const playTile: PlayAction = {
+        actionType: 'play',
+        playerIndex: gameState.activePlayer,
+        tilePlayed: droppedMove.placedTile,
+        coord: droppedMove.coord,
+      }
+      pushAction(playTile);
+      setTileInHand(undefined);
+    }
+  }
+
   return (
     <div className="game-board" ref={gameBoardRef}>
       {Array.from(gameState.gameBoard.entries()).map(([coord, placedBlock]) => (
@@ -91,9 +116,11 @@ export function GameBoardView(props: {
           key = {toKey(potentialMove.coord)}
           coord = {potentialMove.coord}
           placedTile = {potentialMove.placedTile}
-          tileStyle={'playable'}
-          onClick={() => onBlockClick(potentialMove.coord)}
-          position={{
+          tileStyle = {'playable'}
+          onClick = {() => onBlockClick(potentialMove.coord)}
+          onDragOver = {(event) => event.preventDefault()}
+          onDrop = {(event) => onBlockDrop(event, potentialMove.coord)}
+          position = {{
             left: `${(potentialMove.coord.x - minX) * width * 0.5 + offsetX}px`,
             bottom: `${(potentialMove.coord.y - minY) * height + offsetY}px`,
           }}

@@ -10,20 +10,18 @@ Homework:
 - 
 
 KNOWN BUGS:
+- human players can play when it's not their turn!
 - investigate scoring (seems like you can get bridge/hexagon at same time)
 - 
 
 FOR LATER:
-<<<<<<< HEAD
 - Add PassAction & associated game logic
-+- Make TileInHand draggable to GameBoard
-+- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
-=======
-- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
----> Add visualization of how many tiles remain in draw pile
->>>>>>> b9db52e6d5ba62f19200c89b2ed017dada2c7d9a
+- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)- Add ADMIN view that has all buttons, but regular game only has DRAW/PASS
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
+- Create admin view
+--> should display active player's hand
+--> should have all buttons at top (vs. only Start Game --> Draw/Pass --> New Game)
 - Add ability for players to undo by selecting point in data log
 
 End states:

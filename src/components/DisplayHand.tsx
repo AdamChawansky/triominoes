@@ -31,6 +31,7 @@ export function DisplayHand(props: {
           gameState={props.gameState}
           isSelected={newTile.id === props.tileInHand?.id}
           onClick={() => onClick(newTile)}
+          setTileInHand={props.setTileInHand}
         />
       ))}
     </div>
