@@ -76,7 +76,7 @@ export function RootDisplay(props: {
       if( activePlayerName.startsWith("Computer")) {
         const timer = setTimeout(() => {
           takeStep();
-        }, 200);
+        }, 500);
         return () => clearTimeout(timer);
       }
     }
@@ -106,7 +106,12 @@ export function RootDisplay(props: {
         <div className="left-container">
         <CopyToClipboard toCopy={gameData.gameID}/>
           <div className="buttons-container">
-            <button className="button" onClick={getButtonClick(gameState)}>{getButtonLabel(gameState)}</button>
+            <button className="button"
+            onClick={getButtonClick(gameState)}
+            disabled={gameHistory.actions[gameHistory.actions.length - 1].actionType !== 'end' && gameState.activePlayer !== playerIndex}
+          >
+            {getButtonLabel(gameState)}
+          </button>
           </div>
           <GameBoardView 
             gameState={gameState}
