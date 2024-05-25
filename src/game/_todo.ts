@@ -10,7 +10,10 @@ Homework:
 - 
 
 KNOWN BUGS:
-- human players can play when it's not their turn!
+- Need to fix issue of joining using gameID
+--> link with gameID doesn't seem to work
+--> people can keep joining beyond the numPlayers
+--> getting DisplayHand error...
 - investigate scoring (seems like you can get bridge/hexagon at same time)
 - 
 

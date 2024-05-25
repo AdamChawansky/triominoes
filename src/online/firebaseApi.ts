@@ -17,7 +17,6 @@ function sanitizeGameData(raw: FirebaseGameData): FirebaseGameData {
 }
 
 export function firebaseSaveGameData(gameData: FirebaseGameData) {
-  // FOR PAUL: How come I had to remove the firebaseApp from argument? It was messing up the database save structure...
   const db = getDatabase(firebaseApp);
   const gameDataRef = ref(db, `games/${gameData.gameID}`);
   set(gameDataRef, gameData);
@@ -28,7 +27,7 @@ export async function firebaseGetGameData(gameId: string): Promise<FirebaseGameD
   const db = getDatabase(firebaseApp);
   const gameDataRef = ref(db, `games/${gameId}`);
   const snapshot = await get(gameDataRef);
-  // console.log('Game data accessed at ' + Date.now());
+  console.log('Game data accessed at ' + Date.now());
   return snapshot.exists() ? sanitizeGameData(snapshot.val()) : null;
 }
 

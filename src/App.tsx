@@ -27,6 +27,7 @@ function generateGameID() {
 function App() {
   const searchParams = new URLSearchParams(window.location.search);
   let gameIDFromURL = searchParams.get(QueryParam.gameID);
+  console.log(gameIDFromURL);
 
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
