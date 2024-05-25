@@ -84,17 +84,17 @@ export function RootDisplay(props: {
 
   // Determine the button label and onClick handler based on the game state
   function getButtonLabel(gameState: GameState) {
-    if( gameState.gameBoard.size === 0) {
+    if( gameState.gameBoard.size === 0 ) {
       return "START GAME";
-    } else if( gameHistory.actions[gameHistory.actions.length - 1].actionType === 'end' ) {
+    } else if( !gameInProgress ) {
       return "NEW GAME";
     } else {
       return gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ? "DRAW" : "PASS";
     }
   }
 
-  function getButtonClick(gameState: GameState) {
-    if( gameState.gameBoard.size === 0 || gameHistory.actions[gameHistory.actions.length - 1].actionType === 'end' ) {
+  function getButtonClick() {
+    if( !gameInProgress ) {
       return startNewGame;
     } else {
       return takeStep;
@@ -107,8 +107,8 @@ export function RootDisplay(props: {
         <CopyToClipboard toCopy={gameData.gameID}/>
           <div className="buttons-container">
             <button className="button"
-            onClick={getButtonClick(gameState)}
-            disabled={gameHistory.actions[gameHistory.actions.length - 1].actionType !== 'end' && gameState.activePlayer !== playerIndex}
+            onClick={getButtonClick()}
+            disabled={ !gameInProgress || gameState.activePlayer !== playerIndex}
           >
             {getButtonLabel(gameState)}
           </button>
