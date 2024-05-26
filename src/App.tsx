@@ -58,6 +58,10 @@ function App() {
       const newGameID = generateGameID();
       setGameID(newGameID);
 
+      // Update the URL with the generated gameID
+      const newUrl = `${window.location.origin}/?gameID=${newGameID}`;
+      window.history.pushState({ path: newUrl }, '', newUrl);
+
       // Create a new FirebaseGameData object
       const newGameData: FirebaseGameData = {
         gameID: newGameID,
@@ -73,6 +77,7 @@ function App() {
           playerID: playerID,
           playerName: playerName
         }],
+        gameInProgress: false,
       };
       
       // Later, up-sert the playerName

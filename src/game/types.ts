@@ -11,6 +11,7 @@ export interface FirebaseGameData {
     playerID: string;
     playerName: string
   }[];
+  gameInProgress: boolean;
 }
 
 export type PlacedTileA = {

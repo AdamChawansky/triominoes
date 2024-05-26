@@ -22,18 +22,22 @@ export function DisplayHand(props: {
     }
   }
 
-  return (
-    <div className="player-hand">
-      {playerHand.map((newTile) => (
-        <TileInHand
-          key = {newTile.id}
-          newTile = {newTile}
-          gameState={props.gameState}
-          isSelected={newTile.id === props.tileInHand?.id}
-          onClick={() => onClick(newTile)}
-          setTileInHand={props.setTileInHand}
-        />
-      ))}
-    </div>
-  );
+  if( props.gameState.gameBoard.size === 0 ) {
+    return (<div></div>);
+  } else {
+    return (
+      <div className="player-hand">
+        {playerHand.map((newTile) => (
+          <TileInHand
+            key = {newTile.id}
+            newTile = {newTile}
+            gameState={props.gameState}
+            isSelected={newTile.id === props.tileInHand?.id}
+            onClick={() => onClick(newTile)}
+            setTileInHand={props.setTileInHand}
+          />
+        ))}
+      </div>
+    );
+  }
 }

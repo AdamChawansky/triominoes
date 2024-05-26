@@ -19,14 +19,13 @@ export function RootDisplay(props: {
   // local state
   const [gameData, setGameData] = useState<FirebaseGameData>(props.initialGameData);
   const [tileInHand, setTileInHand] = useState<NewTile | undefined>();
-  const [gameInProgress, setGameInProgress] = useState(false);
   
   // on first render
   useEffect(() => {
     async function startSubscription() {
       await firebaseSubscribeGameData(
         props.initialGameData,
-        gameData => setGameData(gameData),
+        firebaseGameData => setGameData(firebaseGameData),
       );
     }
     startSubscription();
@@ -37,10 +36,11 @@ export function RootDisplay(props: {
 
   // helpers
   const gameHistory = gameData.gameHistory;
-  function setGameHistory(newGameHistory: GameHistory) {
+  function setGameHistory(newGameHistory: GameHistory, gameInProgress: boolean ) {
     firebaseSaveGameData({
       ...gameData,
       gameHistory: newGameHistory,
+      gameInProgress: gameInProgress,
     });
   }
   const gameState = replayHistory(gameHistory);
@@ -48,17 +48,14 @@ export function RootDisplay(props: {
   function startNewGame() {
     const playerNames = gameData.players.map(player => player.playerName);
     const newGameHistory = initializeNewGameHistory(gameData.numPlayers, playerNames);
-    setGameHistory(newGameHistory);
-    setGameInProgress(true);
+    setGameHistory(newGameHistory, true);
   }
 
   // Automatically makes first available action: play / draw / pass
   function takeStep() {
     const updatedGameHistory = simulateOneAction(gameData.gameHistory);
-    setGameHistory(updatedGameHistory);
-    if( updatedGameHistory.actions[updatedGameHistory.actions.length - 1].actionType === 'end' ) {
-      setGameInProgress(false);
-    }
+    const updatedGameInProgress = updatedGameHistory.actions[updatedGameHistory.actions.length - 1].actionType !== 'end';
+    setGameHistory(updatedGameHistory, updatedGameInProgress);
   }
 
   function pushAction(action: Action) {
@@ -66,12 +63,14 @@ export function RootDisplay(props: {
       startingDeck: gameData.gameHistory.startingDeck,
       actions: gameData.gameHistory.actions.concat(action),
     };
-    setGameHistory(updatedGameHistory);
+
+    const updatedGameInProgress = action.actionType !== 'end';
+    setGameHistory(updatedGameHistory, updatedGameInProgress);
   }
 
   // Automate computer plays
   useEffect(() => {
-    if( gameInProgress ) {
+    if( gameData.gameInProgress ) {
       const activePlayerName = gameState.playerNames[gameState.activePlayer];
       if( activePlayerName.startsWith("Computer")) {
         const timer = setTimeout(() => {
@@ -80,13 +79,13 @@ export function RootDisplay(props: {
         return () => clearTimeout(timer);
       }
     }
-  }, [gameInProgress, gameHistory.actions]);
+  }, [gameData.gameInProgress, gameHistory.actions]);
 
   // Determine the button label and onClick handler based on the game state
   function getButtonLabel(gameState: GameState) {
     if( gameState.gameBoard.size === 0 ) {
       return "START GAME";
-    } else if( !gameInProgress ) {
+    } else if( !gameData.gameInProgress ) {
       return "NEW GAME";
     } else {
       return gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ? "DRAW" : "PASS";
@@ -94,7 +93,7 @@ export function RootDisplay(props: {
   }
 
   function getButtonClick() {
-    if( !gameInProgress ) {
+    if( !gameData.gameInProgress ) {
       return startNewGame;
     } else {
       return takeStep;
@@ -108,7 +107,7 @@ export function RootDisplay(props: {
           <div className="buttons-container">
             <button className="button"
             onClick={getButtonClick()}
-            disabled={ !gameInProgress || gameState.activePlayer !== playerIndex}
+            disabled={ gameData.gameInProgress && gameState.activePlayer !== playerIndex}
           >
             {getButtonLabel(gameState)}
           </button>
