@@ -30,7 +30,7 @@ export function Admin(props: {
     startSubscription();
   }, []);
 
-  const playerIndex = gameData.players.findIndex((player) => player.playerID === props.localPlayerID);
+  const playerIndex = gameData.players.findIndex((player) => player.localPlayerID === props.localPlayerID);
   const playerName = playerIndex !== -1 ? gameData.players[playerIndex].playerName : '';
 
   // helpers

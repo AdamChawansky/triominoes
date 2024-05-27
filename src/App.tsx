@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { RootDisplay } from './components/RootDisplay';
 import { FirebaseGameData, QueryParam } from './game/types';
@@ -20,20 +20,45 @@ function generateGameID() {
   return gameID;
 }
 
-  const playerID = new Date().getTime().toString();
-  // const playerID = Math.random().toString(36).substr(2, 9);
+// Generate unique playerID
+const playerID = new Date().getTime().toString();
+// const playerID = Math.random().toString(36).substr(2, 9);
+
 
 /* App runs a function and returns something that looks like HTML */
 function App() {
   const searchParams = new URLSearchParams(window.location.search);
   let gameIDFromURL = searchParams.get(QueryParam.gameID);
-  console.log(gameIDFromURL);
 
   const [numPlayers, setNumPlayers] = useState<number | undefined>();
   const [playerName, setPlayerName] = useState('');
   const [gameID, setGameID] = useState(gameIDFromURL || '');
-  const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'enterRoom'>('landing');
+  const [gameStatus, setGameStatus] = useState<'landing' | 'newGame' | 'joinGame' | 'enterRoom'>(gameIDFromURL ? 'joinGame' : 'landing');
   const [initialGameData, setInitialGameData] = useState<FirebaseGameData | null>(null);
+  // console.log("gameStatus is ", gameStatus);
+
+  const fetchGameData = async (gameID: string) => {
+    const firebaseGameData = await firebaseGetGameData(gameID);
+    if( firebaseGameData ) {
+      setInitialGameData(firebaseGameData);
+      setGameStatus('enterRoom');
+    } else {
+      console.log("Invalid game ID");
+      setGameStatus('landing');
+    }
+  } 
+
+  useEffect(() => {
+    if( gameIDFromURL ) {
+      fetchGameData(gameIDFromURL).then(() => {
+        if( initialGameData && initialGameData.players.some(player => player.localPlayerID === playerID)) {
+          setGameStatus('enterRoom');
+        } else {
+          setGameStatus('joinGame');
+        }
+      });
+    }
+  }, [gameIDFromURL]);
 
   // Player selects "Create New Game"
   const handleCreateNewGame = () => {
@@ -44,12 +69,6 @@ function App() {
   const handleJoinExistingGame = () => {
     setGameStatus('joinGame');
   };
-  
-  // Player uses link with gameID alread included
-  if (gameIDFromURL) {
-    setGameStatus('joinGame');
-    setGameID(gameIDFromURL);
-  }
 
   // Player is creating a new game
   const handleEnterNewRoom = async () => {
@@ -74,14 +93,16 @@ function App() {
           }],
         },
         players: [{
-          playerID: playerID,
-          playerName: playerName
+          localPlayerID: playerID,
+          playerName: playerName,
+          playerType: 'human',
         }],
         gameInProgress: false,
       };
       
       // Later, up-sert the playerName
-      setInitialGameData(newGameData);
+      await firebaseSaveGameData(newGameData);
+      await fetchGameData(newGameID);
       setGameStatus('enterRoom');
     }
   };
@@ -91,28 +112,53 @@ function App() {
     if (gameID !== '' && playerName.trim() !== '') {
       // Retrieve the existing game data
       const existingGameData = await firebaseGetGameData(gameID);
-      if (existingGameData) {
-        // Add the new player to the humanPlayers array & AddPlayer action
-        const updatedGameData: FirebaseGameData = {
-          ...existingGameData,
-          gameHistory: {
-            startingDeck: [...existingGameData.gameHistory.startingDeck],
-            actions: [...existingGameData.gameHistory.actions, {
-              actionType: 'add-player',
-              playerName: playerName,
-            }],
-          },
-          players: [...existingGameData.players, {
-            playerID: playerID,
-            playerName: playerName,
-          }],
-        };
+      console.log(existingGameData);
+      if( existingGameData ) {
+        // Check if the player already exists in the game
+        const existingPlayerIndex = existingGameData.players.findIndex(
+          (player) => player.localPlayerID === playerID
+        );
 
-        // Save the updated game data to Firebase
-        await firebaseSaveGameData(updatedGameData);
+        if( existingPlayerIndex !== -1 ) {
+          // Player already exists, update the playerName
+          const updatedGameData: FirebaseGameData = {
+            ...existingGameData,
+            players: existingGameData.players.map((player, index) => 
+              index === existingPlayerIndex ? { ...player, playerName } : player)
+            ,
+          };
+          // Save the updated game data to Firebase
+          await firebaseSaveGameData(updatedGameData);
+          setInitialGameData(updatedGameData);
+        } else {
+          // Player doesn't exist, add as a new player
+          let playerType: 'human' | 'spectator';
+          if( existingGameData.gameInProgress || existingGameData.players.length >= existingGameData.numPlayers) {
+            playerType = 'spectator';
+          } else {
+            playerType = 'human';
+          }
+
+          const updatedGameData: FirebaseGameData = {
+            ...existingGameData,
+            gameHistory: playerType === 'human' ? {
+              startingDeck: [...existingGameData.gameHistory.startingDeck],
+              actions: [
+                ...existingGameData.gameHistory.actions,
+                { actionType: 'add-player', playerName: playerName },
+              ],
+          } : existingGameData.gameHistory,
+            players: [
+              ...existingGameData.players,
+              { localPlayerID: playerID, playerName: playerName, playerType }
+            ],
+          };
+          // Save the updated game data to Firebase
+          await firebaseSaveGameData(updatedGameData);
+          setInitialGameData(updatedGameData);
+        }
 
         // get to RootDisplay
-        setInitialGameData(updatedGameData);
         setGameStatus('enterRoom');
       } else {
         console.log('Invalid Game ID');
@@ -120,7 +166,13 @@ function App() {
     }
   };
 
-  if (gameStatus === 'landing') {
+  if( gameStatus === 'enterRoom' && initialGameData ) {
+    if (playerName==='admin') {
+      return <Admin initialGameData={initialGameData} localPlayerID={playerID}/>;
+    } else {
+      return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID}/>;
+    }
+  } else if (gameStatus === 'landing') {
     return (
       <div className="loading-screen">
         <h1>Let's play Triominoes!</h1>
@@ -128,8 +180,7 @@ function App() {
         <button className="button" onClick={handleJoinExistingGame}>Join a Game</button>
       </div>
     );
-  } 
-  if (gameStatus === 'newGame') {
+  } else if (gameStatus === 'newGame') {
     return (
       <div className="loading-screen">
         <h2>Create New Game</h2>
@@ -162,9 +213,7 @@ function App() {
         <button className="button" onClick={handleEnterNewRoom}>Create Room</button>
       </div>
     );
-  }
-  
-  if (gameStatus === 'joinGame') {
+  } else if (gameStatus === 'joinGame') {
     // FOR LATER: Add ability for URL to automatically take you to 'joinGame' and populate Game ID
     return (
       <div className="loading-screen">
@@ -190,14 +239,6 @@ function App() {
     );
   }
   
-  if (gameStatus === 'enterRoom' && initialGameData) {
-    if (playerName==='admin') {
-      return <Admin initialGameData={initialGameData} localPlayerID={playerID}/>;
-    } else {
-      return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID}/>;
-    }
-  }
-
   // else
   console.log("Invalid Game Status");
   return null;

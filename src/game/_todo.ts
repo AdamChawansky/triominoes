@@ -14,6 +14,7 @@ KNOWN BUGS:
 --> link with gameID doesn't seem to work
 --> people can keep joining beyond the numPlayers
 --> getting DisplayHand error...
+--> reloading the page takes you back to JoinGame screen. Does the playerID change on reload? PAUL!!!
 - investigate scoring (seems like you can get bridge/hexagon at same time)
 - 
 

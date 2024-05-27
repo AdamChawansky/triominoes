@@ -1,6 +1,6 @@
 // These components are used with the firebase
 export const QueryParam = {
-  gameID: 'id',
+  gameID: 'gameID',
 } as const;
 
 export interface FirebaseGameData {
@@ -8,8 +8,9 @@ export interface FirebaseGameData {
   numPlayers: number;
   gameHistory: GameHistory;
   players: {
-    playerID: string;
-    playerName: string
+    localPlayerID: string; // unique identifier
+    playerName: string; // human player name for score, log, and chat
+    playerType: 'human' | 'computer' | 'spectator';
   }[];
   gameInProgress: boolean;
 }
