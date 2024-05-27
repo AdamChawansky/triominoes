@@ -105,12 +105,14 @@ export function RootDisplay(props: {
         <div className="left-container">
         <CopyToClipboard toCopy={gameData.gameID}/>
           <div className="buttons-container">
+            {gameData.players[playerIndex].playerType !== 'spectator' && (
             <button className="button"
-            onClick={getButtonClick()}
-            disabled={ gameData.gameInProgress && gameState.activePlayer !== playerIndex}
-          >
-            {getButtonLabel(gameState)}
-          </button>
+              onClick={getButtonClick()}
+              disabled={ gameData.gameInProgress && gameState.activePlayer !== playerIndex}
+            >
+              {getButtonLabel(gameState)}
+            </button>
+            )}
           </div>
           <GameBoardView 
             gameState={gameState}
@@ -119,12 +121,14 @@ export function RootDisplay(props: {
             pushAction={pushAction}
           />
           <div className="bottom-container">
+            {gameData.players[playerIndex].playerType !== 'spectator' && (
             <DisplayHand 
                 playerIndex={playerIndex}
                 gameState={gameState} 
                 tileInHand={tileInHand}
                 setTileInHand={setTileInHand}
             />
+            )}
           </div>
         </div>
       <div className="right-container">
