@@ -91,7 +91,7 @@ function App() {
       setGameID(newGameID);
 
       // Update the URL with the generated gameID
-      const newUrl = `${window.location.origin}/?gameID=${newGameID}`;
+      const newUrl = `${window.location.origin}/triominoes/?gameID=${newGameID}`;
       window.history.pushState({ path: newUrl }, '', newUrl);
 
       // Create a new FirebaseGameData object

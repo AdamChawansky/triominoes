@@ -93,7 +93,14 @@ export function RootDisplay(props: {
     } else if( !gameData.gameInProgress ) {
       return "NEW GAME";
     } else {
-      return gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ? "DRAW" : "PASS";
+      const tilesRemaining = gameState.drawPile.length;
+      return (
+        <>
+          { gameState.tilesDrawnThisTurn < MAX_DRAW && tilesRemaining > 0 ? "DRAW" : "PASS" }
+          <br/>
+          <span className='tiles-remaining'>{tilesRemaining} tiles left</span>
+        </>
+      );
     }
   }
 

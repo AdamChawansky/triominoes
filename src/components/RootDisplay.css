@@ -56,6 +56,11 @@ main {
   color: black;
 }
 
+.tiles-remaining {
+  font-size: 0.8em;
+  color: #888;
+}
+
 /* Holds player hand */
 .bottom-container {
   display: flex;

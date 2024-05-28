@@ -93,7 +93,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.lastPlay = {x:0, y:0};
       
       gameState.gameLog.push(`All players draw starting tiles.`);
-      gameState.gameLog.push(`${gameState.playerNames[playerIndex]} plays [${tilePlayed.id}] for ${pointsForTurn} points.`);
+      gameState.gameLog.push(`${gameState.playerNames[playerIndex]} plays [${tilePlayed.id}] and gains ${pointsForTurn} points.`);
 
       gameState.activePlayer = (playerIndex + 1) % gameState.hands.length;
 
