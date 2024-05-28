@@ -4,17 +4,12 @@ import './ChatComponent.css'
 import { playerColors } from './DisplayScores';
 import { firebaseSaveGameData } from '../online/firebaseApi';
 
-// const initialMessageHistory: MessageHistory = {
-//     messages: [],
-//   };
-  
 const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData: FirebaseGameData}> = ({
   playerName,
   playerIndex,
   gameData,
 }) => {
   const messageHistory = gameData.messageHistory;
-  // const [messageHistory, setMessageHistory] = useState<MessageHistory>(initialMessageHistory);
   const [inputMessage, setInputMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
 

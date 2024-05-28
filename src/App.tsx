@@ -98,6 +98,7 @@ function App() {
           playerType: 'human',
         }],
         gameInProgress: false,
+        messageHistory: { messages: [] },
       };
       
       // Later, up-sert the playerName

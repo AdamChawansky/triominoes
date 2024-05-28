@@ -117,7 +117,9 @@ export function Admin(props: {
         />
         <ChatComponent
           playerName={playerName}
-          playerIndex={playerIndex}/>
+          playerIndex={playerIndex}
+          gameData={gameData}
+        />
       </div>
     </main>
   );
