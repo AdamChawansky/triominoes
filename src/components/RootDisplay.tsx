@@ -112,33 +112,40 @@ export function RootDisplay(props: {
     }
   }
 
+  // Sound effects code below
+  const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(false);
+
+  function handleSoundToggle() {
+    setSoundEffectsEnabled(prevState => !prevState);
+  }
+
   // Play a notification when it's your turn
   const activePlayerSoundRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    if( gameData.gameInProgress && gameState.activePlayer === playerIndex ) {
+    if( soundEffectsEnabled && gameData.gameInProgress && gameState.activePlayer === playerIndex ) {
       if( activePlayerSoundRef.current ) {
         activePlayerSoundRef.current.play();
       }
     }
-  }, [gameData.gameInProgress, gameState.activePlayer, playerIndex]);
+  }, [soundEffectsEnabled, gameData.gameInProgress, gameState.activePlayer, playerIndex]);
 
   // Play a sound if a player makes a hexagon or bridge
   const bridgeOrHexagonSoundRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const lastAction = gameHistory.actions[gameHistory.actions.length - 1];
-    if( lastAction && lastAction.actionType === 'play' ) {
+    if( soundEffectsEnabled && lastAction && lastAction.actionType === 'play' ) {
       const points = pointsFromPlay(lastAction.tilePlayed, lastAction.coord, gameState.gameBoard);
       if( points >= 40 && bridgeOrHexagonSoundRef.current ) {
         bridgeOrHexagonSoundRef.current.play();
       }
     }
-  }, [gameHistory.actions, gameState.gameBoard]);
+  }, [soundEffectsEnabled, gameHistory.actions, gameState.gameBoard]);
 
   // Play a victory / failure notification if you win / lose 
   const victorySoundRef = useRef<HTMLAudioElement | null>(null);
   const failureSoundRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    if( !gameData.gameInProgress && gameState.gameBoard.size > 0 ) {
+    if( soundEffectsEnabled && !gameData.gameInProgress && gameState.gameBoard.size > 0 ) {
       const playerScore = gameState.scores[playerIndex];
       const highestScore = Math.max(...gameState.scores);
 
@@ -152,7 +159,7 @@ export function RootDisplay(props: {
         }
       }
     }
-  }, [gameData.gameInProgress, gameState.scores, playerIndex]);
+  }, [soundEffectsEnabled, gameData.gameInProgress, gameState.scores, playerIndex]);
 
 
   return (
@@ -162,7 +169,7 @@ export function RootDisplay(props: {
       <audio ref={victorySoundRef} src={victorySound}/>
       <audio ref={failureSoundRef} src={failureSound}/>
       <div className="left-container">
-      <CopyToClipboard toCopy={gameData.gameID}/>
+        <CopyToClipboard toCopy={gameData.gameID}/>
         <div className="buttons-container">
           {gameData.players[playerIndex].playerType !== 'spectator' && (
           <button className="button"
@@ -173,6 +180,9 @@ export function RootDisplay(props: {
           </button>
           )}
         </div>
+        <button className="sound-toggle-button" onClick={handleSoundToggle}>
+          {soundEffectsEnabled ? '🔊' : '🔇'}
+        </button>
         <GameBoardView 
           gameState={gameState}
           tileInHand={tileInHand}
