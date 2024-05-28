@@ -1,5 +1,6 @@
 import { GameState } from "../game/types";
 import './DisplayScores.css';
+import activePlayerGIF from '../../public/active-player.gif'
 
 export const playerColors = [
   'player-color-red',
@@ -23,7 +24,7 @@ export function DisplayScores(props: { gameState: GameState }) {
           <div className="player-score-details">
             <div className="player-active-box">
               {props.gameState.activePlayer === index && (
-                <img src='./active-player.gif' 
+                <img src={activePlayerGIF} 
                 alt="Active Player"
                 className="active-player-gif" />
               )}
