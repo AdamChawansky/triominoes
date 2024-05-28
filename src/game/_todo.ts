@@ -19,7 +19,10 @@ KNOWN BUGS:
 - 
 
 FOR LATER:
-- Add PassAction & associated game logic
+- Add notification for player's turn
+- Create -/+ zoom button to zoom that GameBoardView
+- Change GameLog wording to gain/loses and color code green/red.
+--> Add HEXAGON & BRIDGE chime / text.
 - Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets

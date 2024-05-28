@@ -10,9 +10,10 @@ export function GameBoardView(props: {
   tileInHand: NewTile | undefined,
   setTileInHand: (b: NewTile | undefined) => void,
   pushAction: ActionPusher,
+  isActivePlayer: boolean,
 }) {
   // aka const gameState = props.gameState;
-  const { gameState, tileInHand, pushAction, setTileInHand } = props;
+  const { gameState, tileInHand, pushAction, setTileInHand, isActivePlayer } = props;
 
   // Grab gameBoard height & width to keep tiles centered
   const gameBoardRef = useRef<HTMLDivElement>(null);
@@ -54,7 +55,7 @@ export function GameBoardView(props: {
 
   // Allow players to place tiles in available spaces based on selected tileInHand
   function onBlockClick(coord: Coordinate) {
-    if(tileInHand) {
+    if( isActivePlayer && tileInHand ) {
       const potentialMoves = searchForMove(tileInHand, gameState.gameBoard);
       const clickedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
 
@@ -73,26 +74,28 @@ export function GameBoardView(props: {
 
   // Allow players to place tiles in available spaces by dragging and dropping
   function onBlockDrop(event: React.DragEvent<HTMLDivElement>, coord: Coordinate) {
-    event.preventDefault();
-    const tileData = event.dataTransfer.getData('text/plain');
-    // console.log('Tile Data: ', tileData);
-    const droppedTile: NewTile = JSON.parse(tileData);
-    // console.log('Dropped Tile: ', droppedTile);
+    if( isActivePlayer ) {
+      event.preventDefault();
+      const tileData = event.dataTransfer.getData('text/plain');
+      // console.log('Tile Data: ', tileData);
+      const droppedTile: NewTile = JSON.parse(tileData);
+      // console.log('Dropped Tile: ', droppedTile);
 
-    const potentialMoves = searchForMove(droppedTile, gameState.gameBoard);
-    // console.log('Potential Moves: ', potentialMoves);
-    const droppedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
-    // console.log('Dropped Move: ', droppedMove);
+      const potentialMoves = searchForMove(droppedTile, gameState.gameBoard);
+      // console.log('Potential Moves: ', potentialMoves);
+      const droppedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
+      // console.log('Dropped Move: ', droppedMove);
 
-    if(droppedMove) {
-      const playTile: PlayAction = {
-        actionType: 'play',
-        playerIndex: gameState.activePlayer,
-        tilePlayed: droppedMove.placedTile,
-        coord: droppedMove.coord,
+      if(droppedMove) {
+        const playTile: PlayAction = {
+          actionType: 'play',
+          playerIndex: gameState.activePlayer,
+          tilePlayed: droppedMove.placedTile,
+          coord: droppedMove.coord,
+        }
+        pushAction(playTile);
+        setTileInHand(undefined);
       }
-      pushAction(playTile);
-      setTileInHand(undefined);
     }
   }
 

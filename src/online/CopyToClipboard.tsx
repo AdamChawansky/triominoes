@@ -12,7 +12,7 @@ export function CopyToClipboard(props: {
         cursor: copied ? 'not-allowed' : 'pointer',
         fontSize: copied ? '1rem' : '2rem',
       }}
-      onClick={() => !copied && copyToClipboard("https://adamchawansky.github.io/triominoes/?id=" + props.toCopy)}
+      onClick={() => !copied && copyToClipboard("https://adamchawansky.github.io/triominoes/?gameID=" + props.toCopy)}
     >
       {copied ? 'copied to clipboard!' : '🔗: ' + props.toCopy}
     </div>
