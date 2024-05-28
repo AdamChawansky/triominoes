@@ -20,9 +20,6 @@ function generateGameID() {
   return gameID;
 }
 
-// Generate unique playerID
-// const playerID = new Date().getTime().toString();
-
 // Check if player ID exists in local storage
 let playerID: string | null = localStorage.getItem('playerID');
 

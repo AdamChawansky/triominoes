@@ -300,7 +300,7 @@ export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameB
   if( placedTile.orientation === 'up' ) {
     // Check Up: (x-1,y), (x+1,y), (x-1,y+1), (x,y+1), (x+1,y+1)
     // Check DownLeft: (x-2,y), (x-1,y), (x-2,y-1), (x-1,y-1), (x,y-1)
-    // Check DownRight: (x+1,y), (x+2,y), (x,y-1), (x+1,y-1), (x-1,y+1)
+    // Check DownRight: (x+1,y), (x+2,y), (x,y-1), (x+1,y-1), (x+2,y-1)
     const hexAbove: Boolean =
       gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
       gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
@@ -318,7 +318,7 @@ export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameB
       gameBoard.has(toKey({ x: coord.x+2, y: coord.y})) &&
       gameBoard.has(toKey({ x: coord.x,   y: coord.y-1})) &&
       gameBoard.has(toKey({ x: coord.x+1, y: coord.y-1})) &&
-      gameBoard.has(toKey({ x: coord.x-1, y: coord.y+1}));
+      gameBoard.has(toKey({ x: coord.x+2, y: coord.y-1}));
     if( hexAbove ) points += 50;
     if( hexDownLeft ) points += 50;
     if( hexDownRight ) points += 50;
