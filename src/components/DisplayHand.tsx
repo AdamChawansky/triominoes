@@ -9,32 +9,34 @@ export function DisplayHand(props: {
   tileInHand: NewTile | undefined,
   setTileInHand: (b: NewTile | undefined) => void,
 }) {
-  // Only display hand of local player
-  const playerHand = props.gameState.hands[props.playerIndex];
-  // ADMIN: display hand of activePlayer
-  // const playerHand = props.gameState.hands[props.gameState.activePlayer];
+  const { playerIndex, gameState, tileInHand, setTileInHand } = props;
 
-  function onClick(tileInHand: NewTile) {
-    if(props.tileInHand?.id === tileInHand.id) {
-      props.setTileInHand(undefined);
+  // Only display hand of local player
+  const playerHand = gameState.hands[playerIndex];
+  // ADMIN: display hand of activePlayer
+  // const playerHand = gameState.hands[gameState.activePlayer];
+
+  function onClick(tile: NewTile) {
+    if(tileInHand?.id === tile.id) {
+      setTileInHand(undefined);
     } else {
-      props.setTileInHand(tileInHand);
+      setTileInHand(tile);
     }
   }
 
-  if( props.gameState.gameBoard.size === 0 ) {
+  if( gameState.gameBoard.size === 0 ) {
     return (<div></div>);
   } else {
     return (
       <div className="player-hand">
         {playerHand.map((newTile) => (
           <TileInHand
-            key = {newTile.id}
-            newTile = {newTile}
-            gameState={props.gameState}
-            isSelected={newTile.id === props.tileInHand?.id}
+            key={newTile.id}
+            newTile={newTile}
+            gameState={gameState}
+            isSelected={newTile.id === tileInHand?.id}
             onClick={() => onClick(newTile)}
-            setTileInHand={props.setTileInHand}
+            setTileInHand={setTileInHand}
           />
         ))}
       </div>

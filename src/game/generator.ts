@@ -37,18 +37,18 @@ export function makeNewTiles(): NewTile[] {
 // Given a NewBlock, return 3 permutations of As and Bs
 export function permuteTile( tile:NewTile ): PlacedTile[] {
   return [{
-  // Make the 3 A types
+  // Return the 6 permutations in order as you rotate them 60 degrees clockwise
     orientation: 'up',
     newTileID: tile.id,
     topCenter: tile.numbers[0],
     bottomRight: tile.numbers[1],
     bottomLeft: tile.numbers[2],
   }, {
-    orientation: 'up',
+    orientation: 'down',
     newTileID: tile.id,
-    topCenter: tile.numbers[1],
-    bottomRight: tile.numbers[2],
-    bottomLeft: tile.numbers[0],
+    bottomCenter: tile.numbers[1],
+    topLeft: tile.numbers[2],
+    topRight: tile.numbers[0],
   }, {
     orientation: 'up',
     newTileID: tile.id,
@@ -56,18 +56,17 @@ export function permuteTile( tile:NewTile ): PlacedTile[] {
     bottomRight: tile.numbers[0],
     bottomLeft: tile.numbers[1],
   }, {
-  // Make the 3 B types
     orientation: 'down',
     newTileID: tile.id,
     bottomCenter: tile.numbers[0],
     topLeft: tile.numbers[1],
     topRight: tile.numbers[2],
   }, {
-    orientation: 'down',
+    orientation: 'up',
     newTileID: tile.id,
-    bottomCenter: tile.numbers[1],
-    topLeft: tile.numbers[2],
-    topRight: tile.numbers[0],
+    topCenter: tile.numbers[1],
+    bottomRight: tile.numbers[2],
+    bottomLeft: tile.numbers[0],
   }, {
     orientation: 'down',
     newTileID: tile.id,
