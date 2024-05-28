@@ -109,7 +109,7 @@ export function RootDisplay(props: {
             {gameData.players[playerIndex].playerType !== 'spectator' && (
             <button className="button"
               onClick={getButtonClick()}
-              disabled={ gameData.gameInProgress && gameState.activePlayer !== playerIndex}
+              disabled={gameData.gameInProgress && gameState.activePlayer !== playerIndex}
             >
               {getButtonLabel(gameState)}
             </button>

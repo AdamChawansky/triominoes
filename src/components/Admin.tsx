@@ -98,6 +98,7 @@ export function Admin(props: {
             tileInHand={tileInHand}
             setTileInHand={setTileInHand}
             pushAction={pushAction}
+            isActivePlayer={gameState.activePlayer === playerIndex}
           />
           <div className="bottom-container">
             <DisplayHand 

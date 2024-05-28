@@ -21,9 +21,25 @@ function generateGameID() {
 }
 
 // Generate unique playerID
-const playerID = new Date().getTime().toString();
-// const playerID = Math.random().toString(36).substr(2, 9);
+// const playerID = new Date().getTime().toString();
 
+// Check if player ID exists in local storage
+let playerID: string | null = localStorage.getItem('playerID');
+
+// If player ID doesn't exist, generate a new one
+if (!playerID) {
+  playerID = generateUniqueID();
+  localStorage.setItem('playerID', playerID);
+}
+
+// Function to generate a unique player ID
+function generateUniqueID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c: string): string {
+    const r: number = Math.random() * 16 | 0 // | 0 truncates number to an integer
+    const v = c === 'x' ? r : (r & 0x3 | 0x8); // extracts a number from 1000 to 1011 for y
+    return v.toString(16);
+  });
+}
 
 /* App runs a function and returns something that looks like HTML */
 function App() {
@@ -93,7 +109,7 @@ function App() {
           }],
         },
         players: [{
-          localPlayerID: playerID,
+          localPlayerID: playerID || "null",
           playerName: playerName,
           playerType: 'human',
         }],
@@ -151,7 +167,7 @@ function App() {
           } : existingGameData.gameHistory,
             players: [
               ...existingGameData.players,
-              { localPlayerID: playerID, playerName: playerName, playerType }
+              { localPlayerID: playerID || "null", playerName: playerName, playerType }
             ],
           };
           // Save the updated game data to Firebase
@@ -169,9 +185,9 @@ function App() {
 
   if( gameStatus === 'enterRoom' && initialGameData ) {
     if (playerName==='admin') {
-      return <Admin initialGameData={initialGameData} localPlayerID={playerID}/>;
+      return <Admin initialGameData={initialGameData} localPlayerID={playerID || "null"}/>;
     } else {
-      return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID}/>;
+      return <RootDisplay initialGameData={initialGameData} localPlayerID={playerID || "null"}/>;
     }
   } else if (gameStatus === 'landing') {
     return (
