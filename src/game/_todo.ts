@@ -10,25 +10,17 @@ Homework:
 - 
 
 KNOWN BUGS:
-- Need to fix issue of joining using gameID
---> link with gameID doesn't seem to work
---> people can keep joining beyond the numPlayers
---> getting DisplayHand error...
---> reloading the page takes you back to JoinGame screen. Does the playerID change on reload? PAUL!!!
+- PAUL: reloading the page takes you back to JoinGame screen.
 - investigate scoring (seems like you can get bridge/hexagon at same time)
-- 
+- game doesn't trigger 'end' action until someone tries to play
 
 FOR LATER:
-- Add notification for player's turn
-- Create -/+ zoom button to zoom that GameBoardView
-- Change GameLog wording to gain/loses and color code green/red.
---> Add HEXAGON & BRIDGE chime / text.
 - Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)
+- Create -/+ zoom button for GameBoardView
+- Change GameLog wording to gain/loses and color code green/red.
+- Change pointsFromPlay to return (points, hex, bridge) for HEXAGON & BRIDGE chime / text.
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
-- Create admin view
---> should display active player's hand
---> should have all buttons at top (vs. only Start Game --> Draw/Pass --> New Game)
 - Add ability for players to undo by selecting point in data log
 
 End states:
