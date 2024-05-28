@@ -33,6 +33,7 @@ export function RootDisplay(props: {
 
   const playerIndex = gameData.players.findIndex((player) => player.localPlayerID === props.localPlayerID);
   const playerName = playerIndex !== -1 ? gameData.players[playerIndex].playerName : '';
+  console.log(gameData.players);
 
   // helpers
   const gameHistory = gameData.gameHistory;
@@ -140,7 +141,9 @@ export function RootDisplay(props: {
         />
         <ChatComponent
           playerName={playerName}
-          playerIndex={playerIndex}/>
+          playerIndex={playerIndex}
+          gameData={gameData}
+        />
       </div>
     </main>
   );

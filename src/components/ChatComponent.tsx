@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Message, MessageHistory } from '../game/types';
+import { FirebaseGameData, Message, MessageHistory } from '../game/types';
 import './ChatComponent.css'
 import { playerColors } from './DisplayScores';
+import { firebaseSaveGameData } from '../online/firebaseApi';
 
-const initialMessageHistory: MessageHistory = {
-    messages: [],
-  };
+// const initialMessageHistory: MessageHistory = {
+//     messages: [],
+//   };
   
-const ChatComponent: React.FC<{playerName: string; playerIndex: number}> = ({
+const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData: FirebaseGameData}> = ({
   playerName,
   playerIndex,
+  gameData,
 }) => {
-  const [messageHistory, setMessageHistory] = useState<MessageHistory>(initialMessageHistory);
+  const messageHistory = gameData.messageHistory;
+  // const [messageHistory, setMessageHistory] = useState<MessageHistory>(initialMessageHistory);
   const [inputMessage, setInputMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
@@ -22,13 +25,17 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number}> = ({
   const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
       const newMessage: Message = {
-        player: playerName,
+        playerName: playerName,
         playerIndex: playerIndex,
         content: inputMessage.trim(),
       };
-      setMessageHistory((prevHistory) => ({
-        messages: [...prevHistory.messages, newMessage],
-      }));
+      const updatedMessageHistory: MessageHistory = {
+        messages: [...messageHistory.messages, newMessage],
+      };
+      firebaseSaveGameData({
+        ...gameData,
+        messageHistory: updatedMessageHistory,
+      });
       setInputMessage('');
     }
   };
@@ -51,7 +58,7 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number}> = ({
         {messageHistory.messages.map((message, index) => (
           <div key={index} className="message">
             <span className={`player ${playerColors[message.playerIndex]}`}>
-              {message.player + `: `}
+              {message.playerName + `: `}
             </span>
             <span className="content">{message.content}</span>
           </div>

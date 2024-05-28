@@ -13,6 +13,7 @@ function sanitizeGameData(raw: FirebaseGameData): FirebaseGameData {
       actions: raw.gameHistory?.actions ?? [],
     },
     players: raw.players ?? [], // if first element is undefined or null, return the second element
+    messageHistory: raw.messageHistory ?? {messages: []},
   };
 }
 

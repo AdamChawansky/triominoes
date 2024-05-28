@@ -13,6 +13,7 @@ export interface FirebaseGameData {
     playerType: 'human' | 'computer' | 'spectator';
   }[];
   gameInProgress: boolean;
+  messageHistory: MessageHistory;
 }
 
 export type PlacedTileA = {
@@ -112,7 +113,7 @@ export type EndGameAction = {
 export type ActionPusher = (action: Action) => void;
 
 export interface Message {
-  player: string;
+  playerName: string;
   playerIndex: number;
   content: string;
 }
