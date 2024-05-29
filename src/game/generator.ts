@@ -76,6 +76,15 @@ export function permuteTile( tile:NewTile ): PlacedTile[] {
   }];
 }
 
+// Extract NewTile from PlacedTile
+export function placedTileToNewTile(placedTile: PlacedTile): NewTile {
+  const numbers = placedTile.newTileID.split(',').map(Number);
+  return {
+    id: placedTile.newTileID,
+    numbers: numbers as [number, number, number],
+  };
+}
+
 export function initializeNewGameHistory(numPlayers: number, playerNames: string[]): GameHistory {
   const history: GameHistory = {
     startingDeck: makeNewTiles(),
