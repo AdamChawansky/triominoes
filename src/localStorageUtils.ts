@@ -9,11 +9,15 @@ export function saveTileToLocalStorage(tileId: string, permutation: number) {
     }
   
     localStorage.setItem('tilesInHand', JSON.stringify(tilesInHand));
-    console.log("Saved TilesInHand: ", tilesInHand);
+    // console.log("Saved TilesInHand: ", tilesInHand);
 }
 
 export function retrieveTilesFromLocalStorage() {
     const tilesInHand = JSON.parse(localStorage.getItem('tilesInHand') || '[]');
-    console.log("Retrieved TilesInHand: ", tilesInHand);
+    // console.log("Retrieved TilesInHand: ", tilesInHand);
     return tilesInHand;
+}
+
+export function clearTilesFromLocalStorage() {
+    localStorage.removeItem('tilesInHand');
 }

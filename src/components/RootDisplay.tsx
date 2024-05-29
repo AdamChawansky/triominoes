@@ -15,6 +15,7 @@ import activePlayerSound from '../../public/456965-notification.mp3'
 import victorySound from '../../public/456968-win-game.mp3'
 import failureSound from '../../public/639945-lose-game.wav'
 import bridgeOrHexagonSound from '../../public/442586-bridge.wav'
+import { clearTilesFromLocalStorage } from '../localStorageUtils.ts';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
@@ -54,6 +55,7 @@ export function RootDisplay(props: {
     const playerNames = gameData.players.map(player => player.playerName);
     const newGameHistory = initializeNewGameHistory(gameData.numPlayers, playerNames);
     setGameHistory(newGameHistory, true);
+    clearTilesFromLocalStorage();
   }
 
   // Automatically makes first available action: play / draw / pass
