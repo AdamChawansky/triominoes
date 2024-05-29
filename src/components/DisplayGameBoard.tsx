@@ -54,23 +54,23 @@ export function GameBoardView(props: {
   const offsetY = (gameBoardHeight - boardHeight) / 2;
 
   // Allow players to place tiles in available spaces based on selected tileInHand
-  function onBlockClick(coord: Coordinate) {
-    if( isActivePlayer && tileInHand ) {
-      const potentialMoves = searchForMove(tileInHand, gameState.gameBoard);
-      const clickedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
+  // function onBlockClick(coord: Coordinate) {
+  //   if( isActivePlayer && tileInHand ) {
+  //     const potentialMoves = searchForMove(tileInHand, gameState.gameBoard);
+  //     const clickedMove = potentialMoves.find(move => move.coord.x === coord.x && move.coord.y === coord.y);
 
-      if(clickedMove) {
-        const playTile: PlayAction = {
-          actionType: 'play',
-          playerIndex: gameState.activePlayer,
-          tilePlayed: clickedMove.placedTile,
-          coord: clickedMove.coord,
-        }
-        pushAction(playTile);
-        setTileInHand(undefined);
-      }
-    }
-  }
+  //     if(clickedMove) {
+  //       const playTile: PlayAction = {
+  //         actionType: 'play',
+  //         playerIndex: gameState.activePlayer,
+  //         tilePlayed: clickedMove.placedTile,
+  //         coord: clickedMove.coord,
+  //       }
+  //       pushAction(playTile);
+  //       setTileInHand(undefined);
+  //     }
+  //   }
+  // }
 
   // Allow players to place tiles in available spaces by dragging and dropping
   function onBlockDrop(event: React.DragEvent<HTMLDivElement>, coord: Coordinate) {
@@ -107,7 +107,7 @@ export function GameBoardView(props: {
           coord = {toCoord(coord)}
           placedTile = {placedBlock}
           tileStyle={toKey(gameState.lastPlay) === coord ? 'most-recent' : ''}
-          onClick={() => onBlockClick(toCoord(coord))}
+          // onClick={() => onBlockClick(toCoord(coord))}
           position={{
             left: `${(toCoord(coord).x - minX) * width * 0.5 + offsetX}px`,
             bottom: `${(toCoord(coord).y - minY) * height + offsetY}px`,
@@ -120,7 +120,7 @@ export function GameBoardView(props: {
           coord = {potentialMove.coord}
           placedTile = {potentialMove.placedTile}
           tileStyle = {'playable'}
-          onClick = {() => onBlockClick(potentialMove.coord)}
+          // onClick = {() => onBlockClick(potentialMove.coord)}
           onDragOver = {(event) => event.preventDefault()}
           onDrop = {(event) => onBlockDrop(event, potentialMove.coord)}
           position = {{
