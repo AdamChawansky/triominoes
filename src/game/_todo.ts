@@ -8,6 +8,12 @@ gameBoard.entries();
 
 Homework:
 - 
+https://freesound.org/people/gristi/sounds/562197/
+https://freesound.org/people/David819/sounds/668434/
+https://freesound.org/people/AKkingStudio/sounds/684166/
+https://freesound.org/people/el_boss/sounds/560700/
+https://freesound.org/people/goncalo95/sounds/396406/
+https://freesound.org/people/VSokorelos/sounds/346178/
 
 KNOWN BUGS:
 - PAUL: reloading the page takes you back to JoinGame screen.
@@ -15,7 +21,7 @@ KNOWN BUGS:
 - game doesn't trigger 'end' action until someone tries to play
 
 FOR LATER:
-- Change onClick for TileInHand to rotate tile (and make them act like PlacedTiles)
+- Add button that turns available spaces on/off
 - Create -/+ zoom button for GameBoardView
 - Change GameLog wording to gain/loses and color code green/red.
 - Change pointsFromPlay to return (points, hex, bridge) for HEXAGON & BRIDGE chime / text.
