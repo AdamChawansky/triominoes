@@ -200,7 +200,7 @@ export function RootDisplay(props: {
                 color: moveHighlightingEnabled ? 'green' : 'red',
               }}
             >
-              {moveHighlightingEnabled ? 'MOVE ON' : 'MOVE OFF'}
+              {moveHighlightingEnabled ? 'SHOW MOVES' : 'SHOW MOVES'}
             </button>
           </div>
         </div>
