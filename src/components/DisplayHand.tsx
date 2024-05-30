@@ -12,18 +12,8 @@ export function DisplayHand(props: {
 }) {
   const { playerIndex, gameState, tileInHand, setTileInHand, soundEffectsEnabled } = props;
 
-  // Only display hand of local player
+  // ADMIN: displays hand of activePlayer, otherwise display hand of local player
   const playerHand = gameState.hands[playerIndex];
-  // ADMIN: display hand of activePlayer
-  // const playerHand = gameState.hands[gameState.activePlayer];
-
-  // function onClick(tile: NewTile) {
-  //   if(tileInHand?.id === tile.id) {
-  //     setTileInHand(undefined);
-  //   } else {
-  //     setTileInHand(tile);
-  //   }
-  // }
 
   if( gameState.gameBoard.size === 0 ) {
     return (<div></div>);
@@ -35,7 +25,6 @@ export function DisplayHand(props: {
             key={newTile.id}
             newTile={newTile}
             isSelected={newTile.id === tileInHand?.id}
-            // onClick={() => onClick(newTile)}
             setTileInHand={setTileInHand}
             soundEffectsEnabled={soundEffectsEnabled}
           />

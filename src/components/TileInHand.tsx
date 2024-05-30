@@ -7,7 +7,6 @@ import { retrieveTilesFromLocalStorage, saveTileToLocalStorage } from "../localS
 export function TileInHand(props: {
   newTile: NewTile;
   isSelected: boolean;
-  // onClick: () => void;
   setTileInHand: (tile: NewTile | undefined) => void;
   soundEffectsEnabled: boolean;
 }) {

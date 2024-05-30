@@ -114,6 +114,13 @@ export function RootDisplay(props: {
     }
   }
 
+  // Enable or disable visual highlight of available plays
+  const [moveHighlightingEnabled, setMoveHighlightingEnabled] = useState(true);
+
+  function handleMoveHighlightingToggle() {
+    setMoveHighlightingEnabled(prevState => !prevState);
+  }
+
   // Sound effects code below
   const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(false);
 
@@ -181,16 +188,29 @@ export function RootDisplay(props: {
             {getButtonLabel(gameState)}
           </button>
           )}
+          <div className="right-aligned-buttons">
+            <button className="sound-toggle-button" onClick={handleSoundToggle}>
+              {soundEffectsEnabled ? '🔊' : '🔇'}
+            </button>
+            <button
+              className="move-highlighting-toggle-button"
+              onClick={handleMoveHighlightingToggle}
+              style={{
+                textDecoration: moveHighlightingEnabled ? 'none' : 'line-through',
+                color: moveHighlightingEnabled ? 'green' : 'red',
+              }}
+            >
+              {moveHighlightingEnabled ? 'MOVE ON' : 'MOVE OFF'}
+            </button>
+          </div>
         </div>
-        <button className="sound-toggle-button" onClick={handleSoundToggle}>
-          {soundEffectsEnabled ? '🔊' : '🔇'}
-        </button>
         <GameBoardView 
           gameState={gameState}
           tileInHand={tileInHand}
           setTileInHand={setTileInHand}
           pushAction={pushAction}
           isActivePlayer={gameState.activePlayer === playerIndex}
+          moveHighlightingEnabled={moveHighlightingEnabled}
         />
         <div className="bottom-container">
           {gameData.players[playerIndex].playerType !== 'spectator' && (

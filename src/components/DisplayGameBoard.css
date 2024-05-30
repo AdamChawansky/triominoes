@@ -4,8 +4,9 @@
   flex: 1;
 }
 .game-board .tile-container {
+ /* adjust the height:width ratio to maintain equilateral triangle ratio */
   width: 100px;
-  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  height: 86.6px;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background-image: url('triangle-up-beige.png');
   background-size: contain;
@@ -32,8 +33,9 @@
   transform: translateX(-43.3%) rotate(180deg);
 }
 .game-board .tile-container-inverted {
+ /* adjust the height:width ratio to maintain equilateral triangle ratio */
   width: 100px;
-  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  height: 86.6px;
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
   background-image: url('triangle-down-beige.png');
   background-size: contain;
@@ -56,13 +58,9 @@
 }
 
 .tile-container:hover {
-  /* background-image: url('triangle-up-invert.png'); */
-  /* color: white; */
   transform: translateY(-2px);
 }
 .tile-container-inverted:hover {
-  /* background-image: url('triangle-down-invert.png'); */
-  /* color: white; */
   transform: translateY(-2px);
 }
 
@@ -83,12 +81,20 @@
   background-image: url('triangle-down-yellow.png');
   color: black;
 } */
-.tile-container.playable {
+.tile-container.playable-visible {
   background-image: url('triangle-up-darkgreen.png');
   color: transparent;
 }
-.tile-container-inverted.playable {
+.tile-container-inverted.playable-visible {
   background-image: url('triangle-down-darkgreen.png');
+  color: transparent;
+}
+.tile-container.playable-hidden {
+  background-image: url('empty.png');
+  color: transparent;
+}
+.tile-container-inverted.playable-hidden {
+  background-image: url('empty.png');
   color: transparent;
 }
 

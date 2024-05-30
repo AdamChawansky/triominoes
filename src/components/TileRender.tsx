@@ -8,8 +8,8 @@ export function TileRender(props: {
   onClick?: () => void;
   style?: CSSProperties;
   tileStyle?: string;
-    // 'selected' = yellow shading in hand
-    // 'playable' = black outline, no numbers
+    // 'playable-visible' = black outline, dark green fill, no numbers
+    // 'playable-hidden' = completely transparent
     // 'most-recent' = red star in center of tile
   draggable?: boolean; // Makes tile draggable
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void; // sets data of dragged tile

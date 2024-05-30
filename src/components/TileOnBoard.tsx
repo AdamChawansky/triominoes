@@ -6,7 +6,6 @@ export function TileOnBoard(props: {
   coord: Coordinate;
   placedTile: PlacedTile;
   tileStyle?: string;
-  // onClick: () => void;
   onDragOver?: (event: React.DragEvent<HTMLDivElement>) => void;
   onDrop?: (event: React.DragEvent<HTMLDivElement>) => void;
   position: CSSProperties;
@@ -25,7 +24,6 @@ export function TileOnBoard(props: {
       bottom={bottom}
       orientation={props.placedTile.orientation}
       tileStyle={props.tileStyle}
-      // onClick={props.onClick}
       onDragOver={props.onDragOver}
       onDrop={props.onDrop}
     />

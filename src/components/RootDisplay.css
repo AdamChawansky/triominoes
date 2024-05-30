@@ -34,6 +34,9 @@ main {
 
 /* Holds buttons */
 .buttons-container {
+  display: flex;
+  position: relative;
+  align-items: center;
   border-radius: 1px;
   padding: 10px;
   font-weight: bold;
@@ -41,6 +44,9 @@ main {
 }
 
 .buttons-container .button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 14px;
   padding: 10px 20px;
   margin: 5px;
@@ -50,21 +56,34 @@ main {
   border-radius: 8px;
   cursor: pointer;
 }
-  
 .buttons-container .button:hover {
   background-color: #D3D3D3;
   color: black;
 }
-
 .tiles-remaining {
   font-size: 0.8em;
   color: #888;
 }
 
+.right-aligned-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.move-highlighting-toggle-button {
+  background-color: black;
+  color: whitesmoke;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.move-highlighting-toggle-button:hover {
+  background-color: #D3D3D3;
+  color: black;
+}
+
 .sound-toggle-button {
-  position: absolute;
-  top: 10px;
-  right: 375px;
   background: none;
   border: none;
   font-size: 24px;

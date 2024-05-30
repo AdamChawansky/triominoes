@@ -11,9 +11,10 @@ export function GameBoardView(props: {
   setTileInHand: (b: NewTile | undefined) => void,
   pushAction: ActionPusher,
   isActivePlayer: boolean,
+  moveHighlightingEnabled: boolean,
 }) {
   // aka const gameState = props.gameState;
-  const { gameState, tileInHand, pushAction, setTileInHand, isActivePlayer } = props;
+  const { gameState, tileInHand, pushAction, setTileInHand, isActivePlayer, moveHighlightingEnabled } = props;
 
   // Grab gameBoard height & width to keep tiles centered
   const gameBoardRef = useRef<HTMLDivElement>(null);
@@ -119,7 +120,7 @@ export function GameBoardView(props: {
           key = {toKey(potentialMove.coord)}
           coord = {potentialMove.coord}
           placedTile = {potentialMove.placedTile}
-          tileStyle = {'playable'}
+          tileStyle = {moveHighlightingEnabled ? 'playable-visible' : 'playable-hidden'}
           // onClick = {() => onBlockClick(potentialMove.coord)}
           onDragOver = {(event) => event.preventDefault()}
           onDrop = {(event) => onBlockDrop(event, potentialMove.coord)}
