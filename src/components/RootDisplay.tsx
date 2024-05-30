@@ -199,6 +199,7 @@ export function RootDisplay(props: {
               gameState={gameState} 
               tileInHand={tileInHand}
               setTileInHand={setTileInHand}
+              soundEffectsEnabled={soundEffectsEnabled}
           />
           )}
         </div>

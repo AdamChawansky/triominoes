@@ -8,12 +8,6 @@ gameBoard.entries();
 
 Homework:
 - 
-https://freesound.org/people/gristi/sounds/562197/
-https://freesound.org/people/David819/sounds/668434/
-https://freesound.org/people/AKkingStudio/sounds/684166/
-https://freesound.org/people/el_boss/sounds/560700/
-https://freesound.org/people/goncalo95/sounds/396406/
-https://freesound.org/people/VSokorelos/sounds/346178/
 
 KNOWN BUGS:
 - PAUL: reloading the page takes you back to JoinGame screen.

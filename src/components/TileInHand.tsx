@@ -1,37 +1,45 @@
 import { useEffect, useState } from "react";
 import { permuteTile } from "../game/generator";
-import { GameState, NewTile } from "../game/types";
+import { NewTile } from "../game/types";
 import { TileRender } from "./TileRender";
 import { retrieveTilesFromLocalStorage, saveTileToLocalStorage } from "../localStorageUtils";
 
 export function TileInHand(props: {
   newTile: NewTile;
-  gameState: GameState;
   isSelected: boolean;
   // onClick: () => void;
   setTileInHand: (tile: NewTile | undefined) => void;
+  soundEffectsEnabled: boolean;
 }) {
+  const { newTile, isSelected, setTileInHand, soundEffectsEnabled } = props;
+
   const [permutation, setPermutation] = useState(() => {
     const tilesInHand = retrieveTilesFromLocalStorage();
-    const tileInHand = tilesInHand.find((tile: { id: string }) => tile.id === props.newTile.id);
+    const tileInHand = tilesInHand.find((tile: { id: string }) => tile.id === newTile.id);
     return tileInHand ? tileInHand.permutation : 0;
   })
 
-  const permutedTile = permuteTile(props.newTile)[permutation];
+  const permutedTile = permuteTile(newTile)[permutation];
 
   useEffect(() => {
     const tilesInHand = retrieveTilesFromLocalStorage();
-    const tileIndex = tilesInHand.findIndex((tile: { id: string }) => tile.id === props.newTile.id);
+    const tileIndex = tilesInHand.findIndex((tile: { id: string }) => tile.id === newTile.id);
 
     if (tileIndex === -1) {
-      saveTileToLocalStorage(props.newTile.id, 0);
+      saveTileToLocalStorage(newTile.id, 0);
     }
-  }, [props.newTile.id]);
+  }, [newTile.id]);
 
+  // Rotates tile 60 degrees and plays a sound
   function onClick() {
     const nextPermutation = (permutation + 1) % 6;
     setPermutation(nextPermutation);
-    saveTileToLocalStorage(props.newTile.id, nextPermutation);
+    saveTileToLocalStorage(newTile.id, nextPermutation);
+
+    if (soundEffectsEnabled) {
+      const rotateTileSound = new Audio('../../public/346178-rotate-tile.wav');
+      rotateTileSound.play();
+    }
   }
 
   const top = permutedTile.orientation === 'up'
@@ -42,9 +50,9 @@ export function TileInHand(props: {
     : [permutedTile.bottomCenter];
 
   function onDragStart(event: React.DragEvent<HTMLDivElement>) {
-    event.dataTransfer.setData('text/plain', JSON.stringify(props.newTile));
-    props.setTileInHand(props.newTile);
-    // console.log('Tile being dragged: ', JSON.stringify(props.newTile));
+    event.dataTransfer.setData('text/plain', JSON.stringify(newTile));
+    setTileInHand(newTile);
+    // console.log('Tile being dragged: ', JSON.stringify(newTile));
   }
 
   return (
@@ -53,7 +61,7 @@ export function TileInHand(props: {
       bottom={bottom}
       orientation={permutedTile.orientation}
       onClick={onClick}
-      tileStyle={props.isSelected ? 'selected' : ''}
+      tileStyle={isSelected ? 'selected' : ''}
       draggable
       onDragStart={onDragStart}
     />

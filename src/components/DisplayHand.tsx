@@ -8,8 +8,9 @@ export function DisplayHand(props: {
   gameState: GameState,
   tileInHand: NewTile | undefined,
   setTileInHand: (b: NewTile | undefined) => void,
+  soundEffectsEnabled: boolean,
 }) {
-  const { playerIndex, gameState, tileInHand, setTileInHand } = props;
+  const { playerIndex, gameState, tileInHand, setTileInHand, soundEffectsEnabled } = props;
 
   // Only display hand of local player
   const playerHand = gameState.hands[playerIndex];
@@ -33,10 +34,10 @@ export function DisplayHand(props: {
           <TileInHand
             key={newTile.id}
             newTile={newTile}
-            gameState={gameState}
             isSelected={newTile.id === tileInHand?.id}
             // onClick={() => onClick(newTile)}
             setTileInHand={setTileInHand}
+            soundEffectsEnabled={soundEffectsEnabled}
           />
         ))}
       </div>
