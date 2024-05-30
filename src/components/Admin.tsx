@@ -89,54 +89,61 @@ export function Admin(props: {
     setGameHistory(updatedGameHistory);
   }
 
-    // Sound effects code below
-    const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(false);
+  // Enable or disable visual highlight of available plays
+  const [moveHighlightingEnabled, setMoveHighlightingEnabled] = useState(true);
 
-    function handleSoundToggle() {
-      setSoundEffectsEnabled(prevState => !prevState);
+  function handleMoveHighlightingToggle() {
+    setMoveHighlightingEnabled(prevState => !prevState);
+  }
+
+  // Sound effects code below
+  const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(false);
+
+  function handleSoundToggle() {
+    setSoundEffectsEnabled(prevState => !prevState);
+  }
+
+  // Play a notification when it's your turn
+  const activePlayerSoundRef = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    if( soundEffectsEnabled && gameData.gameInProgress && gameState.activePlayer === playerIndex ) {
+      if( activePlayerSoundRef.current ) {
+        activePlayerSoundRef.current.play();
+      }
     }
-  
-    // Play a notification when it's your turn
-    const activePlayerSoundRef = useRef<HTMLAudioElement | null>(null);
-    useEffect(() => {
-      if( soundEffectsEnabled && gameData.gameInProgress && gameState.activePlayer === playerIndex ) {
-        if( activePlayerSoundRef.current ) {
-          activePlayerSoundRef.current.play();
+  }, [soundEffectsEnabled, gameData.gameInProgress, gameState.activePlayer, playerIndex]);
+
+  // Play a sound if a player makes a hexagon or bridge
+  const bridgeOrHexagonSoundRef = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    const lastAction = gameHistory.actions[gameHistory.actions.length - 1];
+    if( soundEffectsEnabled && lastAction && lastAction.actionType === 'play' ) {
+      const points = pointsFromPlay(lastAction.tilePlayed, lastAction.coord, gameState.gameBoard);
+      if( points >= 40 && bridgeOrHexagonSoundRef.current ) {
+        bridgeOrHexagonSoundRef.current.play();
+      }
+    }
+  }, [soundEffectsEnabled, gameHistory.actions, gameState.gameBoard]);
+
+  // Play a victory / failure notification if you win / lose 
+  const victorySoundRef = useRef<HTMLAudioElement | null>(null);
+  const failureSoundRef = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    if( soundEffectsEnabled && !gameData.gameInProgress && gameState.gameBoard.size > 0 ) {
+      const playerScore = gameState.scores[playerIndex];
+      const highestScore = Math.max(...gameState.scores);
+
+      if( playerScore === highestScore ) {
+        if( victorySoundRef.current ) {
+          victorySoundRef.current.play();
+        }
+      } else {
+        if( failureSoundRef.current ) {
+          failureSoundRef.current.play();
         }
       }
-    }, [soundEffectsEnabled, gameData.gameInProgress, gameState.activePlayer, playerIndex]);
-  
-    // Play a sound if a player makes a hexagon or bridge
-    const bridgeOrHexagonSoundRef = useRef<HTMLAudioElement | null>(null);
-    useEffect(() => {
-      const lastAction = gameHistory.actions[gameHistory.actions.length - 1];
-      if( soundEffectsEnabled && lastAction && lastAction.actionType === 'play' ) {
-        const points = pointsFromPlay(lastAction.tilePlayed, lastAction.coord, gameState.gameBoard);
-        if( points >= 40 && bridgeOrHexagonSoundRef.current ) {
-          bridgeOrHexagonSoundRef.current.play();
-        }
-      }
-    }, [soundEffectsEnabled, gameHistory.actions, gameState.gameBoard]);
-  
-    // Play a victory / failure notification if you win / lose 
-    const victorySoundRef = useRef<HTMLAudioElement | null>(null);
-    const failureSoundRef = useRef<HTMLAudioElement | null>(null);
-    useEffect(() => {
-      if( soundEffectsEnabled && !gameData.gameInProgress && gameState.gameBoard.size > 0 ) {
-        const playerScore = gameState.scores[playerIndex];
-        const highestScore = Math.max(...gameState.scores);
-  
-        if( playerScore === highestScore ) {
-          if( victorySoundRef.current ) {
-            victorySoundRef.current.play();
-          }
-        } else {
-          if( failureSoundRef.current ) {
-            failureSoundRef.current.play();
-          }
-        }
-      }
-    }, [soundEffectsEnabled, gameData.gameInProgress, gameState.scores, playerIndex]);
+    }
+  }, [soundEffectsEnabled, gameData.gameInProgress, gameState.scores, playerIndex]);
 
   return (
     <main>
@@ -155,13 +162,24 @@ export function Admin(props: {
             <button className="sound-toggle-button" onClick={handleSoundToggle}>
               {soundEffectsEnabled ? '🔊' : '🔇'}
             </button>
+            <button
+              className="move-highlighting-toggle-button"
+              onClick={handleMoveHighlightingToggle}
+              style={{
+                textDecoration: moveHighlightingEnabled ? 'none' : 'line-through',
+                color: moveHighlightingEnabled ? 'green' : 'red',
+              }}
+            >
+              {moveHighlightingEnabled ? 'MOVE ON' : 'MOVE OFF'}
+            </button>
           </div>
           <GameBoardView 
             gameState={gameState}
             tileInHand={tileInHand}
             setTileInHand={setTileInHand}
             pushAction={pushAction}
-            isActivePlayer={gameState.activePlayer === playerIndex}
+            isActivePlayer={true}
+            moveHighlightingEnabled={moveHighlightingEnabled}
           />
           <div className="bottom-container">
             <DisplayHand 
