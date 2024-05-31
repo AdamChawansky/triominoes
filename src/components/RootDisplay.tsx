@@ -172,8 +172,8 @@ export function RootDisplay(props: {
       <audio ref={victorySoundRef} src={victorySound}/>
       <audio ref={failureSoundRef} src={failureSound}/>
       <div className="left-container">
-        <CopyToClipboard toCopy={gameData.gameID}/>
         <div className="buttons-container">
+          <CopyToClipboard toCopy={gameData.gameID}/>
           {gameData.players[playerIndex].playerType !== 'spectator' && (
           <button className="button"
             onClick={getButtonClick()}
