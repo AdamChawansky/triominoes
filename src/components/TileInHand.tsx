@@ -34,6 +34,7 @@ export function TileInHand(props: {
     const nextPermutation = (permutation + 1) % 6;
     setPermutation(nextPermutation);
     saveTileToLocalStorage(newTile.id, nextPermutation);
+    setTileInHand(newTile);
 
     if (soundEffectsEnabled) {
       const rotateTileSound = new Audio('../../public/346178-rotate-tile.wav');
