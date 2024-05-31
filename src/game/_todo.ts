@@ -15,6 +15,10 @@ KNOWN BUGS:
 - game doesn't trigger 'end' action until someone tries to play
 
 FOR LATER:
+- Things for local storage:
+  - audio preferences
+  - display name
+  - current gameID
 - Add button that turns available spaces on/off
 - Create -/+ zoom button for GameBoardView
 - Change GameLog wording to gain/loses and color code green/red.
