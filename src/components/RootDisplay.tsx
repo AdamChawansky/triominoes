@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { initializeNewGameHistory, simulateOneAction } from '../game/generator.ts';
-import { replayHistory } from '../game/history.ts';
+import { isGameOver, replayHistory } from '../game/history.ts';
 import { MAX_DRAW, pointsFromPlay } from '../game/logic.ts';
 import { Action, FirebaseGameData, GameHistory, GameState, NewTile } from '../game/types.ts';
 import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
@@ -67,16 +67,18 @@ export function RootDisplay(props: {
   }
 
   function pushAction(action: Action) {
-    const updatedGameHistory = {
-      startingDeck: gameData.gameHistory.startingDeck,
-      actions: gameData.gameHistory.actions.concat(action),
-    };
+    if (action.actionType !== 'end' || !gameHistory.actions.some(a => a.actionType === 'end')) {
+      const updatedGameHistory = {
+        startingDeck: gameData.gameHistory.startingDeck,
+        actions: gameData.gameHistory.actions.concat(action),
+      };
 
-    const updatedGameInProgress = action.actionType !== 'end';
-    setGameHistory(updatedGameHistory, updatedGameInProgress);
+      const updatedGameInProgress = action.actionType !== 'end';
+      setGameHistory(updatedGameHistory, updatedGameInProgress);
+    }
   }
 
-  // Automate computer plays
+  // Automate computer plays every 500ms
   useEffect(() => {
     if( gameData.gameInProgress ) {
       const activePlayerName = gameState.playerNames[gameState.activePlayer];
@@ -88,6 +90,18 @@ export function RootDisplay(props: {
       }
     }
   }, [gameData.gameInProgress, gameHistory.actions]);
+
+  // Check if gameIsOver after every play
+  useEffect(() => {
+    const gameIsOver = isGameOver(gameState);
+    if (gameIsOver) {
+      const updatedGameHistory = {
+        ...gameHistory,
+        action: [...gameHistory.actions, {actionType: 'end'}],
+      };
+      setGameHistory(updatedGameHistory, false);
+    }
+  }, [gameData.gameHistory.actions]);
 
   // Determine the button label and onClick handler based on the game state
   function getButtonLabel(gameState: GameState) {
@@ -135,7 +149,7 @@ export function RootDisplay(props: {
     if( soundEffectsEnabled && gameData.gameInProgress && gameState.activePlayer === playerIndex ) {
       activePlayerSoundRef.current?.play();
     }
-  }, [gameData.gameInProgress, gameState.activePlayer, playerIndex]);
+  }, [gameData.gameHistory.actions]);
 
   // Play a sound if a player makes a hexagon or bridge
   const bridgeSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -150,7 +164,7 @@ export function RootDisplay(props: {
         hexagonSoundRef.current?.play();
       }
     }
-  }, [gameHistory.actions, gameState.gameBoard]);
+  }, [gameData.gameHistory.actions]);
 
   // Play a victory / failure notification if you win / lose 
   const victorySoundRef = useRef<HTMLAudioElement | null>(null);
@@ -163,10 +177,10 @@ export function RootDisplay(props: {
       if( playerScore === highestScore ) {
         victorySoundRef.current?.play();
       } else {
-          failureSoundRef.current?.play();
+        failureSoundRef.current?.play();
       }
     }
-  }, [gameData.gameInProgress, gameState.scores, playerIndex]);
+  }, [gameData.gameHistory.actions]);
 
 
   return (

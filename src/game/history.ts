@@ -149,3 +149,15 @@ export function replayHistory(gameHistory: GameHistory): GameState {
 
   return gameState;
 }
+
+export function isGameOver(gameState: GameState): Boolean {
+  // Check if anyone's hand is empty
+  let isEmpty: Boolean = false;
+  for (let i = 0; i < gameState.hands.length; i++) {
+    if (gameState.hands[i].length === 0) {
+      isEmpty = true;
+    }
+  }
+  
+  return isEmpty || (gameState.consecutivePasses === gameState.playerNames.length && gameState.drawPile.length === 0);
+}

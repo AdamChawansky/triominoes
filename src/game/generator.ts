@@ -148,37 +148,36 @@ export function simulateOneAction(gameHistory: GameHistory): GameHistory {
   }
   let gameState: GameState = replayHistory(simulatedHistory);
 
-  let isEmpty: Boolean = false;
-  for (let i=0; i < gameState.hands.length; i++) {
-    if (gameState.hands[i].length === 0) {
-      isEmpty = true;
-    }
-  }
+  // let isEmpty: Boolean = false;
+  // for (let i=0; i < gameState.hands.length; i++) {
+  //   if (gameState.hands[i].length === 0) {
+  //     isEmpty = true;
+  //   }
+  // }
   
-  if( gameHistory.actions[gameHistory.actions.length - 1].actionType != 'end') {
-    if (isEmpty || (gameState.consecutivePasses === gameState.playerNames.length && gameState.drawPile.length === 0)) {
+  // if( gameHistory.actions[gameHistory.actions.length - 1].actionType != 'end') {
+  //   if (isEmpty || (gameState.consecutivePasses === gameState.playerNames.length && gameState.drawPile.length === 0)) {
+  //     simulatedHistory.actions.push({
+  //       actionType: 'end',
+  //     });
+  //   } else {
+
+  // Automatically make a play for computer
+  const activePlayerName = gameState.playerNames[gameState.activePlayer];
+  if( activePlayerName.startsWith("Computer") ) {
+    simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
+  } else {
+    // Don't automatically make a play for human. Let them draw up to MAX_DRAW and then pass.
+    if( gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ) {
       simulatedHistory.actions.push({
-        actionType: 'end',
+        actionType: 'draw',
+        playerIndex: gameState.activePlayer,
       });
     } else {
-      // Automatically make a play for computer
-      const activePlayerName = gameState.playerNames[gameState.activePlayer];
-      if( activePlayerName.startsWith("Computer") ) {
-        simulatedHistory.actions.push(determineAction(gameState, gameState.activePlayer));
-      } else {
-        // Don't automatically make a play for human. Let them draw up to MAX_DRAW and then pass.
-        if( gameState.tilesDrawnThisTurn < MAX_DRAW && gameState.drawPile.length > 0 ) {
-          simulatedHistory.actions.push({
-            actionType: 'draw',
-            playerIndex: gameState.activePlayer,
-          });
-        } else {
-          simulatedHistory.actions.push({
-            actionType: 'pass',
-            playerIndex: gameState.activePlayer,
-          });
-        }
-      }
+      simulatedHistory.actions.push({
+        actionType: 'pass',
+        playerIndex: gameState.activePlayer,
+      });
     }
   }
   return simulatedHistory;

@@ -11,7 +11,7 @@ Homework:
 
 KNOWN BUGS:
 - PAUL: reloading the page takes you back to JoinGame screen.
-- game doesn't trigger 'end' action until someone tries to play
+- sound effects can trigger multiple times, even though nothing happened because of firebase subscription?
 
 FOR LATER:
 - Things for local storage:
