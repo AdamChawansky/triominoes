@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { initializeNewGameHistory, simulateOneAction } from '../game/generator.ts';
-import { isGameOver, replayHistory } from '../game/history.ts';
+import { replayHistory } from '../game/history.ts';
 import { MAX_DRAW, pointsFromPlay } from '../game/logic.ts';
 import { Action, FirebaseGameData, GameHistory, GameState, NewTile } from '../game/types.ts';
 import { CopyToClipboard } from '../online/CopyToClipboard.tsx';
