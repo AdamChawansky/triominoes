@@ -46,17 +46,17 @@ export function determineFirstPlay(gameState: GameState): [number, number] {
   return [startingPlayer, startingTileIndex];
 }
 
-// Function to test if blockInHand fits into given space on game board
-// Need to check if any of the 3 permutations of blockInHand align
+// Function to test if tileInHand fits into given space on game board
+// Need to check if any of the 3 permutations of tileInHand align
 export function doesTileFit( tileInHand: NewTile, coord: Coordinate, gameBoard: GameBoard ): PlacedTile | undefined {
   // Only need to check 3 of the permutations based on space on game board
-  // If we assume the block at (0,0) has PlacedBlockA orientation, then
+  // If we assume the tile at (0,0) has PlacedTileA orientation, then
   // all (x,y) where x+y is even will be A, and x+y is odd is B
   let testTiles = permuteTile(tileInHand);
-  //console.log(testBlocks);
-  const validPlays = testTiles.filter( (testBlock)=> {
+  //console.log(testTiles);
+  const validPlays = testTiles.filter( (testTile)=> {
     let tileFits = false;
-    // For a block to fit, it must have an orientation where its edge can align with the target piece
+    // For a tile to fit, it must have an orientation where its edge can align with the target piece
     // AND its other edges must also align with the edges of other peices (when they exist)
     //   If x+y EVEN, then the edges to check would be (x-1, y), (x+1, y), and (x, y-1)
     // AND its opposite corner must also align with the corresponding corner of a piece (when it exists)
@@ -64,7 +64,7 @@ export function doesTileFit( tileInHand: NewTile, coord: Coordinate, gameBoard: 
     //                ABOVE: (x-1,y+1), (x,y+1), (x+1,y+1)
     //                DOWN LEFT: (x-2, y), (x-2,y-1), (x-1,y-1)
     //                DOWN RIGHT: (x+2,y), (x+2,y-1), (x+1,y-1)
-    if( (coord.x + coord.y) % 2 === 0 && testBlock.orientation === 'up' ) {
+    if( (coord.x + coord.y) % 2 === 0 && testTile.orientation === 'up' ) {
       const toLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y})) as PlacedTileB | undefined;
       const toRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y })) as PlacedTileB | undefined;
       const toBelow = gameBoard.get(toKey({ x: coord.x, y: coord.y - 1})) as PlacedTileB | undefined;
@@ -82,20 +82,20 @@ export function doesTileFit( tileInHand: NewTile, coord: Coordinate, gameBoard: 
       const rightDown = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y - 1})) as PlacedTileA | undefined;
 
       tileFits =
-      (toLeft === undefined || (testBlock.bottomLeft === toLeft.bottomCenter && testBlock.topCenter === toLeft.topRight)) &&
-      (toRight === undefined || (testBlock.bottomRight === toRight.bottomCenter && testBlock.topCenter === toRight.topLeft)) &&
-      (toBelow === undefined || (testBlock.bottomLeft === toBelow.topLeft && testBlock.bottomRight === toBelow.topRight)) &&
-      (upLeft === undefined || testBlock.topCenter === upLeft.bottomRight) &&
-      (upMiddle === undefined || testBlock.topCenter === upMiddle.bottomCenter) &&
-      (upRight === undefined || testBlock.topCenter === upRight.bottomLeft) &&
-      (leftUp === undefined || testBlock.bottomLeft === leftUp.bottomRight) &&
-      (leftMiddle === undefined || testBlock.bottomLeft === leftMiddle.topRight) &&
-      (leftDown == undefined || testBlock.bottomLeft === leftDown.topCenter) &&
-      (rightUp === undefined || testBlock.bottomRight === rightUp.bottomLeft) &&
-      (rightMiddle === undefined || testBlock.bottomRight === rightMiddle.topLeft) &&
-      (rightDown === undefined || testBlock.bottomRight === rightDown.topCenter);
+      (toLeft === undefined || (testTile.bottomLeft === toLeft.bottomCenter && testTile.topCenter === toLeft.topRight)) &&
+      (toRight === undefined || (testTile.bottomRight === toRight.bottomCenter && testTile.topCenter === toRight.topLeft)) &&
+      (toBelow === undefined || (testTile.bottomLeft === toBelow.topLeft && testTile.bottomRight === toBelow.topRight)) &&
+      (upLeft === undefined || testTile.topCenter === upLeft.bottomRight) &&
+      (upMiddle === undefined || testTile.topCenter === upMiddle.bottomCenter) &&
+      (upRight === undefined || testTile.topCenter === upRight.bottomLeft) &&
+      (leftUp === undefined || testTile.bottomLeft === leftUp.bottomRight) &&
+      (leftMiddle === undefined || testTile.bottomLeft === leftMiddle.topRight) &&
+      (leftDown == undefined || testTile.bottomLeft === leftDown.topCenter) &&
+      (rightUp === undefined || testTile.bottomRight === rightUp.bottomLeft) &&
+      (rightMiddle === undefined || testTile.bottomRight === rightMiddle.topLeft) &&
+      (rightDown === undefined || testTile.bottomRight === rightDown.topCenter);
     }
-    // For a block to fit, it must have an orientation where its edge can align with the target piece
+    // For a tile to fit, it must have an orientation where its edge can align with the target piece
     // AND its other edges must also align with the edges of other peices (when they exist)
     //   If x+y ODD, then the edges to check would be (x-1, y), (x+1, y), and (x, y+1)
     // AND its opposite corner must also align with the corresponding corner of a piece (when it exists)
@@ -103,7 +103,7 @@ export function doesTileFit( tileInHand: NewTile, coord: Coordinate, gameBoard: 
     //                BELOW: (x-1, y-1), (x,y-1), (x+1,y-1)
     //                UP LEFT: (x-2,y), (x-2,y+1), (x-1,y+1)
     //                UP RIGHT: (x+1,y+1), (x+2,y+1), (x+2,y)
-    else if( Math.abs((coord.x + coord.y)) % 2 === 1 && testBlock.orientation === 'down' ) {
+    else if( Math.abs((coord.x + coord.y)) % 2 === 1 && testTile.orientation === 'down' ) {
       const toLeft = gameBoard.get(toKey({ x: coord.x - 1, y: coord.y})) as PlacedTileA | undefined;
       const toRight = gameBoard.get(toKey({ x: coord.x + 1, y: coord.y })) as PlacedTileA | undefined;
       const toAbove = gameBoard.get(toKey({ x: coord.x, y: coord.y + 1})) as PlacedTileA | undefined;
@@ -121,18 +121,18 @@ export function doesTileFit( tileInHand: NewTile, coord: Coordinate, gameBoard: 
       const rightDown = gameBoard.get(toKey({ x: coord.x + 2, y: coord.y})) as PlacedTileB | undefined;
 
       tileFits =
-      (toLeft === undefined || (testBlock.topLeft === toLeft.topCenter && testBlock.bottomCenter === toLeft.bottomRight)) &&
-      (toRight === undefined || (testBlock.bottomCenter === toRight.bottomLeft && testBlock.topRight === toRight.topCenter)) &&
-      (toAbove === undefined || (testBlock.topLeft === toAbove.bottomLeft && testBlock.topRight === toAbove.bottomRight)) &&
-      (downLeft === undefined || testBlock.bottomCenter === downLeft.topRight) &&
-      (downMiddle === undefined || testBlock.bottomCenter === downMiddle.topCenter) &&
-      (downRight === undefined || testBlock.bottomCenter === downRight.topLeft) &&
-      (leftDown === undefined || testBlock.topLeft === leftDown.topRight) &&
-      (leftMiddle === undefined || testBlock.topLeft === leftMiddle.bottomRight) &&
-      (leftUp == undefined || testBlock.topLeft === leftUp.bottomCenter) &&
-      (rightUp === undefined || testBlock.topRight === rightUp.bottomCenter) &&
-      (rightMiddle === undefined || testBlock.topRight === rightMiddle.bottomLeft) &&
-      (rightDown === undefined || testBlock.topRight === rightDown.topLeft);
+      (toLeft === undefined || (testTile.topLeft === toLeft.topCenter && testTile.bottomCenter === toLeft.bottomRight)) &&
+      (toRight === undefined || (testTile.bottomCenter === toRight.bottomLeft && testTile.topRight === toRight.topCenter)) &&
+      (toAbove === undefined || (testTile.topLeft === toAbove.bottomLeft && testTile.topRight === toAbove.bottomRight)) &&
+      (downLeft === undefined || testTile.bottomCenter === downLeft.topRight) &&
+      (downMiddle === undefined || testTile.bottomCenter === downMiddle.topCenter) &&
+      (downRight === undefined || testTile.bottomCenter === downRight.topLeft) &&
+      (leftDown === undefined || testTile.topLeft === leftDown.topRight) &&
+      (leftMiddle === undefined || testTile.topLeft === leftMiddle.bottomRight) &&
+      (leftUp == undefined || testTile.topLeft === leftUp.bottomCenter) &&
+      (rightUp === undefined || testTile.topRight === rightUp.bottomCenter) &&
+      (rightMiddle === undefined || testTile.topRight === rightMiddle.bottomLeft) &&
+      (rightDown === undefined || testTile.topRight === rightDown.topLeft);
     }
 
     return tileFits;
@@ -174,8 +174,8 @@ export function getAvailableCoords(gameBoard: GameBoard): Coordinate[] {
 }
 
 
-// To determine if a blockInHand can be placed, we need to check all gameboard entries
-// Then we can loop through those to see if any of the NewBlocks in hand fit
+// To determine if a tileInHand can be placed, we need to check all gameboard entries
+// Then we can loop through those to see if any of the NewTiles in hand fit
 export function searchForMoves( tilesInHand: NewTile[], gameBoard: GameBoard ): PotentialMove[] {
   const toReturn: PotentialMove[] = [];
   const availableSpaces = getAvailableCoords(gameBoard);
@@ -241,7 +241,7 @@ export function takeTurn( tilesInHand: NewTile[], drawPile: NewTile[], gameBoard
           // console.log("Tile played: " + potentialMoves[0].placedBlock.newBlockID + " at " + toKey(potentialMoves[0].coord));
           gameBoard.set( toKey(potentialMoves[0].coord), potentialMoves[0].placedTile );
 
-          pointsForTurn += pointsFromPlay( potentialMoves[0].placedTile, potentialMoves[0].coord, gameBoard );
+          pointsForTurn += pointsFromPlay( potentialMoves[0].placedTile, potentialMoves[0].coord, gameBoard )[0];
           return pointsForTurn;
         }
       } else {
@@ -259,11 +259,6 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
   // FOR LATER: Create heuristics to decide which move to prioritize
   // FOR LATER: Implement machine learning to determine best move
 
-  // End states:
-  // 1) A player plays their last tile (any hand[i] === 0)
-  //    That player earns 25 points + the total points of everyone else's tiles
-  // 2) The drawPile is empty and all players pass, meaning no more moves possible.
-  //    Each player loses points equal to sum of their own tiles
   if( potentialMoves.length > 0 ) {
     return {
       actionType: 'play',
@@ -292,8 +287,12 @@ export function determineAction( gameState: GameState, playerIndex: number ): Ac
 
 
 // Function to determine points from placing a tile
-export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameBoard: GameBoard ): number {
+// Returns [points, madeHex, madeBridge]
+export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameBoard: GameBoard ): [number, Boolean, Boolean] {
   let points: number = placedTile.newTileID.split(',').map(Number).reduce((sum, num) => sum + num, 0);
+  let madeHex: Boolean = false;
+  let madeBridge: Boolean = false;
+
   // console.log("Tile points = " + points);
   // Determine if placedBlock completes one of 3 possible hexagons (50 points per hexagon)
   // Need to check coordinates of hexagon formed around the 3 vertices of placedBlock
@@ -319,9 +318,8 @@ export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameB
       gameBoard.has(toKey({ x: coord.x,   y: coord.y-1})) &&
       gameBoard.has(toKey({ x: coord.x+1, y: coord.y-1})) &&
       gameBoard.has(toKey({ x: coord.x+2, y: coord.y-1}));
-    if( hexAbove ) points += 50;
-    if( hexDownLeft ) points += 50;
-    if( hexDownRight ) points += 50;
+
+    madeHex = hexAbove || hexDownLeft || hexDownRight;
     // console.log("Hexagons" + hexAbove + hexDownLeft + hexDownRight);
   } else {
     // Check Down: (x-1,y), (x+1,y), (x-1,y-1), (x,y-1), (x+1,y-1)
@@ -345,52 +343,57 @@ export function pointsFromPlay( placedTile: PlacedTile, coord: Coordinate, gameB
       gameBoard.has(toKey({ x: coord.x,   y: coord.y+1})) &&
       gameBoard.has(toKey({ x: coord.x+1, y: coord.y+1})) &&
       gameBoard.has(toKey({ x: coord.x+2, y: coord.y+1}));
-    if( hexBelow ) points += 50;
-    if( hexUpLeft ) points += 50;
-    if( hexUpRight ) points += 50;
+
+    madeHex = hexBelow || hexUpLeft ||hexUpRight
     // console.log("Hexagons" + hexBelow + hexUpLeft + hexUpRight);
   }
 
-  
   // Determine if placedBlock completes a bridge (40 points per bridge)
   // Assuming all previous moves were legal, you only need to check
   // if matching one edge of a placedBlock with the point DIRECTLY OPPOSITE
   // (There seem to be other definitions of a bridge, but this is my interpretation.)
-  if( placedTile.orientation === 'up' ) {
-    // Check Above: (x,y-1) & (x,y+1)
-    // Check DownLeft: (x+1,y) & (x-2,y-1)
-    // Check DownRight: (x-1,y) & (x+2,y-1)
-    const bridgeAbove: Boolean =
-      gameBoard.has(toKey({ x: coord.x, y: coord.y-1})) &&
-      gameBoard.has(toKey({ x: coord.x, y: coord.y+1}));
-    const bridgeDownLeft: Boolean =
-      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
-      gameBoard.has(toKey({ x: coord.x-2, y: coord.y-1}));
-    const bridgeDownRight: Boolean =
-      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
-      gameBoard.has(toKey({ x: coord.x+2, y: coord.y-1}));
-    if( bridgeAbove ) points += 40;
-    if( bridgeDownLeft ) points += 40;
-    if( bridgeDownRight ) points += 40;
-    // console.log("Bridges" + bridgeAbove + bridgeDownLeft + bridgeDownRight);
-  } else {
-    // Check Below: (x,y+1) & (x,y-1)
-    // Check UpLeft: (x+1,y) & (x-2,y+1)
-    // Check UpRight: (x-1,y) & (x+2,y+1)
-    const bridgeBelow: Boolean =
-      gameBoard.has(toKey({ x: coord.x, y: coord.y+1})) &&
-      gameBoard.has(toKey({ x: coord.x, y: coord.y-1}));
-    const bridgeUpLeft: Boolean =
-      gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
-      gameBoard.has(toKey({ x: coord.x-2, y: coord.y+1}));
-    const bridgeUpRight: Boolean =
-      gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
-      gameBoard.has(toKey({ x: coord.x+2, y: coord.y+1}));
-    if( bridgeBelow ) points += 40;
-    if( bridgeUpLeft ) points += 40;
-    if( bridgeUpRight ) points += 40;
-    // console.log("Bridges" + bridgeBelow + bridgeUpLeft + bridgeUpRight);
+  // Don't allow players to score bonus points for bridge if scoring for hex
+  if( !madeHex ) {
+    if( placedTile.orientation === 'up' ) {
+      // Check Above: (x,y-1) & (x,y+1)
+      // Check DownLeft: (x+1,y) & (x-2,y-1)
+      // Check DownRight: (x-1,y) & (x+2,y-1)
+      const bridgeAbove: Boolean =
+        gameBoard.has(toKey({ x: coord.x, y: coord.y-1})) &&
+        gameBoard.has(toKey({ x: coord.x, y: coord.y+1}));
+      const bridgeDownLeft: Boolean =
+        gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+        gameBoard.has(toKey({ x: coord.x-2, y: coord.y-1}));
+      const bridgeDownRight: Boolean =
+        gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+        gameBoard.has(toKey({ x: coord.x+2, y: coord.y-1}));
+
+      madeBridge = bridgeAbove || bridgeDownLeft || bridgeDownRight;
+      // console.log("Bridges" + bridgeAbove + bridgeDownLeft + bridgeDownRight);
+    } else {
+      // Check Below: (x,y+1) & (x,y-1)
+      // Check UpLeft: (x+1,y) & (x-2,y+1)
+      // Check UpRight: (x-1,y) & (x+2,y+1)
+      const bridgeBelow: Boolean =
+        gameBoard.has(toKey({ x: coord.x, y: coord.y+1})) &&
+        gameBoard.has(toKey({ x: coord.x, y: coord.y-1}));
+      const bridgeUpLeft: Boolean =
+        gameBoard.has(toKey({ x: coord.x+1, y: coord.y})) &&
+        gameBoard.has(toKey({ x: coord.x-2, y: coord.y+1}));
+      const bridgeUpRight: Boolean =
+        gameBoard.has(toKey({ x: coord.x-1, y: coord.y})) &&
+        gameBoard.has(toKey({ x: coord.x+2, y: coord.y+1}));
+
+      madeBridge = bridgeBelow || bridgeUpLeft || bridgeUpRight;
+      // console.log("Bridges" + bridgeBelow + bridgeUpLeft + bridgeUpRight);
+    }
   }
   
-  return points;
+  if( madeHex ) {
+    points += 50;
+  } else if( madeBridge ) {
+    points += 40;
+  }
+
+  return [points, madeHex, madeBridge];
 }

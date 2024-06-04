@@ -33,14 +33,20 @@ export function replayHistory(gameHistory: GameHistory): GameState {
       gameState.hands[action.playerIndex].splice(index, 1);
 
       const pointsForTurn = pointsFromPlay(action.tilePlayed, action.coord, gameState.gameBoard);
-      gameState.scores[action.playerIndex] += pointsForTurn;
+      gameState.scores[action.playerIndex] += pointsForTurn[0];
 
       gameState.lastPlay = action.coord;
 
-      gameState.gameLog.push(`${gameState.playerNames[action.playerIndex]} plays [${action.tilePlayed.newTileID}] for ${pointsForTurn} points.`);
+      const hexagonOrBridge =
+        pointsForTurn[1]
+          ? " Hexagon!"
+          : pointsForTurn[2]
+          ? " Bridge!"
+          : "";
+      gameState.gameLog.push(`${gameState.playerNames[action.playerIndex]} plays [${action.tilePlayed.newTileID}] for ${pointsForTurn[0]} points.` + hexagonOrBridge);
       gameState.activePlayer = (action.playerIndex + 1) % gameState.hands.length; // next player's turn
       gameState.tilesDrawnThisTurn = 0; // reset tiles drawn counter after a play is made
-      gameState.consecutivePasses = 0;
+      gameState.consecutivePasses = 0; // reset consecutive passes counter after a play is made
     } else if(action.actionType === 'draw') {
       if (!gameStarted) {
         // fix error from attempting to access inner arrays that don't exist

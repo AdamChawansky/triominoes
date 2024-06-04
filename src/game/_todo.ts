@@ -11,7 +11,6 @@ Homework:
 
 KNOWN BUGS:
 - PAUL: reloading the page takes you back to JoinGame screen.
-- investigate scoring (seems like you can get bridge/hexagon at same time)
 - game doesn't trigger 'end' action until someone tries to play
 
 FOR LATER:
@@ -19,10 +18,8 @@ FOR LATER:
   - audio preferences
   - display name
   - current gameID
-- Add button that turns available spaces on/off
 - Create -/+ zoom button for GameBoardView
 - Change GameLog wording to gain/loses and color code green/red.
-- Change pointsFromPlay to return (points, hex, bridge) for HEXAGON & BRIDGE chime / text.
 - Figure out why right container takes up whole screen instead of collapsing when screen too narrow.
 - Optimize for mobile & tablets
 - Add ability for players to undo by selecting point in data log

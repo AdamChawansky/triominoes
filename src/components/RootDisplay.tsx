@@ -14,7 +14,8 @@ import './RootDisplay.css';
 import activePlayerSound from '../../public/456965-notification.mp3'
 import victorySound from '../../public/456968-win-game.mp3'
 import failureSound from '../../public/639945-lose-game.wav'
-import bridgeOrHexagonSound from '../../public/442586-bridge.wav'
+import bridgeSound from '../../public/442586-bridge.wav'
+import hexagonSound from '../../public/37233-hexagon.wav'
 import { clearTilesFromLocalStorage } from '../localStorageUtils.ts';
 
 export function RootDisplay(props: {
@@ -137,13 +138,16 @@ export function RootDisplay(props: {
   }, [gameData.gameInProgress, gameState.activePlayer, playerIndex]);
 
   // Play a sound if a player makes a hexagon or bridge
-  const bridgeOrHexagonSoundRef = useRef<HTMLAudioElement | null>(null);
+  const bridgeSoundRef = useRef<HTMLAudioElement | null>(null);
+  const hexagonSoundRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const lastAction = gameHistory.actions[gameHistory.actions.length - 1];
     if( soundEffectsEnabled && lastAction && lastAction.actionType === 'play' ) {
       const points = pointsFromPlay(lastAction.tilePlayed, lastAction.coord, gameState.gameBoard);
-      if( points >= 40 ) {
-        bridgeOrHexagonSoundRef.current?.play();
+      if( points[1] ) {
+        bridgeSoundRef.current?.play();
+      } else if( points[2] ) {
+        hexagonSoundRef.current?.play();
       }
     }
   }, [gameHistory.actions, gameState.gameBoard]);
@@ -168,7 +172,8 @@ export function RootDisplay(props: {
   return (
     <main>
       <audio ref={activePlayerSoundRef} src={activePlayerSound}/>
-      <audio ref={bridgeOrHexagonSoundRef} src={bridgeOrHexagonSound}/>
+      <audio ref={bridgeSoundRef} src={bridgeSound}/>
+      <audio ref={hexagonSoundRef} src={hexagonSound}/>
       <audio ref={victorySoundRef} src={victorySound}/>
       <audio ref={failureSoundRef} src={failureSound}/>
       <div className="left-container">
