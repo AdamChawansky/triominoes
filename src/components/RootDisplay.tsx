@@ -92,16 +92,16 @@ export function RootDisplay(props: {
   }, [gameData.gameInProgress, gameHistory.actions]);
 
   // Check if gameIsOver after every play
-  useEffect(() => {
-    const gameIsOver = isGameOver(gameState);
-    if (gameIsOver) {
-      const updatedGameHistory = {
-        ...gameHistory,
-        action: [...gameHistory.actions, {actionType: 'end'}],
-      };
-      setGameHistory(updatedGameHistory, false);
-    }
-  }, [gameData.gameHistory.actions]);
+  // useEffect(() => {
+  //   const gameIsOver = isGameOver(gameState);
+  //   if (gameIsOver) {
+  //     const updatedGameHistory = {
+  //       ...gameHistory,
+  //       action: [...gameHistory.actions, {actionType: 'end'}],
+  //     };
+  //     setGameHistory(updatedGameHistory, false);
+  //   }
+  // }, [gameState]);
 
   // Determine the button label and onClick handler based on the game state
   function getButtonLabel(gameState: GameState) {
