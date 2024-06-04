@@ -11,6 +11,7 @@ main {
   /* background-image: url('felt-background-compressed.jpg');
   background-size: contain; */
   color: black;
+  overflow: hidden;
 }
 
 /* Holds buttons, game-board, and player hand */
@@ -20,6 +21,7 @@ main {
   display: flex;
   flex-direction: column;
   padding: 10px;
+  overflow: hidden;
 }
 
 /* Holds scores, game log, and chat */
@@ -30,6 +32,7 @@ main {
   flex-direction: column;
   box-sizing: border-box;
   padding: 10px;
+  overflow: auto;
 }
 
 /* Holds buttons */
@@ -96,6 +99,7 @@ main {
 .bottom-container {
   display: flex;
   justify-content: center;
+  /* margin-bottom: 35px; */
 }
 
 .player-color-red {

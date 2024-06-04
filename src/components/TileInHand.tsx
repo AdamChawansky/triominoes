@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { permuteTile } from "../game/generator";
 import { NewTile } from "../game/types";
-import { TileRender } from "./TileRender";
 import { retrieveTilesFromLocalStorage, saveTileToLocalStorage } from "../localStorageUtils";
+import './TileInHand.css'
 
 export function TileInHand(props: {
   newTile: NewTile;
@@ -18,8 +17,6 @@ export function TileInHand(props: {
     return tileInHand ? tileInHand.permutation : 0;
   })
 
-  const permutedTile = permuteTile(newTile)[permutation];
-
   useEffect(() => {
     const tilesInHand = retrieveTilesFromLocalStorage();
     const tileIndex = tilesInHand.findIndex((tile: { id: string }) => tile.id === newTile.id);
@@ -31,7 +28,7 @@ export function TileInHand(props: {
 
   // Rotates tile 60 degrees and plays a sound
   function onClick() {
-    const nextPermutation = (permutation + 1) % 6;
+    const nextPermutation = (permutation + 1);
     setPermutation(nextPermutation);
     saveTileToLocalStorage(newTile.id, nextPermutation);
     setTileInHand(newTile);
@@ -42,13 +39,18 @@ export function TileInHand(props: {
     }
   }
 
-  const top = permutedTile.orientation === 'up'
-    ? [permutedTile.topCenter]
-    : [permutedTile.topLeft, permutedTile.topRight];
-  const bottom = permutedTile.orientation === 'up'
-    ? [permutedTile.bottomLeft, permutedTile.bottomRight]
-    : [permutedTile.bottomCenter];
+  const rotation = permutation * 60; // Calculate the rotation angle based upon permutation
 
+  // Calculate the position of the tile based on the rotation angle
+  const tilePosition = {
+      0: { top: '0',    left: '50%',   transform: 'translate(-50%, 0)' },
+     60: { top: '25%',  left: '93.3%', transform: 'translate(-80%, -50%)' },
+    120: { top: '75%',  left: '93.3%', transform: 'translate(-80%, -50%)' },
+    180: { top: '100%', left: '50%',   transform: 'translate(-50%, -100%)' },
+    240: { top: '75%',  left: '6.7%',  transform: 'translate(-20%, -50%)' },
+    300: { top: '25%',  left: '6.7%',  transform: 'translate(-20%, -50%)' },
+  }[rotation % 360];
+  
   function onDragStart(event: React.DragEvent<HTMLDivElement>) {
     event.dataTransfer.setData('text/plain', JSON.stringify(newTile));
     setTileInHand(newTile);
@@ -56,14 +58,47 @@ export function TileInHand(props: {
   }
 
   return (
-    <TileRender 
-      top={top}
-      bottom={bottom}
-      orientation={permutedTile.orientation}
+    <div
+      className={`tile-in-hand ${isSelected ? 'selected' : ''}`}
       onClick={onClick}
-      tileStyle={isSelected ? 'selected' : ''}
       draggable
       onDragStart={onDragStart}
-    />
+    >
+      <div className="tile-content" style={{ ...tilePosition, transform: `${tilePosition!.transform} rotate(${rotation}deg)` }}>
+        <span className="number top-center">{newTile.numbers[0]}</span>
+        <span className="number bottom-right">{newTile.numbers[1]}</span>
+        <span className="number bottom-left">{newTile.numbers[2]}</span>
+      </div>
+    </div>
   );
+
+  // return (
+  //   <div
+  //     className="tile-holder"
+  //     style={{ transform: `rotate(${rotation}deg)` }}
+  //     onClick={onClick}
+  //     draggable
+  //     onDragStart={onDragStart}
+  //   >
+  //     <div className={`tile-in-hand ${isSelected ? 'selected' : ''}`}>
+  //       <span className="number top-center">{newTile.numbers[0]}</span>
+  //       <span className="number bottom-right">{newTile.numbers[1]}</span>
+  //       <span className="number bottom-left">{newTile.numbers[2]}</span>
+  //     </div>
+  //   </div>
+  // );
+
+  // return (
+  //   <div
+  //     className={`tile-in-hand ${isSelected ? 'selected' : ''}`}
+  //     style={{ transform: `rotate(${rotation}deg)` }}
+  //     onClick={onClick}
+  //     draggable
+  //     onDragStart={onDragStart}
+  //   >
+  //     <span className="number top-center">{newTile.numbers[0]}</span>
+  //     <span className="number bottom-right">{newTile.numbers[1]}</span>
+  //     <span className="number bottom-left">{newTile.numbers[2]}</span>
+  //   </div>
+  // );
 }

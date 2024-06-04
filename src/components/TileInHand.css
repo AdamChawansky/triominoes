@@ -1,0 +1,52 @@
+/* Styling for tiles in hand, removes absolute positioning */
+.tile-in-hand {
+  flex: 0 0 auto;
+  width: 100px;
+  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tile-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background-image: url('./../../public/triangle-up-beige.png');
+  background-size: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.tile-in-hand.selected .tile-content {
+  background-image: url('./../../public/triangle-up-yellow.png');
+}
+
+.tile-in-hand:hover .tile-content {
+  transform: translateY(-2px);
+}
+
+.droppable-tile {
+  cursor: pointer;
+}
+
+.number {
+  position: absolute;
+  font-size: 20px;
+  font-weight: bold;
+}
+.top-center {
+  top: 20px;
+  transform: translateX(-43.3%) rotate(180deg);
+}
+.bottom-right {
+  bottom: 5px;
+  right: 27px;
+  transform: rotate(-60deg);
+}
+.bottom-left {
+  bottom: 5px;
+  left: 27px;
+  transform: rotate(60deg);
+}
