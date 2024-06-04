@@ -7,11 +7,12 @@ gameBoard.values();
 gameBoard.entries();
 
 Homework:
-- 
+- Add a rules page or pop-up
 
 KNOWN BUGS:
 - PAUL: reloading the page takes you back to JoinGame screen.
 - sound effects can trigger multiple times, even though nothing happened because of firebase subscription?
+- with new dragging code, the dragged TileInHand doesn't hold the rotated image
 
 FOR LATER:
 - Things for local storage:

@@ -43,14 +43,14 @@ export function TileInHand(props: {
 
   // Calculate the position of the tile based on the rotation angle
   const tilePosition = {
-      0: { top: '0',    left: '50%',   transform: 'translate(-50%, 0)' },
-     60: { top: '25%',  left: '93.3%', transform: 'translate(-80%, -50%)' },
-    120: { top: '75%',  left: '93.3%', transform: 'translate(-80%, -50%)' },
-    180: { top: '100%', left: '50%',   transform: 'translate(-50%, -100%)' },
-    240: { top: '75%',  left: '6.7%',  transform: 'translate(-20%, -50%)' },
-    300: { top: '25%',  left: '6.7%',  transform: 'translate(-20%, -50%)' },
+      0: { transform: 'translate(  0%,   0%)' },
+     60: { transform: 'translate( 13%, -20%)' },
+    120: { transform: 'translate( 13%,  27%)' },
+    180: { transform: 'translate(  0%,   6%)' },
+    240: { transform: 'translate(-13%,  27%)' },
+    300: { transform: 'translate(-15%, -20%)' },
   }[rotation % 360];
-  
+
   function onDragStart(event: React.DragEvent<HTMLDivElement>) {
     event.dataTransfer.setData('text/plain', JSON.stringify(newTile));
     setTileInHand(newTile);
@@ -60,45 +60,16 @@ export function TileInHand(props: {
   return (
     <div
       className={`tile-in-hand ${isSelected ? 'selected' : ''}`}
+      style={{ ...tilePosition, transform: `${tilePosition!.transform} rotate(${rotation}deg)` }}
       onClick={onClick}
       draggable
       onDragStart={onDragStart}
     >
-      <div className="tile-content" style={{ ...tilePosition, transform: `${tilePosition!.transform} rotate(${rotation}deg)` }}>
+      <div className="number-container">
         <span className="number top-center">{newTile.numbers[0]}</span>
         <span className="number bottom-right">{newTile.numbers[1]}</span>
         <span className="number bottom-left">{newTile.numbers[2]}</span>
       </div>
     </div>
   );
-
-  // return (
-  //   <div
-  //     className="tile-holder"
-  //     style={{ transform: `rotate(${rotation}deg)` }}
-  //     onClick={onClick}
-  //     draggable
-  //     onDragStart={onDragStart}
-  //   >
-  //     <div className={`tile-in-hand ${isSelected ? 'selected' : ''}`}>
-  //       <span className="number top-center">{newTile.numbers[0]}</span>
-  //       <span className="number bottom-right">{newTile.numbers[1]}</span>
-  //       <span className="number bottom-left">{newTile.numbers[2]}</span>
-  //     </div>
-  //   </div>
-  // );
-
-  // return (
-  //   <div
-  //     className={`tile-in-hand ${isSelected ? 'selected' : ''}`}
-  //     style={{ transform: `rotate(${rotation}deg)` }}
-  //     onClick={onClick}
-  //     draggable
-  //     onDragStart={onDragStart}
-  //   >
-  //     <span className="number top-center">{newTile.numbers[0]}</span>
-  //     <span className="number bottom-right">{newTile.numbers[1]}</span>
-  //     <span className="number bottom-left">{newTile.numbers[2]}</span>
-  //   </div>
-  // );
 }
