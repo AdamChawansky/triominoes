@@ -148,20 +148,6 @@ export function simulateOneAction(gameHistory: GameHistory): GameHistory {
   }
   let gameState: GameState = replayHistory(simulatedHistory);
 
-  // let isEmpty: Boolean = false;
-  // for (let i=0; i < gameState.hands.length; i++) {
-  //   if (gameState.hands[i].length === 0) {
-  //     isEmpty = true;
-  //   }
-  // }
-  
-  // if( gameHistory.actions[gameHistory.actions.length - 1].actionType != 'end') {
-  //   if (isEmpty || (gameState.consecutivePasses === gameState.playerNames.length && gameState.drawPile.length === 0)) {
-  //     simulatedHistory.actions.push({
-  //       actionType: 'end',
-  //     });
-  //   } else {
-
   // Automatically make a play for computer
   const activePlayerName = gameState.playerNames[gameState.activePlayer];
   if( activePlayerName.startsWith("Computer") ) {
@@ -204,11 +190,6 @@ export function simulateCompleteGame(gameHistory: GameHistory): GameHistory {
     if(gameOver) {
       simulatedHistory.actions.push({actionType: 'end'});
     }
-    // End states:
-    // 1) A player plays their last tile (any hand[i] === 0)
-    //    That player earns 25 points + the total points of everyone else's tiles
-    // 2) The drawPile is empty and all players pass, meaning no more moves possible.
-    //    Each player loses points equal to sum of their own tiles
   }
 
   return simulatedHistory;
