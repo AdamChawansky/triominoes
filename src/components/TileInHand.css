@@ -49,3 +49,11 @@
   left: 25px;
   transform: rotate(60deg);
 }
+
+/* Wrapper div around rotating tile that uses clip-path to get dragged image */
+.tile-dragging {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.tile-dragging-inverted {
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+}
