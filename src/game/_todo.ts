@@ -99,4 +99,45 @@ TileRender
       width: `${(zoomLevel ? zoomLevel : 1) * 96}px`,
       height: `${(zoomLevel ? zoomLevel : 1) * 96 * .88}px`,
    }}
+
+
+BROKEN HAND REARRANGE CODE
+
+function onDrop(event: React.DragEvent<HTMLDivElement>) {
+  event.preventDefault();
+  const droppedTile = JSON.parse(event.dataTransfer.getData('text/plain')) as NewTile;
+  const draggedIndex = playerHand.findIndex((tile) => tile.id === droppedTile.id);
+
+  const targetElement = event.target as HTMLElement;
+  const droppedOnTileId = targetElement.closest('.tile-in-hand')?.getAttribute('data-tile-id');
+
+  if (droppedOnTileId) {
+    const droppedIndex = playerHand.findIndex((tile) => tile.id === droppedOnTileId);
+
+    const newHand = [...playerHand];
+    newHand.splice(draggedIndex, 1);
+    newHand.splice(droppedIndex, 0, droppedTile);
+
+    localStorage.setItem('playerHand', JSON.stringify(newHand));
+  }
+}
+
+
+const [playerHand, setPlayerHand] = useState(() => {
+  const storedHand = localStorage.getItem('playerHand');
+  return storedHand ? JSON.parse(storedHand) : gameState.hands[playerIndex];
+});
+
+
+TileInHand
+<div
+  className={`tile-in-hand ${isSelected ? 'selected' : ''}`}
+  style={{ ...tilePosition, transform: `${tilePosition!.transform} rotate(${rotation}deg)` }}
+  onClick={onClick}
+  data-tile-id={newTile.id}
+>
+</div>
+
+
+
      */
