@@ -1,0 +1,87 @@
+.how-to-play-button {
+    width: 150px;
+    font-size: 14px;
+    padding: 10px 20px;
+    background-color: black;
+    color: whitesmoke;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.how-to-play-button:hover {
+    background-color: #D3D3D3;
+    color: black;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    background-color: #FFFFF0;
+    width: 80%;
+    max-height: 80%;
+    padding: 20px;
+    overflow-y: auto;
+    position: relative;
+    border: 4px solid #000;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+  
+.popup-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+  
+.close-btn {
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+}
+
+.wikipedia-content {
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.wikipedia-content h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.wikipedia-content h2 {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.wikipedia-content p {
+    margin-bottom: 15px;
+}
+
+.wikipedia-content ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}

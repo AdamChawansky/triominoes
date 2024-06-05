@@ -17,6 +17,7 @@ import failureSound from '../../public/639945-lose-game.wav'
 import bridgeSound from '../../public/442586-bridge.wav'
 import hexagonSound from '../../public/37233-hexagon.wav'
 import { clearTilesFromLocalStorage } from '../localStorageUtils.ts';
+import { HowToPlayButton, HowToPlayPopup } from './HowToPlay.tsx';
 
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
@@ -182,6 +183,16 @@ export function RootDisplay(props: {
     }
   }, [gameData.gameHistory.actions]);
 
+  // Add a pop-up window with HOW TO PLAY rules
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
+
+  const handleHowToPlayClick = () => {
+    setIsHowToPlayOpen(true);
+  }
+
+  const handleHowToPlayClose = () => {
+    setIsHowToPlayOpen(false);
+  }
 
   return (
     <main>
@@ -217,6 +228,8 @@ export function RootDisplay(props: {
             </button>
           </div>
         </div>
+        <HowToPlayButton onClick={handleHowToPlayClick}/>
+        <HowToPlayPopup isOpen={isHowToPlayOpen} onClose={handleHowToPlayClose}/>
         <GameBoardView 
           gameState={gameState}
           tileInHand={tileInHand}
