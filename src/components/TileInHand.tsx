@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { NewTile } from "../game/types";
 import { retrieveTilesFromLocalStorage, saveTileToLocalStorage } from "../localStorageUtils";
 import './TileInHand.css'
-import { isElementOfType } from "react-dom/test-utils";
 
 export function TileInHand(props: {
   newTile: NewTile;
