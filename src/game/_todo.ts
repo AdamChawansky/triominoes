@@ -7,12 +7,10 @@ gameBoard.values();
 gameBoard.entries();
 
 Homework:
-- Add a rules page or pop-up
 - do I even use the add-player action for anything?
 --> how is it different between GameState and FirebaseGameData?
 
 KNOWN BUGS:
-- PAUL: reloading the page takes you back to JoinGame screen.
 - new players joining the game don't automatically show up in GameLog before game starts
 - sound effects can trigger multiple times, even though nothing happened because of firebase subscription?
 - Reverted gameIsOver code because it wasn't triggering re-render...
