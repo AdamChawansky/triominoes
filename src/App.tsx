@@ -71,7 +71,7 @@ function App() {
         }
       });
     }
-  }, [gameIDFromURL, initialGameData]);
+  }, [gameIDFromURL]);
 
   // Player selects "Create New Game"
   const handleCreateNewGame = () => {

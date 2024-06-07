@@ -41,7 +41,7 @@ main {
   position: relative;
   align-items: center;
   border-radius: 1px;
-  padding: 10px;
+  padding: 5px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -73,6 +73,9 @@ main {
   margin-left: auto;
 }
 .move-highlighting-toggle-button {
+  font-size: 14px;
+  padding: 10px 20px;
+  /* margin: 5px; */
   background-color: black;
   color: whitesmoke;
   border: none;

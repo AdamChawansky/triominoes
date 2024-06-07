@@ -203,7 +203,8 @@ export function RootDisplay(props: {
       <audio ref={failureSoundRef} src={failureSound}/>
       <div className="left-container">
         <div className="buttons-container">
-          <CopyToClipboard toCopy={gameData.gameID}/>
+          <HowToPlayButton onClick={handleHowToPlayClick}/>
+          <HowToPlayPopup isOpen={isHowToPlayOpen} onClose={handleHowToPlayClose}/>
           {gameData.players[playerIndex].playerType !== 'spectator' && (
           <button className="button"
             onClick={getButtonClick()}
@@ -221,15 +222,15 @@ export function RootDisplay(props: {
               onClick={handleMoveHighlightingToggle}
               style={{
                 textDecoration: moveHighlightingEnabled ? 'none' : 'line-through',
-                color: moveHighlightingEnabled ? 'green' : 'red',
+                color: moveHighlightingEnabled ? 'whitesmoke' : 'red',
+                fontSize: '14px',
               }}
             >
               {moveHighlightingEnabled ? 'SHOW MOVES' : 'SHOW MOVES'}
             </button>
           </div>
         </div>
-        <HowToPlayButton onClick={handleHowToPlayClick}/>
-        <HowToPlayPopup isOpen={isHowToPlayOpen} onClose={handleHowToPlayClose}/>
+        <CopyToClipboard toCopy={gameData.gameID}/>
         <GameBoardView 
           gameState={gameState}
           tileInHand={tileInHand}

@@ -98,7 +98,7 @@ export type DrawAction = {
 }
 
 export type PassAction = {
-  actionType: 'pass'
+  actionType: 'pass';
   playerIndex: number;
 }
 

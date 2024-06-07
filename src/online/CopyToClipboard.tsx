@@ -8,7 +8,8 @@ export function CopyToClipboard(props: {
     <div
       style={{
         cursor: copied ? 'not-allowed' : 'pointer',
-        fontSize: copied ? '1rem' : '2rem',
+        fontSize: copied ? '1rem' : '1.5rem',
+        width: '150px',
       }}
       onClick={() => !copied && copyToClipboard("https://adamchawansky.github.io/triominoes/?gameID=" + props.toCopy)}
     >
