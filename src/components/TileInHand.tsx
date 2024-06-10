@@ -11,26 +11,26 @@ export function TileInHand(props: {
 }) {
   const { newTile, isSelected, setTileInHand, soundEffectsEnabled } = props;
 
-  const [permutation, setPermutation] = useState(() => {
-    const tilesInHand = retrieveTilesFromLocalStorage();
-    const tileInHand = tilesInHand.find((tile: { id: string }) => tile.id === newTile.id);
-    return tileInHand ? tileInHand.permutation : 0;
-  })
+  // const [permutation, setPermutation] = useState(() => {
+  //   const tilesInHand = retrieveTilesFromLocalStorage();
+  //   const tileInHand = tilesInHand.find((tile: { id: string }) => tile.id === newTile.id);
+  //   return tileInHand ? tileInHand.timesRotated : 0;
+  // })
 
   useEffect(() => {
     const tilesInHand = retrieveTilesFromLocalStorage();
     const tileIndex = tilesInHand.findIndex((tile: { id: string }) => tile.id === newTile.id);
 
     if (tileIndex === -1) {
-      saveTileToLocalStorage(newTile.id, 0);
+      saveTileToLocalStorage(newTile.id, newTile.numbers, 0);
     }
   }, [newTile.id]);
 
   // Rotates tile 60 degrees and plays a sound
   function onClick() {
-    const nextPermutation = (permutation + 1);
-    setPermutation(nextPermutation);
-    saveTileToLocalStorage(newTile.id, nextPermutation);
+    // const nextPermutation = (permutation + 1);
+    // setPermutation(nextPermutation);
+    saveTileToLocalStorage(newTile.id, newTile.numbers, newTile.timesRotated++);
     setTileInHand(newTile);
 
     if (soundEffectsEnabled) {
@@ -39,7 +39,7 @@ export function TileInHand(props: {
     }
   }
 
-  const rotation = permutation * 60; // Calculate the rotation angle based upon permutation
+  const rotation = newTile.timesRotated * 60; // Calculate the rotation angle based upon permutation
 
   // Calculate the position of the tile based on the rotation angle
   const tilePosition = {

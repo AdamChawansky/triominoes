@@ -38,6 +38,7 @@ export type PlacedTile = PlacedTileA | PlacedTileB;
 export type NewTile = {
   id: string;
   numbers: [number, number, number];
+  timesRotated: number; // default is 0, each rotation is 60 degrees
 }
 
 export type Coordinate = {

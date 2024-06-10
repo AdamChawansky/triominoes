@@ -6,6 +6,7 @@ export function genNewTile(nums: [number, number, number]): NewTile {
   return {
     id: nums.join(","), 
     numbers: nums,
+    timesRotated: 0,
   };
 }
 
@@ -82,6 +83,7 @@ export function placedTileToNewTile(placedTile: PlacedTile): NewTile {
   return {
     id: placedTile.newTileID,
     numbers: numbers as [number, number, number],
+    timesRotated: 0,
   };
 }
 

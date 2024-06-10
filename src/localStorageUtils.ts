@@ -1,30 +1,27 @@
 // App.tsx uses playerID in UUID format
 // playerID: string | null = localStorage.getItem('playerID');
 
-export type LocalTileInHand = {
-  id: string; // "a,b,c,"
-  permutation: number; // n * 60 degrees of rotation
-}
+import { NewTile } from "./game/types";
 
-export function saveTileToLocalStorage(tileId: string, permutation: number) {
-  const tilesInHand: LocalTileInHand[] = JSON.parse(localStorage.getItem('tilesInHand') || '[]');
-  const tileIndex = tilesInHand.findIndex((tile: LocalTileInHand) => tile.id === tileId);
+export function saveTileToLocalStorage(tileId: string, tileNumbers: [number, number, number], tileTimesRotated: number) {
+  const tilesInHand: NewTile[] = JSON.parse(localStorage.getItem('tilesInHand') || '[]');
+  const tileIndex = tilesInHand.findIndex((tile: NewTile) => tile.id === tileId);
 
   if (tileIndex === -1) {
-    tilesInHand.push({ id: tileId, permutation });
+    tilesInHand.push({ id: tileId, numbers: tileNumbers, timesRotated: tileTimesRotated });
   } else {
-    tilesInHand[tileIndex].permutation = permutation;
+    tilesInHand[tileIndex].timesRotated = tileTimesRotated;
   }
 
   localStorage.setItem('tilesInHand', JSON.stringify(tilesInHand));
 }
 
-export function retrieveTilesFromLocalStorage(): LocalTileInHand[] {
-  const tilesInHand: LocalTileInHand[] = JSON.parse(localStorage.getItem('tilesInHand') || '[]');
+export function retrieveTilesFromLocalStorage(): NewTile[] {
+  const tilesInHand: NewTile[] = JSON.parse(localStorage.getItem('tilesInHand') || '[]');
   return tilesInHand;
 }
 
-export function updateTilesInLocalStorage(newTilesInHand: LocalTileInHand[]): void {
+export function updateTilesInLocalStorage(newTilesInHand: NewTile[]): void {
   localStorage.setItem('tilesInHand', JSON.stringify(newTilesInHand));
 }
 
