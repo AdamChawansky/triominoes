@@ -26,6 +26,7 @@ export function replayHistory(gameHistory: GameHistory): GameState {
   gameHistory.actions.forEach((action) => {
     if(action.actionType === 'add-player') {
       gameState.playerNames.push(action.playerName);
+      // Add new score to scores array
     } else if(action.actionType === 'play') {
       gameState.gameBoard.set(toKey(action.coord), action.tilePlayed);
 

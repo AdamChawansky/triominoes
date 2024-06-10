@@ -4,6 +4,7 @@ import { toCoord, toKey } from '../game/util.ts';
 import { TileOnBoard } from './TileOnBoard.tsx';
 import './DisplayGameBoard.css';
 import { useEffect, useRef, useState } from 'react';
+import { retrieveTilesFromLocalStorage, updateTilesInLocalStorage } from '../localStorageUtils.ts';
 
 export function GameBoardView(props: {
   gameState: GameState,
@@ -74,7 +75,7 @@ export function GameBoardView(props: {
   // }
 
   // Allow players to place tiles in available spaces by dragging and dropping
-  function onBlockDrop(event: React.DragEvent<HTMLDivElement>, coord: Coordinate) {
+  function onTileDrop(event: React.DragEvent<HTMLDivElement>, coord: Coordinate) {
     if( isActivePlayer ) {
       event.preventDefault();
       const tileData = event.dataTransfer.getData('text/plain');
@@ -88,14 +89,33 @@ export function GameBoardView(props: {
       // console.log('Dropped Move: ', droppedMove);
 
       if(droppedMove) {
-        const playTile: PlayAction = {
-          actionType: 'play',
-          playerIndex: gameState.activePlayer,
-          tilePlayed: droppedMove.placedTile,
-          coord: droppedMove.coord,
+        // Retrieve the player's hand from local storage
+        const localPlayerHand = retrieveTilesFromLocalStorage();
+            
+        // Check if the tile exists in the player's hand
+        const localTileIndex = localPlayerHand.findIndex(t => t.id === droppedMove.newTile.id);
+        // console.log('Played tile: ', localTileIndex, localPlayerHand[localTileIndex])
+        if (localTileIndex !== -1) {
+            // Remove the tile from the local storage array
+            const updatedPlayerHand = localPlayerHand.filter(t => t !== localPlayerHand[localTileIndex]);
+            
+            // Update the local storage with the new hand
+            updateTilesInLocalStorage(updatedPlayerHand)
+            localStorage.setItem("playerHand", JSON.stringify(updatedPlayerHand));
+            
+            // Perform the tile play action in the game
+            const playTile: PlayAction = {
+              actionType: 'play',
+              playerIndex: gameState.activePlayer,
+              tilePlayed: droppedMove.placedTile,
+              coord: droppedMove.coord,
+            }
+            pushAction(playTile);
+            setTileInHand(undefined);
+        } else {
+            // The player is trying to cheat
+            console.log('Someone tried to play a tile not in their hand');
         }
-        pushAction(playTile);
-        setTileInHand(undefined);
       }
     }
   }
@@ -123,7 +143,7 @@ export function GameBoardView(props: {
           tileStyle = {moveHighlightingEnabled ? 'playable-visible' : 'playable-hidden'}
           // onClick = {() => onBlockClick(potentialMove.coord)}
           onDragOver = {(event) => event.preventDefault()}
-          onDrop = {(event) => onBlockDrop(event, potentialMove.coord)}
+          onDrop = {(event) => onTileDrop(event, potentialMove.coord)}
           position = {{
             left: `${(potentialMove.coord.x - minX) * width * 0.5 + offsetX}px`,
             bottom: `${(potentialMove.coord.y - minY) * height + offsetY}px`,
