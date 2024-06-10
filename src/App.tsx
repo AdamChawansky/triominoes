@@ -85,7 +85,7 @@ function App() {
 
   // Player is creating a new game
   const handleEnterNewRoom = async () => {
-    if (numPlayers && !isNaN(numPlayers) && playerName.trim() !== '') {
+    if (numPlayers && playerID && !isNaN(numPlayers) && playerName.trim() !== '') {
       // Generate random string to be gameID
       const newGameID = generateGameID();
       setGameID(newGameID);
@@ -103,6 +103,7 @@ function App() {
           actions: [{
             actionType: 'add-player',
             playerName: playerName,
+            playerID: playerID,
           }],
         },
         players: [{
@@ -123,7 +124,7 @@ function App() {
 
   // Player is joining an existing game
   const handleEnterExistingRoom = async () => {
-    if (gameID !== '' && playerName.trim() !== '') {
+    if (gameID !== '' && playerName.trim() !== '' && playerID) {
       // Retrieve the existing game data
       const existingGameData = await firebaseGetGameData(gameID);
       console.log(existingGameData);
@@ -159,7 +160,10 @@ function App() {
               startingDeck: [...existingGameData.gameHistory.startingDeck],
               actions: [
                 ...existingGameData.gameHistory.actions,
-                { actionType: 'add-player', playerName: playerName },
+                { actionType: 'add-player',
+                  playerName: playerName,
+                  playerID: playerID,
+                },
               ],
           } : existingGameData.gameHistory,
             players: [

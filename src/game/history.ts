@@ -5,8 +5,8 @@ import { toKey } from "./util";
 
 export function replayHistory(gameHistory: GameHistory): GameState {
   const gameBoard: GameBoard = new Map();
-  const hands: NewTile[][] = [[]];
-  const scores: number[] = [0];
+  const hands: NewTile[][] = [];
+  const scores: number[] = [];
 
   const gameState: GameState = {
     gameBoard: gameBoard,
@@ -26,6 +26,8 @@ export function replayHistory(gameHistory: GameHistory): GameState {
   gameHistory.actions.forEach((action) => {
     if(action.actionType === 'add-player') {
       gameState.playerNames.push(action.playerName);
+      gameState.hands.push([]);
+      gameState.scores.push(0);
     } else if(action.actionType === 'play') {
       gameState.gameBoard.set(toKey(action.coord), action.tilePlayed);
 

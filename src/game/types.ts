@@ -83,6 +83,7 @@ export type Action =
 export type AddPlayerAction = {
   actionType: 'add-player';
   playerName: string;
+  playerID: string; // the UUID we generate in App.tsx
 }
 
 export type PlayAction = {
