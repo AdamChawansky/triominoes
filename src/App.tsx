@@ -135,12 +135,22 @@ function App() {
         );
 
         if( existingPlayerIndex !== -1 ) {
-          // Player already exists, update the playerName
+          // Player already exists, update the playerName in add-player action & players
           const updatedGameData: FirebaseGameData = {
             ...existingGameData,
+            gameHistory: {
+              startingDeck: [...existingGameData.gameHistory.startingDeck],
+              actions: existingGameData.gameHistory.actions.map((action) =>
+                (action.actionType === 'add-player' && action.playerID === playerID)
+                ? { ...action, playerName, playerID }
+                : action
+              ),
+            },
             players: existingGameData.players.map((player, index) => 
-              index === existingPlayerIndex ? { ...player, playerName } : player)
-            ,
+              index === existingPlayerIndex
+              ? { ...player, playerName }
+              : player
+            ),
           };
           // Save the updated game data to Firebase
           await firebaseSaveGameData(updatedGameData);
