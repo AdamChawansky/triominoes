@@ -11,7 +11,6 @@ Homework:
 --> how is it different between GameState and FirebaseGameData?
 
 KNOWN BUGS:
-- new players joining the game don't automatically show up in GameLog before game starts
 - sound effects can trigger multiple times, even though nothing happened because of firebase subscription?
 - Reverted gameIsOver code because it wasn't triggering re-render...
 
