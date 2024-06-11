@@ -1,6 +1,6 @@
 import { replayHistory } from "./history";
 import { MAX_DRAW, determineAction } from "./logic";
-import { GameHistory, GameState, NewTile, PlacedTile } from "./types";
+import { FirebaseGameData, GameHistory, GameState, NewTile, PlacedTile } from "./types";
 
 export function genNewTile(nums: [number, number, number]): NewTile {
   return {
@@ -85,23 +85,31 @@ export function placedTileToNewTile(placedTile: PlacedTile): NewTile {
   };
 }
 
-export function initializeNewGameHistory(numPlayers: number, playerNames: string[]): GameHistory {
+export function initializeNewGameHistory(gameData: FirebaseGameData): GameHistory {
+  const numPlayers = gameData.numPlayers;
+  const playerNames: string[] = gameData.players.map(player => player.playerName);
+
   const history: GameHistory = {
     startingDeck: makeNewTiles(),
     actions: [],
   };
 
-  // Generate AddPlayer actions
-  for(let i = 0; i < numPlayers; i++) {
-    if(i < playerNames.length) {
+  // Generate AddPlayer actions based on FirebaseGameData.players info
+  // FOR LATER: Consider how this works with various combos of human/spectator
+  // FOR LATER: Should players be able to join a game mid-way and take over computer slot?
+  // FOR LATER: Should players be able to join a game in a new round and take over computer slot?
+  for (let i = 0; i < numPlayers; i++) {
+    if (i < gameData.players.length) {
       history.actions.push({
         actionType: 'add-player',
-        playerName: playerNames[i],
+        playerName: gameData.players[i].playerName,
+        playerID: gameData.players[i].localPlayerID,
       });
     } else {
       history.actions.push({
         actionType: 'add-player',
         playerName: "Computer " + `${i + 1 - playerNames.length}`,
+        playerID: "null",
       });
     }
   }
