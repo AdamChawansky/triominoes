@@ -35,7 +35,7 @@ export function TileInHand(props: {
     setTileInHand(newTile);
 
     if (soundEffectsEnabled) {
-      const rotateTileSound = new Audio('./../../346178-rotate-tile.wav');
+      const rotateTileSound = new Audio('./../../public/346178-rotate-tile.wav');
       rotateTileSound.play();
     }
   }

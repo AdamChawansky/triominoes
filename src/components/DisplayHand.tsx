@@ -1,7 +1,7 @@
 import { GameState, NewTile } from '../game/types.ts';
 import { TileInHand } from './TileInHand.tsx';
 import './DisplayHand.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function DisplayHand(props: {
   playerIndex: number,
@@ -18,6 +18,19 @@ export function DisplayHand(props: {
   const [tileOrder, setTileOrder] = useState(() => {
     return playerHand.map((tile) => tile.id);
   });
+
+  // Reset tileOrder when the game ends
+  useEffect(() => {
+    if (gameState.gameBoard.size === 0) {
+      setTileOrder([]);
+    }
+  }, [gameState.gameBoard]);
+
+  // Update tileOrder when a tile is played
+  useEffect(() => {
+    const newTileOrder = tileOrder.filter((id) => playerHand.some((tile) => tile.id === id));
+    setTileOrder(newTileOrder);
+  }, [playerHand]);
 
   // Sort playerHand using tileOrder
   const orderedPlayerHand: NewTile[] = [];
