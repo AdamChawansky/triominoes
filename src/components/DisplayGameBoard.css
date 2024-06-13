@@ -8,7 +8,7 @@
   width: 100px;
   height: 86.6px;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  background-image: url('./../../public/triangle-up-beige.png');
+  background-image: url('./../../triangle-up-beige.png');
   background-size: contain;
   position: absolute;
   cursor: pointer;
@@ -37,7 +37,7 @@
   width: 100px;
   height: 86.6px;
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-  background-image: url('./../../public/triangle-down-beige.png');
+  background-image: url('./../../triangle-down-beige.png');
   background-size: contain;
   position: absolute;
   cursor: pointer;
@@ -70,31 +70,31 @@
   /* color: red; */
 }
 .tile-container-inverted.most-recent {
-  background-image: url('./../../public/triangle-down-red-star.png');
+  background-image: url('./../../triangle-down-red-star.png');
   /* color: red; */
 }
 .tile-container.selected {
-  background-image: url('./../../public/triangle-up-yellow.png');
+  background-image: url('./../../triangle-up-yellow.png');
   color: black;
 }
 .tile-container-inverted.selected {
-  background-image: url('./../../public/triangle-down-yellow.png');
+  background-image: url('./../../triangle-down-yellow.png');
   color: black;
 }
 .tile-container.playable-visible {
-  background-image: url('./../../public/triangle-up-darkgreen.png');
+  background-image: url('./../../triangle-up-darkgreen.png');
   color: transparent;
 }
 .tile-container-inverted.playable-visible {
-  background-image: url('./../../public/triangle-down-darkgreen.png');
+  background-image: url('./../../triangle-down-darkgreen.png');
   color: transparent;
 }
 .tile-container.playable-hidden {
-  background-image: url('./../../public/empty.png');
+  background-image: url('./../../empty.png');
   color: transparent;
 }
 .tile-container-inverted.playable-hidden {
-  background-image: url('./../../public/empty.png');
+  background-image: url('./../../empty.png');
   color: transparent;
 }
 
@@ -108,7 +108,7 @@
   width: 100px;
   height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  background-image: url('./../../public/triangle-up-beige.png');
+  background-image: url('./../../triangle-up-beige.png');
   background-size: cover;
   position: relative;
 }
@@ -117,7 +117,7 @@
   width: 100px;
   height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-  background-image: url('./../../public/triangle-down-beige.png');
+  background-image: url('./../../triangle-down-beige.png');
   background-size: cover;
   position: relative;
 }

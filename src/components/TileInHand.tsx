@@ -8,8 +8,9 @@ export function TileInHand(props: {
   isSelected: boolean;
   setTileInHand: (tile: NewTile | undefined) => void;
   soundEffectsEnabled: boolean;
+  onDrop: (event: React.DragEvent<HTMLDivElement>) => void;
 }) {
-  const { newTile, isSelected, setTileInHand, soundEffectsEnabled } = props;
+  const { newTile, isSelected, setTileInHand, soundEffectsEnabled, onDrop } = props;
 
   const [permutation, setPermutation] = useState(() => {
     const tilesInHand = retrieveTilesFromLocalStorage();
@@ -34,7 +35,7 @@ export function TileInHand(props: {
     setTileInHand(newTile);
 
     if (soundEffectsEnabled) {
-      const rotateTileSound = new Audio('../../public/346178-rotate-tile.wav');
+      const rotateTileSound = new Audio('./../../346178-rotate-tile.wav');
       rotateTileSound.play();
     }
   }
@@ -75,9 +76,12 @@ export function TileInHand(props: {
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      onDrop={onDrop}
+      onDragOver={(event) => event.preventDefault()}
     >
       <div
         className={`tile-in-hand ${isSelected ? 'selected' : ''}`}
+        data-tile-id={newTile.id}
         style={{ ...tilePosition, transform: `${tilePosition!.transform} rotate(${rotation}deg)` }}
         onClick={onClick}
       >

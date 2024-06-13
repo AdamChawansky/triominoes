@@ -11,11 +11,11 @@ import { DisplayHand } from './DisplayHand.tsx';
 import { DisplayGameLog } from './DisplayLog.tsx';
 import { DisplayScores } from './DisplayScores.tsx';
 import './RootDisplay.css';
-import activePlayerSound from '../../public/456965-notification.mp3'
-import victorySound from '../../public/456968-win-game.mp3'
-import failureSound from '../../public/639945-lose-game.wav'
-import bridgeSound from '../../public/442586-bridge.wav'
-import hexagonSound from '../../public/37233-hexagon.wav'
+import activePlayerSound from './../../public/456965-notification.mp3'
+import victorySound from './../../public/456968-win-game.mp3'
+import failureSound from './../../public/639945-lose-game.wav'
+import bridgeSound from './../../public/442586-bridge.wav'
+import hexagonSound from './../../public/37233-hexagon.wav'
 import { clearTilesFromLocalStorage } from '../localStorageUtils.ts';
 import { HowToPlayButton, HowToPlayPopup } from './HowToPlay.tsx';
 
