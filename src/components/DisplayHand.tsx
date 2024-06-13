@@ -30,6 +30,14 @@ export function DisplayHand(props: {
     }
   }
 
+  // Add any remaining tiles from playerHand to the end of orderedPlayerHand
+  for (const tile of playerHand) {
+    if (!orderedPlayerHand.includes(tile)) {
+      orderedPlayerHand.push(tile);
+      setTileOrder([...tileOrder, tile.id]);
+    }
+  }
+
   function onDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     const droppedTile = JSON.parse(event.dataTransfer.getData('text/plain')) as NewTile;
