@@ -48,19 +48,21 @@ export function DisplayHand(props: {
   function onDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     const droppedTile = JSON.parse(event.dataTransfer.getData('text/plain')) as NewTile;
-    const draggedIndex = orderedPlayerHand.findIndex((tile) => tile.id === droppedTile.id);
+    const draggedIndex = tileOrder.findIndex((id) => id === droppedTile.id);
   
     const targetElement = event.target as HTMLElement;
     const droppedOnTileId = targetElement.closest('.tile-in-hand')?.getAttribute('data-tile-id');
   
-    if (droppedOnTileId) {
-      const droppedIndex = orderedPlayerHand.findIndex((tile) => tile.id === droppedOnTileId);
+    if (droppedOnTileId && draggedIndex !== -1) {
+      const droppedIndex = tileOrder.findIndex((id) => id === droppedOnTileId);
   
-      const newTileOrder = [...tileOrder];
-      newTileOrder.splice(draggedIndex, 1);
-      newTileOrder.splice(droppedIndex, 0, droppedTile.id);
+      if (droppedIndex !== -1 && draggedIndex !== droppedIndex) {
+        const newTileOrder = [...tileOrder];
+        newTileOrder.splice(draggedIndex, 1);
+        newTileOrder.splice(droppedIndex, 0, droppedTile.id);
   
-      setTileOrder(newTileOrder);
+        setTileOrder(newTileOrder);
+      }
     }
   }
 
