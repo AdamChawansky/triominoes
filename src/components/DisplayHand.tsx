@@ -26,12 +26,6 @@ export function DisplayHand(props: {
     }
   }, [gameState.gameBoard]);
 
-  // Update tileOrder when a tile is played
-  useEffect(() => {
-    const newTileOrder = tileOrder.filter((id) => playerHand.some((tile) => tile.id === id));
-    setTileOrder(newTileOrder);
-  }, [playerHand]);
-
   // Sort playerHand using tileOrder
   const orderedPlayerHand: NewTile[] = [];
   for (let i = 0; i < tileOrder.length; i++) {
