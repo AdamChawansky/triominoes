@@ -22,45 +22,48 @@ export function DisplayHand(props: {
   // Reset tileOrder when the game ends
   useEffect(() => {
     if (gameState.gameBoard.size === 0) {
-      setTileOrder([]);
+      const newTileOrder = playerHand.map((tile) => tile.id);
+      setTileOrder(newTileOrder);
+      console.log("Game over, resetting tile order.");
     }
   }, [gameState.gameBoard]);
 
   // Sort playerHand using tileOrder
-  const orderedPlayerHand: NewTile[] = [];
-  for (let i = 0; i < tileOrder.length; i++) {
-    const tileIndex = playerHand.findIndex((tile) => tile.id === tileOrder[i]);
-    if (tileIndex === -1) {
-      tileOrder.splice(i, 1);
-    } else {
-      orderedPlayerHand.push(playerHand[tileIndex]);
-    }
-  }
+  const orderedPlayerHand = playerHand.slice().sort((a, b) => {
+    const indexA = tileOrder.indexOf(a.id);
+    const indexB = tileOrder.indexOf(b.id);
+    return indexA - indexB;
+  });
 
-  // Add any remaining tiles from playerHand to the end of orderedPlayerHand
-  for (const tile of playerHand) {
-    if (!orderedPlayerHand.includes(tile)) {
-      orderedPlayerHand.push(tile);
-      setTileOrder([...tileOrder, tile.id]);
-    }
-  }
+  // Update tileOrder to match playerHand
+  useEffect(() => {
+    const newTileOrder = playerHand.map((tile) => tile.id);
+    setTileOrder((prevTileOrder) => {
+      const updatedTileOrder = prevTileOrder.filter((id) => newTileOrder.includes(id));
+      const newTiles = newTileOrder.filter((id) => !prevTileOrder.includes(id));
+      return [...updatedTileOrder, ...newTiles];
+    });
+  }, [playerHand]);
 
   function onDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     const droppedTile = JSON.parse(event.dataTransfer.getData('text/plain')) as NewTile;
     const draggedIndex = tileOrder.findIndex((id) => id === droppedTile.id);
+    console.log("droppedTile: [" + droppedTile.id + "] & draggedIndex: " + draggedIndex);
   
     const targetElement = event.target as HTMLElement;
-    const droppedOnTileId = targetElement.closest('.tile-in-hand')?.getAttribute('data-tile-id');
-  
-    if (droppedOnTileId && draggedIndex !== -1) {
-      const droppedIndex = tileOrder.findIndex((id) => id === droppedOnTileId);
+    const droppedOnTileID = targetElement.closest('.tile-in-hand')?.getAttribute('data-tile-id');
+    console.log("droppedOnTileID: " + droppedOnTileID);
+    
+    if (droppedOnTileID && draggedIndex !== -1) {
+      const droppedIndex = tileOrder.findIndex((id) => id === droppedOnTileID);
   
       if (droppedIndex !== -1 && draggedIndex !== droppedIndex) {
         const newTileOrder = [...tileOrder];
         newTileOrder.splice(draggedIndex, 1);
         newTileOrder.splice(droppedIndex, 0, droppedTile.id);
   
+        // console.log("newTileOrder: " + newTileOrder);
         setTileOrder(newTileOrder);
       }
     }
