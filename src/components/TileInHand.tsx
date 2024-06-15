@@ -28,6 +28,9 @@ export function TileInHand(props: {
   }, [newTile.id]);
 
   // Rotates tile 60 degrees and plays a sound
+  const rotateTileSound = new Audio('./../../public/346178-rotate-tile.wav');
+  rotateTileSound.load();
+
   function onClick() {
     const nextPermutation = (permutation + 1);
     setPermutation(nextPermutation);
@@ -35,8 +38,8 @@ export function TileInHand(props: {
     setTileInHand(newTile);
 
     if (soundEffectsEnabled) {
-      const rotateTileSound = new Audio('/public/346178-rotate-tile.wav');
-      // console.log(rotateTileSound);
+      // Reset the audio playback position to the start so that it will play even if previous didn't finish.
+      rotateTileSound.currentTime = 0;
       rotateTileSound.play();
     }
   }

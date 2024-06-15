@@ -14,33 +14,46 @@ export function DisplayHand(props: {
 
   const playerHand = gameState.hands[playerIndex];
 
-  // Array of tile.id to track order of playerHand locally
+  // playerHand order will always hold tiles in the order they were drawn
+  // tileOrder will store initial order of playerHand as string of tile.id
+  // orderedPlayerHand is then used to render the TilesInHand
+  // Players can swap tiles in hand by dragging and dropping
+  // tileOrder and orderedPlayerHand should be updated whenever anything changes state
+  // A change to any of the 3 should cause all 3 to refresh
   const [tileOrder, setTileOrder] = useState(() => {
     return playerHand.map((tile) => tile.id);
   });
 
-  // Reset tileOrder when the game ends
+  // Reset tileOrder when a new game is initialized
   useEffect(() => {
-    if (gameState.gameBoard.size === 0) {
-      const newTileOrder = playerHand.map((tile) => tile.id);
-      setTileOrder(newTileOrder);
+    if (gameState.gameBoard.size === 1) {
+      const newGameTileOrder = playerHand.map((tile) => tile.id);
+      setTileOrder(newGameTileOrder);
       console.log("Game over, resetting tile order.");
     }
   }, [gameState.gameBoard]);
 
-  // Sort playerHand using tileOrder
-  const orderedPlayerHand = playerHand.slice().sort((a, b) => {
+  // Generate orderedPlayerHand by sorting playerHand using tileOrder
+  // FOR PAUL: Does this need to be wrapped in a useEffect() whenever tileOrder changes?
+  //           It seems like it's running everytime gameState updates
+  const orderedPlayerHand: NewTile[] = playerHand.slice().sort((a, b) => {
     const indexA = tileOrder.indexOf(a.id);
     const indexB = tileOrder.indexOf(b.id);
     return indexA - indexB;
   });
+  console.log("orderedPlayerHand: " + orderedPlayerHand.map((tile) => tile.id));
 
-  // Update tileOrder to match playerHand
+  // If player draws or plays a tile, update tileOrder
   useEffect(() => {
     const newTileOrder = playerHand.map((tile) => tile.id);
     setTileOrder((prevTileOrder) => {
+      // Remove tiles that no longer exist in playerHand
       const updatedTileOrder = prevTileOrder.filter((id) => newTileOrder.includes(id));
+      // Add new tiles to end of playerHand
       const newTiles = newTileOrder.filter((id) => !prevTileOrder.includes(id));
+      console.log("playerHand Changed");
+      console.log("New playerHand: " + playerHand.map((tile) => tile.id));
+      console.log("Updated tileOrder: " + [...updatedTileOrder, ...newTiles]);
       return [...updatedTileOrder, ...newTiles];
     });
   }, [playerHand]);
@@ -63,7 +76,7 @@ export function DisplayHand(props: {
         newTileOrder.splice(draggedIndex, 1);
         newTileOrder.splice(droppedIndex, 0, droppedTile.id);
   
-        // console.log("newTileOrder: " + newTileOrder);
+        console.log("Order after dragging: " + newTileOrder);
         setTileOrder(newTileOrder);
       }
     }
