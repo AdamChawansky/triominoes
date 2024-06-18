@@ -88,6 +88,7 @@ export function TileInHand(props: {
         onClick={onClick}
       >
         <audio ref={rotateTileSoundRef} src={rotateTileSound}/>
+        <audio ref={rotateTileSoundRef} src={rotateTileSound}/>
         <div className="number-container">
           <span className="number top-center">{newTile.numbers[0]}</span>
           <span className="number bottom-right">{newTile.numbers[1]}</span>
