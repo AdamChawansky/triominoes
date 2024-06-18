@@ -19,6 +19,13 @@ import hexagonSound from './../../public/37233-hexagon.wav'
 import { clearTilesFromLocalStorage } from '../localStorageUtils.ts';
 import { HowToPlayButton, HowToPlayPopup } from './HowToPlay.tsx';
 
+export function replaySound(audio: HTMLAudioElement | null) {
+  if (!audio) return;
+  audio.pause();
+  audio.currentTime = 0;
+  audio.play();
+}
+
 export function RootDisplay(props: {
   initialGameData: FirebaseGameData,
   localPlayerID: string,
@@ -80,9 +87,9 @@ export function RootDisplay(props: {
 
   // Automate computer plays every 500ms
   useEffect(() => {
-    if( gameData.gameInProgress ) {
+    if (gameData.gameInProgress) {
       const activePlayerName = gameState.playerNames[gameState.activePlayer];
-      if( activePlayerName.startsWith("Computer")) {
+      if (activePlayerName.startsWith("Computer")) {
         const timer = setTimeout(() => {
           takeStep();
         }, 500);
@@ -122,7 +129,7 @@ export function RootDisplay(props: {
   }
 
   function getButtonClick() {
-    if( !gameData.gameInProgress ) {
+    if (!gameData.gameInProgress) {
       return startNewGame;
     } else {
       return takeStep;
@@ -145,23 +152,34 @@ export function RootDisplay(props: {
 
   // Play a notification when it's your turn
   const activePlayerSoundRef = useRef<HTMLAudioElement | null>(null);
-  useEffect(() => {
-    if( soundEffectsEnabled && gameData.gameInProgress && gameState.activePlayer === playerIndex ) {
-      activePlayerSoundRef.current?.play();
+  const [myTurnStarted, setMyTurnStarted] = useState<boolean>(false);
+  if (soundEffectsEnabled) {
+    const isMyTurn = gameData.gameInProgress && gameState.activePlayer === playerIndex;
+    if (isMyTurn && !myTurnStarted) {
+      replaySound(activePlayerSoundRef.current);
+      setMyTurnStarted(true);
+    } else if (!isMyTurn && myTurnStarted) {
+      setMyTurnStarted(false);
     }
-  }, [gameData.gameHistory.actions]);
+  }
+
+  // Used to only play sound effects once per turn
+  const [numberOfActions, setNumberOfActions] = useState<number>(0);
 
   // Play a sound if a player makes a hexagon or bridge
   const bridgeSoundRef = useRef<HTMLAudioElement | null>(null);
   const hexagonSoundRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const lastAction = gameHistory.actions[gameHistory.actions.length - 1];
-    if( soundEffectsEnabled && lastAction && lastAction.actionType === 'play' ) {
+    if (soundEffectsEnabled && lastAction && lastAction.actionType === 'play') {
       const points = pointsFromPlay(lastAction.tilePlayed, lastAction.coord, gameState.gameBoard);
-      if( points[1] ) {
-        bridgeSoundRef.current?.play();
-      } else if( points[2] ) {
-        hexagonSoundRef.current?.play();
+      if (numberOfActions !== gameHistory.actions.length) {
+        if (points[1]) {
+          replaySound(bridgeSoundRef.current);
+        } else if (points[2]) {
+          replaySound(hexagonSoundRef.current);
+        }
+        setNumberOfActions(gameHistory.actions.length);
       }
     }
   }, [gameData.gameHistory.actions]);
@@ -170,14 +188,17 @@ export function RootDisplay(props: {
   const victorySoundRef = useRef<HTMLAudioElement | null>(null);
   const failureSoundRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    if( soundEffectsEnabled && !gameData.gameInProgress && gameState.gameBoard.size > 0 ) {
+    if (soundEffectsEnabled && !gameData.gameInProgress && gameState.gameBoard.size > 0) {
       const playerScore = gameState.scores[playerIndex];
       const highestScore = Math.max(...gameState.scores);
 
-      if( playerScore === highestScore ) {
-        victorySoundRef.current?.play();
-      } else {
-        failureSoundRef.current?.play();
+      if (numberOfActions !== gameHistory.actions.length) {
+        if (playerScore === highestScore) {
+          victorySoundRef.current?.play();
+        } else {
+          failureSoundRef.current?.play();
+        }
+        setNumberOfActions(gameHistory.actions.length);
       }
     }
   }, [gameData.gameHistory.actions]);
@@ -200,10 +221,10 @@ export function RootDisplay(props: {
       <audio ref={hexagonSoundRef} src={hexagonSound}/>
       <audio ref={victorySoundRef} src={victorySound}/>
       <audio ref={failureSoundRef} src={failureSound}/>
+      <HowToPlayPopup isOpen={isHowToPlayOpen} onClose={handleHowToPlayClose}/>
       <div className="left-container">
         <div className="buttons-container">
           <HowToPlayButton onClick={handleHowToPlayClick}/>
-          <HowToPlayPopup isOpen={isHowToPlayOpen} onClose={handleHowToPlayClose}/>
           {gameData.players[playerIndex].playerType !== 'spectator' && (
           <button className="button"
             onClick={getButtonClick()}

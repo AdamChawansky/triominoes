@@ -29,19 +29,17 @@ export function DisplayHand(props: {
     if (gameState.gameBoard.size === 1) {
       const newGameTileOrder = playerHand.map((tile) => tile.id);
       setTileOrder(newGameTileOrder);
-      console.log("Game over, resetting tile order.");
+      // console.log("Game over, resetting tile order.");
     }
   }, [gameState.gameBoard]);
 
   // Generate orderedPlayerHand by sorting playerHand using tileOrder
-  // FOR PAUL: Does this need to be wrapped in a useEffect() whenever tileOrder changes?
-  //           It seems like it's running everytime gameState updates
   const orderedPlayerHand: NewTile[] = playerHand.slice().sort((a, b) => {
     const indexA = tileOrder.indexOf(a.id);
     const indexB = tileOrder.indexOf(b.id);
-    return indexA - indexB;
+    return indexB - indexA;
   });
-  console.log("orderedPlayerHand: " + orderedPlayerHand.map((tile) => tile.id));
+  // console.log("orderedPlayerHand: " + orderedPlayerHand.map((tile) => tile.id));
 
   // If player draws or plays a tile, update tileOrder
   useEffect(() => {
@@ -51,9 +49,9 @@ export function DisplayHand(props: {
       const updatedTileOrder = prevTileOrder.filter((id) => newTileOrder.includes(id));
       // Add new tiles to end of playerHand
       const newTiles = newTileOrder.filter((id) => !prevTileOrder.includes(id));
-      console.log("playerHand Changed");
-      console.log("New playerHand: " + playerHand.map((tile) => tile.id));
-      console.log("Updated tileOrder: " + [...updatedTileOrder, ...newTiles]);
+      // console.log("playerHand Changed");
+      // console.log("New playerHand: " + playerHand.map((tile) => tile.id));
+      // console.log("Updated tileOrder: " + [...updatedTileOrder, ...newTiles]);
       return [...updatedTileOrder, ...newTiles];
     });
   }, [playerHand]);
@@ -62,11 +60,11 @@ export function DisplayHand(props: {
     event.preventDefault();
     const droppedTile = JSON.parse(event.dataTransfer.getData('text/plain')) as NewTile;
     const draggedIndex = tileOrder.findIndex((id) => id === droppedTile.id);
-    console.log("droppedTile: [" + droppedTile.id + "] & draggedIndex: " + draggedIndex);
+    // console.log("droppedTile: [" + droppedTile.id + "] & draggedIndex: " + draggedIndex);
   
     const targetElement = event.target as HTMLElement;
     const droppedOnTileID = targetElement.closest('.tile-in-hand')?.getAttribute('data-tile-id');
-    console.log("droppedOnTileID: " + droppedOnTileID);
+    // console.log("droppedOnTileID: " + droppedOnTileID);
     
     if (droppedOnTileID && draggedIndex !== -1) {
       const droppedIndex = tileOrder.findIndex((id) => id === droppedOnTileID);
@@ -76,7 +74,7 @@ export function DisplayHand(props: {
         newTileOrder.splice(draggedIndex, 1);
         newTileOrder.splice(droppedIndex, 0, droppedTile.id);
   
-        console.log("Order after dragging: " + newTileOrder);
+        // console.log("Order after dragging: " + newTileOrder);
         setTileOrder(newTileOrder);
       }
     }

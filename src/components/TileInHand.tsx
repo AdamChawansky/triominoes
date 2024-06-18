@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NewTile } from "../game/types";
 import { retrieveTilesFromLocalStorage, saveTileToLocalStorage } from "../localStorageUtils";
 import './TileInHand.css'
+import rotateTileSound from './../../public/346178-rotate-tile.wav'
+import { replaySound } from "./RootDisplay";
 
 export function TileInHand(props: {
   newTile: NewTile;
@@ -28,9 +30,7 @@ export function TileInHand(props: {
   }, [newTile.id]);
 
   // Rotates tile 60 degrees and plays a sound
-  const rotateTileSound = new Audio('./../../public/346178-rotate-tile.wav');
-  rotateTileSound.load();
-
+  const rotateTileSoundRef = useRef<HTMLAudioElement | null>(null);
   function onClick() {
     const nextPermutation = (permutation + 1);
     setPermutation(nextPermutation);
@@ -38,9 +38,7 @@ export function TileInHand(props: {
     setTileInHand(newTile);
 
     if (soundEffectsEnabled) {
-      // Reset the audio playback position to the start so that it will play even if previous didn't finish.
-      rotateTileSound.currentTime = 0;
-      rotateTileSound.play();
+      replaySound(rotateTileSoundRef.current);
     }
   }
 
@@ -89,6 +87,7 @@ export function TileInHand(props: {
         style={{ ...tilePosition, transform: `${tilePosition!.transform} rotate(${rotation}deg)` }}
         onClick={onClick}
       >
+        <audio ref={rotateTileSoundRef} src={rotateTileSound}/>
         <div className="number-container">
           <span className="number top-center">{newTile.numbers[0]}</span>
           <span className="number bottom-right">{newTile.numbers[1]}</span>
