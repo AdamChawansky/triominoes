@@ -26,20 +26,12 @@ export function DisplayHand(props: {
 
   // Reset tileOrder when a new game is initialized
   useEffect(() => {
-    if (gameState.gameBoard.size === 1) {
+    if (gameState.gameBoard.size === 0) {
       const newGameTileOrder = playerHand.map((tile) => tile.id);
       setTileOrder(newGameTileOrder);
       // console.log("Game over, resetting tile order.");
     }
   }, [gameState.gameBoard]);
-
-  // Generate orderedPlayerHand by sorting playerHand using tileOrder
-  const orderedPlayerHand: NewTile[] = playerHand.slice().sort((a, b) => {
-    const indexA = tileOrder.indexOf(a.id);
-    const indexB = tileOrder.indexOf(b.id);
-    return indexB - indexA;
-  });
-  // console.log("orderedPlayerHand: " + orderedPlayerHand.map((tile) => tile.id));
 
   // If player draws or plays a tile, update tileOrder
   useEffect(() => {
@@ -51,10 +43,18 @@ export function DisplayHand(props: {
       const newTiles = newTileOrder.filter((id) => !prevTileOrder.includes(id));
       // console.log("playerHand Changed");
       // console.log("New playerHand: " + playerHand.map((tile) => tile.id));
-      // console.log("Updated tileOrder: " + [...updatedTileOrder, ...newTiles]);
+      console.log("Updated tileOrder: " + [...updatedTileOrder, ...newTiles]);
       return [...updatedTileOrder, ...newTiles];
     });
   }, [playerHand]);
+
+  // Generate orderedPlayerHand by sorting playerHand using tileOrder
+  const orderedPlayerHand: NewTile[] = playerHand.slice().sort((a, b) => {
+    const indexA = tileOrder.indexOf(a.id);
+    const indexB = tileOrder.indexOf(b.id);
+    return indexA - indexB;
+  });
+  console.log("orderedPlayerHand: " + orderedPlayerHand.map((tile) => tile.id));
 
   function onDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
