@@ -5,13 +5,13 @@ export function TileRender(props: {
   top: number[];
   bottom: number[];
   orientation: 'up' | 'down';
-  onClick?: () => void;
   style?: CSSProperties;
   tileStyle?: string;
     // 'playable-visible' = black outline, dark green fill, no numbers
     // 'playable-hidden' = completely transparent
     // 'most-recent' = red star in center of tile
   draggable?: boolean; // Makes tile draggable
+  onClick?: (event: React.DragEvent<HTMLDivElement>) => void;
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void; // sets data of dragged tile
   onDragOver?: (event: React.DragEvent<HTMLDivElement>) => void; // enables dropping of dragged tile
   onDrop?: (event: React.DragEvent<HTMLDivElement>) => void; // places tile when dropped onto valid space
@@ -29,8 +29,8 @@ export function TileRender(props: {
     <div
       className={classNames.join(' ')}
       style={props.style}
-      onClick={props.onClick}
       draggable={props.draggable}
+      onClick={props.onClick}
       onDragStart={props.onDragStart}
       onDragOver={props.onDragOver}
       onDrop={props.onDrop}
