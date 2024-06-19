@@ -128,3 +128,9 @@
   text-align: center;
   font-size: 14px;
 }
+
+@media (max-width: 767px) {
+  .how-to-play-button {
+    max-width: 100px;
+  }
+}

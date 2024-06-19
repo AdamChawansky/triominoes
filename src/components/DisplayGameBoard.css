@@ -103,30 +103,59 @@
 }
 
 /* Styling for tiles in hand, removes absolute positioning */
-.tile-container {
+/* .tile-container {
   flex: 0 0 auto;
   width: 100px;
-  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  height: 86.6px; 
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  background-image: url('./../../triangle-up-beige.png');
+  background-image: url('./../../public/triangle-up-beige.png');
   background-size: cover;
   position: relative;
 }
 .tile-container-inverted {
   flex: 0 0 auto;
   width: 100px;
-  height: 86.6px; /* adjust the height to maintain equilateral triangle ratio */
+  height: 86.6px; 
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-  background-image: url('./../../triangle-down-beige.png');
+  background-image: url('./../../public/triangle-down-beige.png');
   background-size: cover;
   position: relative;
-}
+} */
 
-/* Mobile phone styling */
+/* Mobile phone styling essentially 50% size of desktop version */
 /* Need separate tablet styling */
-@media (max-width: 1024px) {
-  .game-board {
-    flex: 1;
-    order: 2;
+@media (max-width: 767px) {
+  .game-board .tile-container,
+  .game-board .tile-container-inverted {
+    width: 60px;
+    height: 51.96px;
+    /* flex: 1; */
+    /* order: 2; */
+  }
+  .number {
+    font-size: 14px;
+    /* font-weight: 600; */
+  }
+  .bottom-left {
+    bottom: 2px;
+    left: 15px;
+  }
+  .bottom-right {
+    bottom: 2px;
+    right: 15px;
+  }
+  .top-center {
+    top: 10px;
+  }
+  .top-left {
+    top: 1px;
+    left: 16px;
+  }
+  .top-right {
+    top: 1px;
+    right: 16px;
+  }
+  .bottom-center {
+    bottom: 10px;
   }
 }

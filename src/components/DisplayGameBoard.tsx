@@ -16,6 +16,22 @@ export function GameBoardView(props: {
   // aka const gameState = props.gameState;
   const { gameState, tileInHand, pushAction, setTileInHand, isActivePlayer, moveHighlightingEnabled } = props;
 
+  // Adjust width based on screen size (i.e., desktop or mobile)
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // Grab gameBoard height & width to keep tiles centered
   const gameBoardRef = useRef<HTMLDivElement>(null);
   const [gameBoardWidth, setGameBoardWidth] = useState(0);
@@ -37,7 +53,7 @@ export function GameBoardView(props: {
     };
   }, []);
 
-  const width = 96;
+  const width = isMobile ? 57.6 : 96;
   const height = width * 0.88;
 
   const placedTilesWithCoords = Array.from(gameState.gameBoard.entries());

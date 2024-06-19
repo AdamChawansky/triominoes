@@ -67,7 +67,8 @@
   text-align: center;
 }
 
-/* @media (max-width: 1024px) {
+/* Mobile styling */
+@media (max-width: 767px) {
   .player-scores {
     margin: 0;
     border-radius: 4px;
@@ -75,4 +76,16 @@
     font-weight: bold;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
-} */
+  .player-score-item::before {
+    width: 20px;
+    height: 17.32px;
+  }
+  .player-score-item::after {
+    font-size: 12px;
+    left: 10px;
+  }
+  .player-name,
+  .player-score {
+    font-size: 14px;
+  }
+}

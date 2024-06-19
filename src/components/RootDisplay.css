@@ -132,33 +132,38 @@ main {
 
 /* Mobile phone styling */
 /* Need separate tablet styling */
-@media (max-width: 1024px) {
+@media (max-width: 767px) {
   main {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
   }
-  .top-container {
-    flex-direction: column;
-    flex: 1;
-    overflow-y: auto;
-  }
   .buttons-container {
-    order: 1;
+    order: 0;
+    font-size: 10px;
+    padding: 0px;
+  }
+  .sound-toggle-button {
+    padding: 10px;
+    margin-right: 10px;
+  }
+  .move-highlighting-toggle-button {
+    max-width: 100px;
+    margin-right: 20px;
   }
   .left-container {
-    flex-direction: column;
-    padding: 10px;
+    width: 100%;
     order: 2;
-  }
-  .right-container {
-    width: auto;
-    padding: 10px;
-    height: auto;
-    order: 1;
+    overflow-y: auto;
   }
   .bottom-container {
     padding: 10px;
     order: 3;
+  }
+  .right-container {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    order: 1;
   }
 }

@@ -57,3 +57,27 @@
 .tile-dragging-inverted {
   clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
 }
+
+
+/* In general, mobile styling is just 50% of normal desktop sizing */
+@media (max-width: 767px) {
+  .tile-in-hand {
+    width: 60px;
+    height: 51.96px; /* adjust the height to maintain equilateral triangle ratio */
+  }
+  .number {
+    font-size: 14px;
+  }
+  .top-center {
+    top: 13px;
+    left: 25px;
+  }
+  .bottom-right {
+    bottom: 0px;
+    right: 14px;
+  }
+  .bottom-left {
+    bottom: 0px;
+    left: 14px;
+  }
+}

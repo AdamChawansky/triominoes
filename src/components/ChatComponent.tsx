@@ -12,10 +12,15 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData
   const messageHistory = gameData.messageHistory;
   const [inputMessage, setInputMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messageHistory]);
+    if (!expanded) {
+      setHasNewMessage(true);
+    }
+  }, [messageHistory, expanded]);
 
   const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
@@ -32,6 +37,7 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData
         messageHistory: updatedMessageHistory,
       });
       setInputMessage('');
+      setHasNewMessage(false);
     }
   };
 
@@ -47,8 +53,16 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData
     }
   };
 
+  const toggleExpanded = () => {
+    // setExpanded(!expanded); THIS CODE IS FOR WHEN I FIGURE OUT EXPANDING
+    if (hasNewMessage) {
+      setExpanded(expanded);
+    }
+    setHasNewMessage(false);
+  }
+
   return (
-    <div className="chat-component">
+    <div className={`chat-component ${expanded ? 'expanded' : 'minimized'}`} onClick={toggleExpanded}>
       <div className="message-container" ref={messageContainerRef}>
         {messageHistory.messages.map((message, index) => (
           <div key={index} className="message">
@@ -73,4 +87,42 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData
   );
 };
   
-  export default ChatComponent;
+export default ChatComponent;
+
+/* 
+<------------- Chat Component in Progress ----------------->
+
+  <div className={`chat-component ${expanded ? 'expanded' : 'minimized'}`}>
+      <div className="chat-header" onClick={toggleExpanded}>
+        <h3>Chat</h3>
+        {hasNewMessage && <div className="notification"></div>}
+      </div>
+      {expanded && (
+        <>
+          <div className="message-container" ref={messageContainerRef}>
+            {messageHistory.messages.map((message, index) => (
+              <div key={index} className="message">
+                <span className={`player ${playerColors[message.playerIndex]}`}>
+                  {message.playerName + ': '}
+                </span>
+                <span className="content">{message.content}</span>
+              </div>
+            ))}
+          </div>
+          <div className="input-container">
+            <input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Type your message..."
+            />
+            <button onClick={handleSendMessage}>Send</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+
+*/
