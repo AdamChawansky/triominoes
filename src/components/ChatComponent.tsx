@@ -12,7 +12,7 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData
   const messageHistory = gameData.messageHistory;
   const [inputMessage, setInputMessage] = useState('');
   const messageContainerRef = useRef<HTMLDivElement>(null);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
@@ -54,7 +54,8 @@ const ChatComponent: React.FC<{playerName: string; playerIndex: number, gameData
   };
 
   const toggleExpanded = () => {
-    // setExpanded(!expanded); THIS CODE IS FOR WHEN I FIGURE OUT EXPANDING
+    // THIS CODE IS FOR WHEN I FIGURE OUT EXPANDING
+    // setExpanded(!expanded);
     if (hasNewMessage) {
       setExpanded(expanded);
     }
