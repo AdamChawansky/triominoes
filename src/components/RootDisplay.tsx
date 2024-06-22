@@ -223,17 +223,21 @@ export function RootDisplay(props: {
       <audio ref={failureSoundRef} src={failureSound}/>
       <HowToPlayPopup isOpen={isHowToPlayOpen} onClose={handleHowToPlayClose}/>
       <div className="left-container">
-        <div className="buttons-container">
-          <HowToPlayButton onClick={handleHowToPlayClick}/>
-          {gameData.players[playerIndex].playerType !== 'spectator' && (
-          <button className="button"
-            onClick={getButtonClick()}
-            disabled={gameData.gameInProgress && gameState.activePlayer !== playerIndex}
-          >
-            {getButtonLabel(gameState)}
-          </button>
-          )}
-          <div className="right-aligned-buttons">
+        <div className="button-container">
+          <div className="button-group left">
+            <HowToPlayButton onClick={handleHowToPlayClick}/>
+          </div>
+          <div className="button-group center">
+            {gameData.players[playerIndex].playerType !== 'spectator' && (
+            <button className="button"
+              onClick={getButtonClick()}
+              disabled={gameData.gameInProgress && gameState.activePlayer !== playerIndex}
+            >
+              {getButtonLabel(gameState)}
+            </button>
+            )}
+          </div>
+          <div className="button-group right">
             <button className="sound-toggle-button" onClick={handleSoundToggle}>
               {soundEffectsEnabled ? '🔊' : '🔇'}
             </button>
@@ -243,7 +247,6 @@ export function RootDisplay(props: {
               style={{
                 textDecoration: moveHighlightingEnabled ? 'none' : 'line-through',
                 color: moveHighlightingEnabled ? 'whitesmoke' : 'red',
-                fontSize: '14px',
               }}
             >
               {moveHighlightingEnabled ? 'SHOW MOVES' : 'SHOW MOVES'}

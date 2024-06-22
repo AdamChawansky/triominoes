@@ -158,4 +158,10 @@
   .bottom-center {
     bottom: 10px;
   }
+  .tile-container:hover {
+    transform: none;
+  }
+  .tile-container-inverted:hover {
+    transform: none;
+  }  
 }

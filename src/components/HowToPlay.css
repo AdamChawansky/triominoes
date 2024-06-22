@@ -131,7 +131,10 @@
 
 @media (max-width: 767px) {
   .how-to-play-button {
-    max-width: 90px;
+    max-width: 86px;
     font-size: 11px;
+  }
+  .gallery-items {
+    display: contents;
   }
 }

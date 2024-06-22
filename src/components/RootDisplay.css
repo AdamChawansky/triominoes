@@ -36,21 +36,41 @@ main {
 }
 
 /* Holds buttons */
-.buttons-container {
+.button-container {
   display: flex;
+  justify-content: space-between;
   position: relative;
+  width: 100%;
+  min-height: 37px;
   align-items: center;
   border-radius: 1px;
   padding: 5px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
-.buttons-container .button {
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+.button-group.left {
+  margin-right: auto;
+}
+.button-group.center {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  width: 100%; /* Stretch div to full width to center it */
+  justify-content: center;
+  pointer-events: none; /* Allow clicks to pass through to buttons in other divs */
+}
+.button-group.center button {
+  pointer-events: auto; /* Re-enables button clicking */
+}
+.button-group.right {
+  margin-left: auto;
+  vertical-align: middle;
+}
+.button-container .button {
   font-size: 14px;
-  padding: 10px 20px;
   margin: 5px;
   background-color: black;
   color: whitesmoke;
@@ -67,15 +87,8 @@ main {
   color: #888;
 }
 
-.right-aligned-buttons {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
 .move-highlighting-toggle-button {
   font-size: 14px;
-  padding: 10px 20px;
-  /* margin: 5px; */
   background-color: black;
   color: whitesmoke;
   border: none;
@@ -92,6 +105,7 @@ main {
   background: none;
   border: none;
   font-size: 24px;
+  padding: 5px;
   cursor: pointer;
 }
 .sound-toggle-button:focus {
@@ -143,12 +157,11 @@ main {
     padding: 0px;
   }
   .buttons-container .button {
-    font-size: 11px;
-    transform: translateX(-65px);
+    font-size: 12px;
+    /* transform: translateX(-65px); */
   }
   .sound-toggle-button {
-    padding: 10px;
-    margin-right: 10px;
+    padding: 0px;
   }
   .move-highlighting-toggle-button {
     max-width: 80px;
