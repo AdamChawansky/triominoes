@@ -214,6 +214,19 @@ export function RootDisplay(props: {
     setIsHowToPlayOpen(false);
   }
 
+  // Set <main> to height of visible area, mostly for mobile styling
+  useEffect(() => {
+    function updateHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   return (
     <main>
       <audio ref={activePlayerSoundRef} src={activePlayerSound}/>
